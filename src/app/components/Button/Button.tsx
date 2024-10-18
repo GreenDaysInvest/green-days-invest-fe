@@ -8,17 +8,17 @@ type ButtonProps = {
 };
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, type = 'primary', disabled = false }) => {
-  let buttonStyle = 'px-6 py-3 rounded font-semibold focus:outline-none';
+  let buttonStyle = 'px-6 py-3 rounded font-semibold focus:outline-none transition duration-300 ease-in-out'; 
 
   switch (type) {
     case 'primary':
-      buttonStyle += ' bg-darkGreen text-white hover:bg-teal-700';
+      buttonStyle += ' bg-darkGreen text-white hover:bg-secondary';
       break;
     case 'secondary':
-      buttonStyle += ' bg-secondary text-main hover:bg-main hover:text-white';
+      buttonStyle += ' bg-secondary text-white hover:bg-main hover:text-white';
       break;
     case 'outline':
-      buttonStyle += ' border border-main text-darkGreen hover:bg-teal-50';
+      buttonStyle += ' border border-2 border-darkGreen text-darkGreen hover:bg-darkGreen hover:text-white ';
       break;
     case 'danger':
       buttonStyle += ' bg-red-600 text-white hover:bg-red-700';

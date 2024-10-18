@@ -1,0 +1,16 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "about": "About",
+    "cannabisAvailability": "Cannabis Availability",
+    "diseases": "Diseases",
+    "dataPrivacy": "Data Privacy",
+    "termsConditions": "Terms Conditions",
+    "blog": "Blog",
+    "faq": "FAQ"
+  },
+  "HomePage": {
+    "title": "Halo world!",
+    "about": "Go to the about page"
+  }
+}

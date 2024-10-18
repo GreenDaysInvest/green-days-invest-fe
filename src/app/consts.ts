@@ -17,7 +17,7 @@ export const partnersData = [
     {
       id: 3,
       type: 'image',
-      content: trustPilot
+      content: trustPilot,
     },
     {
       id: 4,

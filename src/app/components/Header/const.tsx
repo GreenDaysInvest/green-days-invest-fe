@@ -24,7 +24,7 @@ export const slides: Slide[] = [
             onClick={() => console.log("here")} />
           <Button 
             label="Check live inventory"
-            type="secondary"
+            type="outline"
             onClick={() => console.log("here")} />
         </div>
       </>
