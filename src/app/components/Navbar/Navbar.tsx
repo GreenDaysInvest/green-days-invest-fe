@@ -2,9 +2,7 @@
 import React, { useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import Image from 'next/image';
-import DropdownItem from './DropdownItem'; 
 import Button from '../Button/Button';
-import { FaPlus } from 'react-icons/fa6';
 import { Link } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 
@@ -22,33 +20,6 @@ const Navbar: React.FC = () => {
     setDropdownOpen(null);
   };
 
-  const servicesItems = [
-    {
-      href: '/services/request-treatment',
-      title: 'Request Treatment',
-      description: 'In just three steps to therapy with medical cannabis',
-      icon: <FaPlus className='text-secondary' />
-    },
-    {
-      href: '/services/redeem-prescription',
-      title: 'Redeem Prescription',
-      description: 'In just three steps to therapy with medical cannabis',
-      icon: <FaPlus className='text-secondary' />
-    },
-    {
-      href: '/services/reports-forms',
-      title: 'Reports & Forms',
-      description: 'In just three steps to therapy with medical cannabis',
-      icon: <FaPlus className='text-secondary' />
-    },
-    {
-      href: '/services/another-service',
-      title: 'Another Service',
-      description: 'Description for another service.',
-      icon: <FaPlus className='text-secondary' />
-    },
-  ];
-
   return (
     <nav className="bg-white p-4 md:p-8 relative">
       <div className="container mx-auto flex items-center justify-between">
@@ -58,7 +29,7 @@ const Navbar: React.FC = () => {
 
           <div className="hidden md:flex items-center space-x-10 ml-10">
             <Link href="/how-it-works" legacyBehavior>
-              <a className="text-secondary font-normal hover:text-gray-500">{t('home')}</a>
+              <p className="text-secondary font-normal hover:text-gray-500">{t('home')}</p>
             </Link>
             <div
               className="relative"
@@ -66,64 +37,78 @@ const Navbar: React.FC = () => {
               onMouseLeave={handleMouseLeave}
             >
               <Link href="/products" legacyBehavior>
-                <a className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
+                <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
                   <span>{t('cannabisAvailability')}</span>
                   <FaChevronDown className="text-sm" />
-                </a>
+                </p>
               </Link>
               <div
-                className={`absolute left-0 right-0 mt-2 shadow-lg bg-white w-screen py-2 transition-all duration-500 ease-in-out transform origin-top z-50 max-h-0 overflow-hidden ${
+                className={`absolute left-0 right-0 mt-2 shadow-lg bg-white py-2 transition-all duration-500 ease-in-out transform origin-top z-50 max-h-0 overflow-hidden ${
                   dropdownOpen === 'cannabisAvailability'
                     ? 'max-h-screen opacity-100'
                     : 'opacity-0'
                 }`}
               >
-                <div className="grid grid-cols-2 gap-4 mx-auto">
-                  {servicesItems.map((item) => (
-                    <DropdownItem
-                      key={item.href}
-                      href={item.href}
-                      title={item.title}
-                      description={item.description}
-                      icon={item.icon}
-                    />
-                  ))}
-                </div>
+                <ul className="p-4">
+                  <li className="py-2 hover:text-gray-500">
+                    <Link href="/products/category1">
+                      <p className="text-secondary font-normal hover:text-gray-500">{t('category1')}</p>
+                    </Link>
+                  </li>
+                  <li className="py-2 hover:text-gray-500">
+                    <Link href="/products/category2">
+                      <p className="text-secondary font-normal hover:text-gray-500">{t('category2')}</p>
+                    </Link>
+                  </li>
+                  <li className="py-2 hover:text-gray-500">
+                    <Link href="/products/category3">
+                      <p className="text-secondary font-normal hover:text-gray-500">{t('category3')}</p>
+                    </Link>
+                  </li>
+                </ul>
               </div>
             </div>
+
             <div
               className="relative"
               onMouseEnter={() => handleMouseEnter('diseases')}
               onMouseLeave={handleMouseLeave}
             >
               <Link href="/diseases" legacyBehavior>
-                <a className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
+                <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
                   <span>{t('diseases')}</span>
                   <FaChevronDown className="text-sm" />
-                </a>
+                </p>
               </Link>
               <div
-                className={`absolute left-0 right-0 mt-2 shadow-lg bg-white w-screen py-2 transition-all duration-500 ease-in-out transform origin-top z-50 max-h-0 overflow-hidden ${
+                className={`absolute left-0 right-0 mt-2 shadow-lg bg-white py-2 transition-all duration-500 ease-in-out transform origin-top z-50 max-h-0 overflow-hidden ${
                   dropdownOpen === 'diseases'
                     ? 'max-h-screen opacity-100'
                     : 'opacity-0'
                 }`}
               >
-                <div className="grid grid-cols-2 gap-4 mx-auto">
-                  {servicesItems.map((item) => (
-                    <DropdownItem
-                      key={item.href}
-                      href={item.href}
-                      title={item.title}
-                      description={item.description}
-                      icon={item.icon}
-                    />
-                  ))}
-                </div>
+                <ul className="p-4">
+                  <li className="py-2 hover:text-gray-500">
+                    <Link href="/diseases/disease1">
+                      <p className="text-secondary font-normal hover:text-gray-500">{t('disease1')}</p>
+                      </Link>
+                  </li>
+                  <li className="py-2 hover:text-gray-500">
+                    <Link href="/diseases/disease2">
+                      <p className="text-secondary font-normal hover:text-gray-500">{t('disease2')}</p>
+                      </Link>
+                  </li>
+                  <li className="py-2 hover:text-gray-500">
+                    <Link href="/diseases/disease3">
+                      <p className="text-secondary font-normal hover:text-gray-500">{t('disease3')}</p>
+                      </Link>
+                  </li>
+                </ul>
               </div>
             </div>
+
             <Link href="/accessories-shop" legacyBehavior>
-            <p className="text-secondary font-normal hover:text-gray-500">{t('blog')}</p>
+              <p className="text-secondary font-normal hover:text-gray-500">{t('blog')}</p>
             </Link>
           </div>
 
@@ -149,7 +134,6 @@ const Navbar: React.FC = () => {
               type='outline' 
               onClick={() => console.log("here")} 
             />
-              
           </Link>
         </div>
       </div>
