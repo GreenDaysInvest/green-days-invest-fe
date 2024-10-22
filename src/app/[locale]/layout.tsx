@@ -4,15 +4,16 @@ import "slick-carousel/slick/slick-theme.css";
 import "../globals.css";
 import "../globals.scss";
 import Navbar from "../components/Navbar/Navbar";
-import { Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import Footer from "../components/Footer/Footer";
 
-const inter = Inter({
+const poppins = Poppins({
   subsets: ['latin'], 
-  variable: '--font-inter',
+  variable: '--font-poppins',
   display: 'swap', 
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
 });
 
 export const metadata: Metadata = {
@@ -32,7 +33,7 @@ export default async function RootLayout({
   return (
     <html lang="de">
       <body
-        className={` ${inter.variable} bg-white antialiased`}
+        className={` ${poppins.variable} bg-white antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
           <Navbar />

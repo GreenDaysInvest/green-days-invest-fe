@@ -1,27 +1,24 @@
+"use client";
 import { FC } from 'react';
-import Image from 'next/image';
+import { Link } from '@/i18n/routing';
+import { FaArrowRight } from "react-icons/fa";
+import { useTranslations } from 'next-intl';
 
 interface DiseaseCardProps {
   title: string;
-  description: string;
-  imageUrl: string;
 }
 
-const DiseaseCard: FC<DiseaseCardProps> = ({ title, description, imageUrl }) => {
+const DiseaseCard: FC<DiseaseCardProps> = ({ title}) => {
+  const t = useTranslations('HomePage')
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
-      <Image
-        src={imageUrl}
-        alt={title}
-        width={80}
-        height={80}
-        className="mb-4"
-      />
-      <h3 className="text-xl font-semibold text-center mb-2">{title}</h3>
-      <p className="text-center text-gray-500 mb-4">{description}</p>
-      <button className="bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-all">
-        Learn more
-      </button>
+    <div className="bg-lightGreen rounded-2xl shadow-lg p-5 flex flex-col items-start">
+      <p className="text-3xl font-medium text-white text-left mb-6">{title}</p>
+      <Link href="">
+        <div className='flex items-center flex-start rounded-lg bg-white p-3 flex-shrink-0'>
+          <p className='text-sm text-secondary font-medium'>{t('readMore')}</p>
+          <FaArrowRight className="text-secondary ms-2" />
+        </div>
+      </Link>
     </div>
   );
 };

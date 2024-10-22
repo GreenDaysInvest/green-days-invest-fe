@@ -1,0 +1,54 @@
+import Image, { StaticImageData } from "next/image";
+import { FaRegStar, FaStar } from "react-icons/fa6";
+
+interface Props {
+    rating: number;
+    description: string;
+    client: {
+        name: string;
+        image: StaticImageData;
+        position: string;
+    };
+}
+
+const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name, image, position } }) => {
+
+    
+    const renderStars = () => {
+        const stars = [];
+        for (let i = 1; i <= 5; i++) {
+            stars.push(
+                i <= rating ? (
+                    <FaStar key={i} className="text-tertiary" />
+                ) : (
+                    <FaRegStar key={i} className="text-tertiary" />
+                )
+            );
+        }
+        return stars;
+    };
+
+    return (
+        <div className="flex flex-col bg-main rounded-lg p-5">
+            <div className="flex">
+                {renderStars()} 
+            </div>
+            <p className="text-sm text-white mt-4 mb-3">{description}</p>
+            <div className="flex items-center mt-3">
+                <Image 
+                    src={image} 
+                    alt={name}
+                    width={48}
+                    height={48}
+                    className="rounded-full" 
+                />
+                <div className="flex flex-col ml-3">
+                    <p className="text-white font-bold">{name}</p>
+                    <p className="text-white text-xs">{position}</p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default TestimonialCard;

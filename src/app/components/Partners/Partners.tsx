@@ -1,11 +1,38 @@
+"use client";
+import { useTranslations } from 'next-intl';
 import Image, { StaticImageData } from 'next/image';
 import React from 'react';
+import Slider from "react-slick";
+
+// Slick settings
+const sliderSettings = {
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 5, // Adjust the number of logos shown per slide
+  slidesToScroll: 1,
+  autoplay: true, // Enable auto sliding
+  autoplaySpeed: 2000, // Set auto sliding interval
+  arrows: false, // Disable next/prev arrows
+  responsive: [
+    {
+      breakpoint: 1024, // Breakpoint for tablets and smaller screens
+      settings: {
+        slidesToShow: 4,
+      },
+    },
+    {
+      breakpoint: 768, // Breakpoint for mobile screens
+      settings: {
+        slidesToShow: 2,
+      },
+    },
+  ],
+};
 
 interface Partner {
   id: number;
-  type: 'text' | 'image';
-  content: StaticImageData | string;
-  description?: string;
+  content: StaticImageData;
 }
 
 interface PartnersSectionProps {
@@ -13,27 +40,30 @@ interface PartnersSectionProps {
 }
 
 const Partners: React.FC<PartnersSectionProps> = ({ partners }) => {
+  const t = useTranslations('HomePage');
   return (
-    <section className="bg-main py-20 my-10">
-        <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-            {partners.map((partner) => (
-            <div key={partner.id} className="flex flex-col items-center justify-center text-left">
-                {partner.type === 'text' ? (
-                <div>
-                    <h3 className="text-[30px] font-bold text-white mb-2">{String(partner.content)}</h3>
-                    {partner.description && <p className='text-[18px] font-normal text-white'>{partner.description}</p>}
-                </div>
-                ) : (
-                    <Image 
-                        width={220}
-                        height={165}
-                        src={partner.content} 
-                        alt='Partner logo' 
-                    />
-                )}
+    <section className="bg-white py-5 my-10">
+      <p className='text-secondary mb-10 text-center font-bold'>
+        {t('Partners.title')}
+      </p>
+
+      <div className="relative container mx-auto items-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white pointer-events-none z-10"></div>
+
+        <Slider {...sliderSettings} className="custom-slider overflow-hidden z-0">
+          {partners.map((partner) => (
+            <div key={partner.id} className="px-4"> 
+              <Image
+                width={100}
+                height={30}
+                src={partner.content}
+                alt='Partner logo'
+                className="mx-auto"
+              />
             </div>
-            ))}
-        </div>
+          ))}
+        </Slider>
+      </div>
     </section>
   );
 };

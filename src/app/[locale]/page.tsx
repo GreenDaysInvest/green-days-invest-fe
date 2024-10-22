@@ -1,8 +1,11 @@
 import Header from "@/app/components/Header/Header";
 import Partners from "../components/Partners/Partners";
 import { partnersData } from "../consts";
-import MedicalCannabisSection from "../components/MedicalCannabisSection/MedicalCannabisSection";
 import DiseaseList from "../components/DiseaseList/DiseaseList";
+import DiscoverSection from "../components/DiscoverSection/DiscoverSection";
+import CanabisTypes from "../components/CanabisTypes/CanabisTypes";
+import Testimonials from "../components/Testimonials/Testimonials";
+import Faq from "../components/Faq/Faq";
 
 export default function Home() {
 
@@ -10,8 +13,11 @@ export default function Home() {
     <div className="">
       <Header />
       <Partners partners={partnersData} />
-      <MedicalCannabisSection />
+      <DiscoverSection />
       <DiseaseList />
+      <CanabisTypes />
+      <Testimonials />
+      <Faq />
     </div>
   );
 }

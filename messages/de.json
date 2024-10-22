@@ -9,8 +9,84 @@
     "blog": "Blog",
     "faq": "FAQ"
   },
+  "Header": {
+    "title": "5 minutes to Become a Cannabis Patient",
+    "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+  },
+  "Footer": {
+    "title": "Always up to date",
+    "subtitle": "Sign up for our newsletter now! You'll always be the first to receive the latest information from Green Day Invest about promotions, new offers and current research results on medical cannabis.",
+    "email": "Email",
+    "submit": "Submit"
+  },
   "HomePage": {
-    "title": "Halo world!",
-    "about": "Go to the about page"
+    "readMore": "Read More",
+    "Partners": {
+      "title": "Trusted by top-tier teams worldwide"
+    },
+    "DiscoverSection": {
+      "Top": {
+        "title": "Discover the key to grow your business",
+        "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.",
+        "Card": {
+          "title": "Discover the key to grow your business",
+          "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+        }
+      },
+      "Bottom": {
+        "smallText": "Features",
+        "title": "Discover the key to grow your business",
+        "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.",
+        "Keys": {
+            "first": {
+              "title": "Lorem Ipsum Dolor Sit Atem",
+              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+            },
+            "second": {
+              "title": "Lorem Ipsum Dolor Sit Atem",
+              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+            },
+            "third": {
+              "title": "Lorem Ipsum Dolor Sit Atem",
+              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+            }
+        }
+      }
+    },
+    "Disease": {
+      "title": "Which illnesses does medical cannabis help with?",
+      "list": {
+        "sleepDisorder": "Sleep Disorders",
+        "migraine": "Migraine",
+        "chronicPain": "Chronic Pain",
+        "adhd": "ADHD",
+        "depresion": "Depresion",
+        "furtherComplaints": "Further Complaints"
+      }
+    },
+    "CanabisTypes": {
+      "title": "Find the right flower",
+      "subtitle": "Live Now In Our Page"
+    },
+    "Testimonials": {
+      "title": "What Our Clients Have To Say",
+      "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+    },
+    "Faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.",
+      "items": {
+        "q1": "This is just dummy text to represent FAQ?",
+        "a1": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations.",
+        "q2": "This is just dummy text to represent FAQ?",
+        "a2": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations.",
+        "q3": "This is just dummy text to represent FAQ?",
+        "a3": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations.",
+        "q4": "This is just dummy text to represent FAQ?",
+        "a4": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations.",
+        "q5": "This is just dummy text to represent FAQ?",
+        "a5": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations."
+      }
+    }
   }
 }
