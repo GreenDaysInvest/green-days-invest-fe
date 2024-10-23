@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
               onMouseEnter={() => handleMouseEnter('cannabisAvailability')}
               onMouseLeave={handleMouseLeave}
             >
-              <Link href="/cannabis" legacyBehavior>
+              <Link href="/" legacyBehavior>
                 <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
                   <span>{t('cannabisAvailability')}</span>
                   <FaChevronDown className="text-sm" />
