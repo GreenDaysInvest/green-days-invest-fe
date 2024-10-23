@@ -1,11 +1,12 @@
+import Faq from "@/app/components/Faq/Faq";
 
 
-const Faq = () => {
+const FaqPage = () => {
     return ( 
         <div>
-            <h1>Faq</h1>
+            <Faq />
         </div>
     )
 }
 
-export default Faq;
+export default FaqPage;

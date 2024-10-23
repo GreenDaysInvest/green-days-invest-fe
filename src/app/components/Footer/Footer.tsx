@@ -17,7 +17,7 @@ const Footer = () => {
                         <p className="text-3xl text-secondary font-medium mb-4">{t('title')}</p>
                         <p>{t('subtitle')}</p>
                     </div>
-                    <div className="flex items-center w-1/2">
+                    <div className="flex items-center justify-end w-1/2">
                         <div className="flex w-full max-w-[400px] border-darkGreen rounded-lg overflow-hidden">
                             <input
                                 type="email"
@@ -35,7 +35,7 @@ const Footer = () => {
                 <div className="flex justify-between mt-16 pt-16 border-t border-tertiary">
                     <div className="flex w-1/4 flex-col">
                         <Link href="/" legacyBehavior>
-                            <Image src={'/logo-white.svg'} alt="logo" width={180} height={24} />
+                            <Image className='cursor-pointer' src={'/logo-white.svg'} alt="logo" width={180} height={24} />
                         </Link>
                         <p className="text-white my-6">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.

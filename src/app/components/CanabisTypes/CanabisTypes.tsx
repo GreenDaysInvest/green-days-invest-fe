@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl"
 import CanabisCard from "../CanabisCard/CanabisCard"
 import flower from '../../../../public/flower.png'
 
-const canabis = [
+export const canabis = [
     {
         image: flower,
         title: 'Breezy Organics GGL 20/1',

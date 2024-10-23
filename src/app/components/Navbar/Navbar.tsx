@@ -24,11 +24,11 @@ const Navbar: React.FC = () => {
     <nav className="bg-white p-4 md:p-8 relative">
       <div className="container mx-auto flex items-center justify-between">
           <Link href="/" legacyBehavior>
-            <Image src={'/logo.svg'} alt="logo" width={180} height={24} />
+            <Image className='cursor-pointer' src={'/logo.svg'} alt="logo" width={180} height={24} />
           </Link>
 
           <div className="hidden md:flex items-center space-x-10 ml-10">
-            <Link href="/how-it-works" legacyBehavior>
+            <Link href="/" legacyBehavior>
               <p className="text-secondary font-normal hover:text-gray-500">{t('home')}</p>
             </Link>
             <div
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
               onMouseEnter={() => handleMouseEnter('cannabisAvailability')}
               onMouseLeave={handleMouseLeave}
             >
-              <Link href="/products" legacyBehavior>
+              <Link href="/cannabis" legacyBehavior>
                 <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
                   <span>{t('cannabisAvailability')}</span>
                   <FaChevronDown className="text-sm" />
