@@ -5,6 +5,7 @@ import BlogCard from "@/app/components/BlogCard/BlogCard";
 
 const blogs = [
     {
+        id:1,
         image: flower,
         title: 'Blog 1',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
@@ -15,8 +16,9 @@ const blogs = [
         }
     },
     {
+        id:2,
         image: flower,
-        title: 'Blog 1',
+        title: 'Blog 2',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
         client: {
             name: 'John Doe',
@@ -25,8 +27,9 @@ const blogs = [
         }
     },
     {
+        id:3,
         image: flower,
-        title: 'Blog 1',
+        title: 'Blog 3',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
         client: {
             name: 'John Doe',
@@ -35,8 +38,9 @@ const blogs = [
         }
     },
     {
+        id:4,
         image: flower,
-        title: 'Blog 1',
+        title: 'Blog 4',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
         client: {
             name: 'John Doe',
@@ -45,8 +49,9 @@ const blogs = [
         }
     },
     {
+        id:5,
         image: flower,
-        title: 'Blog 1',
+        title: 'Blog 5',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
         client: {
             name: 'John Doe',
@@ -55,8 +60,9 @@ const blogs = [
         }
     },
     {
+        id:6,
         image: flower,
-        title: 'Blog 1',
+        title: 'Blog 6',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
         client: {
             name: 'John Doe',
@@ -65,8 +71,9 @@ const blogs = [
         }
     },
     {
+        id:7,
         image: flower,
-        title: 'Blog 1',
+        title: 'Blog 7',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
         client: {
             name: 'John Doe',
@@ -75,8 +82,9 @@ const blogs = [
         }
     },
     {
+        id:8,
         image: flower,
-        title: 'Blog 1',
+        title: 'Blog 8',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
         client: {
             name: 'John Doe',
@@ -85,8 +93,9 @@ const blogs = [
         }
     },
     {
+        id:9,
         image: flower,
-        title: 'Blog 1',
+        title: 'Blog 9',
         description: 'Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.',
         client: {
             name: 'John Doe',
@@ -109,6 +118,8 @@ const Blog = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {blogs.map(item => <BlogCard 
+                        key={item.title}
+                        id={item.id}
                         image={item.image}
                         title={item.title}
                         description={item.description}
