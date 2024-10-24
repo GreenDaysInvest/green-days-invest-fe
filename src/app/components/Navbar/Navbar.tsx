@@ -107,8 +107,8 @@ const Navbar: React.FC = () => {
               </div>
             </div>
 
-            <Link href="/accessories-shop" legacyBehavior>
-              <p className="text-secondary font-normal hover:text-gray-500">{t('blog')}</p>
+            <Link href="/blog" legacyBehavior>
+              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('blog')}</p>
             </Link>
           </div>
 
