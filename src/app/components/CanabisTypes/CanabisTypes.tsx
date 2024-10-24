@@ -22,6 +22,42 @@ export const canabis = [
         type: 'Green Gelato',
         price: '7,49'
     },
+    {
+        image: flower,
+        title: 'Breezy Organics GGL 20/1',
+        type: 'Green Gelato',
+        price: '7,49'
+    },
+    {
+        image: flower,
+        title: 'Breezy Organics GGL 20/1',
+        type: 'Green Gelato',
+        price: '7,49'
+    },
+    {
+        image: flower,
+        title: 'Breezy Organics GGL 20/1',
+        type: 'Green Gelato',
+        price: '7,49'
+    },
+    {
+        image: flower,
+        title: 'Breezy Organics GGL 20/1',
+        type: 'Green Gelato',
+        price: '7,49'
+    },
+    {
+        image: flower,
+        title: 'Breezy Organics GGL 20/1',
+        type: 'Green Gelato',
+        price: '7,49'
+    },
+    {
+        image: flower,
+        title: 'Breezy Organics GGL 20/1',
+        type: 'Green Gelato',
+        price: '7,49'
+    },
 ]
 
 const CanabisTypes = () => {
@@ -36,7 +72,7 @@ const CanabisTypes = () => {
                     <p className="text-2xl text-white">{t('CanabisTypes.subtitle')}</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-6">
-                    {canabis.map(item => (
+                    {canabis.slice(0, 3).map(item => (
                         <CanabisCard
                             image={item.image}
                             title={item.title}

@@ -29,45 +29,11 @@ const Navbar: React.FC = () => {
 
           <div className="hidden md:flex items-center space-x-10 ml-10">
             <Link href="/" legacyBehavior>
-              <p className="text-secondary font-normal hover:text-gray-500">{t('home')}</p>
+              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('home')}</p>
             </Link>
-            <div
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('cannabisAvailability')}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Link href="/" legacyBehavior>
-                <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
-                  <span>{t('cannabisAvailability')}</span>
-                  <FaChevronDown className="text-sm" />
-                </p>
-              </Link>
-              <div
-                className={`absolute left-0 right-0 mt-2 shadow-lg bg-white py-2 transition-all duration-500 ease-in-out transform origin-top z-50 max-h-0 overflow-hidden ${
-                  dropdownOpen === 'cannabisAvailability'
-                    ? 'max-h-screen opacity-100'
-                    : 'opacity-0'
-                }`}
-              >
-                <ul className="p-4">
-                  <li className="py-2 hover:text-gray-500">
-                    <Link href="/products/category1">
-                      <p className="text-secondary font-normal hover:text-gray-500">{t('category1')}</p>
-                    </Link>
-                  </li>
-                  <li className="py-2 hover:text-gray-500">
-                    <Link href="/products/category2">
-                      <p className="text-secondary font-normal hover:text-gray-500">{t('category2')}</p>
-                    </Link>
-                  </li>
-                  <li className="py-2 hover:text-gray-500">
-                    <Link href="/products/category3">
-                      <p className="text-secondary font-normal hover:text-gray-500">{t('category3')}</p>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <Link href="/cannabis" legacyBehavior>
+              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('cannabisAvailability')}</p>
+            </Link>
 
             <div
               className="relative"
@@ -75,7 +41,7 @@ const Navbar: React.FC = () => {
               onMouseLeave={handleMouseLeave}
             >
               <Link href="/diseases" legacyBehavior>
-                <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
+                <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500 cursor-pointer">
                   <span>{t('diseases')}</span>
                   <FaChevronDown className="text-sm" />
                 </p>
@@ -90,17 +56,17 @@ const Navbar: React.FC = () => {
                 <ul className="p-4">
                   <li className="py-2 hover:text-gray-500">
                     <Link href="/diseases/disease1">
-                      <p className="text-secondary font-normal hover:text-gray-500">{t('disease1')}</p>
+                      <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('disease1')}</p>
                       </Link>
                   </li>
                   <li className="py-2 hover:text-gray-500">
                     <Link href="/diseases/disease2">
-                      <p className="text-secondary font-normal hover:text-gray-500">{t('disease2')}</p>
+                      <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('disease2')}</p>
                       </Link>
                   </li>
                   <li className="py-2 hover:text-gray-500">
                     <Link href="/diseases/disease3">
-                      <p className="text-secondary font-normal hover:text-gray-500">{t('disease3')}</p>
+                      <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('disease3')}</p>
                       </Link>
                   </li>
                 </ul>
@@ -108,19 +74,11 @@ const Navbar: React.FC = () => {
             </div>
 
             <Link href="/accessories-shop" legacyBehavior>
-              <p className="text-secondary font-normal hover:text-gray-500">{t('blog')}</p>
+              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('blog')}</p>
             </Link>
           </div>
 
         <div className="flex items-center space-x-4">
-          {locale === 'en'
-            ? <Link href="/" locale="de">
-              <Image src='/de.png' alt='de' width={30} height={30} />
-            </Link>
-            : <Link href="/" locale="en">
-              <Image src='/en.png' alt='de' width={30} height={30} />
-            </Link>
-          }
           <Link href="/register" legacyBehavior>
             <Button 
               label='Register'
@@ -135,6 +93,14 @@ const Navbar: React.FC = () => {
               onClick={() => console.log("here")} 
             />
           </Link>
+          {locale === 'en'
+            ? <Link href="/" locale="de">
+              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p>
+            </Link>
+            : <Link href="/" locale="en">
+              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p>
+            </Link>
+          }
         </div>
       </div>
     </nav>

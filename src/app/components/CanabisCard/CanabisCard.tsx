@@ -7,11 +7,12 @@ interface Props {
     title: string,
     type: string,
     price: string
+    isBorder?: boolean
 }
 
-const CanabisCard:React.FC<Props> = ({ image, title, type, price }) => {
+const CanabisCard:React.FC<Props> = ({ image, title, type, price, isBorder }) => {
     return (
-        <div className="rounded-2xl bg-white p-6">
+        <div className={`rounded-2xl bg-white p-6 ${isBorder ? 'border border-1 border-main' : ''}`}>
             <div className="flex space-x-8">
                 <Image
                     src={image}
