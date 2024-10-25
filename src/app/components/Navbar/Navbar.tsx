@@ -6,6 +6,7 @@ import Button from '../Button/Button';
 import { Link } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 import { IoBag } from 'react-icons/io5';
+import Modal from '../Modal/Modal';
 
 const Navbar: React.FC = () => {
   const locale = useLocale();
@@ -15,6 +16,8 @@ const Navbar: React.FC = () => {
   const [dropdownWidth, setDropdownWidth] = useState<number>(0);
   const [dropdownOffset, setDropdownOffset] = useState<number>(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   const handleMouseEnter = (menu: string) => {
     setDropdownOpen(menu);
@@ -26,26 +29,32 @@ const Navbar: React.FC = () => {
 
   const dropdownItems = [
     {
+      href: "sleep-disorder",
       icon: <IoBag className='text-white' />,
       text: tHomePage('Disease.list.sleepDisorder'),
     },
     {
+      href: "migrane",
       icon: <IoBag className='text-white' />,
       text: tHomePage('Disease.list.migraine'),
     },
     {
+      href: "chronic-pain",
       icon: <IoBag className='text-white' />,
       text: tHomePage('Disease.list.chronicPain'),
     },
     {
+      href: "adhd",
       icon: <IoBag className='text-white' />,
       text: tHomePage('Disease.list.adhd'),
     },
     {
+      href: "depresion",
       icon: <IoBag className='text-white' />,
       text: tHomePage('Disease.list.depresion'),
     },
     {
+      href: "further-complaints",
       icon: <IoBag className='text-white' />,
       text: tHomePage('Disease.list.furtherComplaints'),
     }
@@ -72,89 +81,106 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="bg-white p-4 md:p-8 relative">
-      <div className="container mx-auto flex items-center justify-between">
-        <Link href="/" legacyBehavior>
-          <Image className='cursor-pointer' src={'/logo.svg'} alt="logo" width={180} height={24} />
-        </Link>
-
-        <div className="hidden md:flex items-center space-x-10 ml-10">
+    <>
+      <nav className="bg-white p-4 md:p-8 relative">
+        <div className="container mx-auto flex items-center justify-between">
           <Link href="/" legacyBehavior>
-            <p className="text-secondary font-normal hover:text-gray-500">{t('home')}</p>
-          </Link>
-          <Link href="/cannabis" legacyBehavior>
-            <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">{t('cannabisAvailability')}</p>
+            <Image className='cursor-pointer' src={'/logo.svg'} alt="logo" width={180} height={24} />
           </Link>
 
-          <div
-            className="relative"
-            onMouseEnter={() => handleMouseEnter('diseases')}
-            onMouseLeave={handleMouseLeave}
-            ref={dropdownRef}
-          >
-            <Link href="/diseases" legacyBehavior>
-              <p className="flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
-                <span>{t('diseases')}</span>
-                <FaChevronDown className="text-sm" />
-              </p>
+          <div className="hidden md:flex items-center space-x-10 ml-10">
+            <Link href="/" legacyBehavior>
+              <p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('home')}</p>
             </Link>
+            <Link href="/cannabis" legacyBehavior>
+              <p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('cannabisAvailability')}</p>
+            </Link>
+
             <div
-              className={`bg-tertiary absolute w-full mt-11 shadow-lg py-6 transition-all duration-500 ease-in-out transform origin-top z-50 max-h-0 overflow-hidden ${
-                dropdownOpen === 'diseases'
-                  ? 'max-h-screen opacity-100'
-                  : 'opacity-0'
-              }`}
-              style={{
-                width: `${dropdownWidth}px`,
-                left: 0, 
-                transform: `translateX(-${dropdownOffset}px)`,
-              }}
+              className="relative"
+              onMouseEnter={() => handleMouseEnter('diseases')}
+              onMouseLeave={handleMouseLeave}
+              ref={dropdownRef}
             >
-              <div className="container mx-auto py-4">
-                <div className="grid grid-cols-3 gap-4">
-                  {dropdownItems.map((item) => (
-                    <div className='flex items-center bg-white rounded-md p-4' key={item.text}>
-                      <span className='flex items-center justify-center bg-main rounded-md w-[38px] h-[38px] mr-4'>{item.icon}</span>
-                      <p className='text-main font-medium'>{item.text}</p>
-                    </div>
-                  ))}
+              <Link href="/diseases" legacyBehavior>
+                <p className="cursor-pointer flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
+                  <span>{t('diseases')}</span>
+                  <FaChevronDown className="text-sm" />
+                </p>
+              </Link>
+              <div
+                className={`bg-tertiary absolute w-full mt-11 shadow-lg py-6 transition-all duration-500 ease-in-out transform origin-top z-50 overflow-hidden ${
+                  dropdownOpen === 'diseases' ? 'opacity-100 max-h-screen visible' : 'opacity-0 max-h-0 invisible'
+                }`}
+                style={{
+                  width: `${dropdownWidth}px`,
+                  left: 0, 
+                  transform: `translateX(-${dropdownOffset}px)`,
+                }}
+              >
+                <div className="container mx-auto py-4">
+                  <div className="grid grid-cols-3 gap-4">
+                    {dropdownItems.map((item, _id) => (
+                      <Link key={_id} href={`/disease/${item.href}`}>
+                        <div className='flex items-center bg-white rounded-md p-4'>
+                          <span className='flex items-center justify-center bg-main rounded-md w-[38px] h-[38px] mr-4'>{item.icon}</span>
+                          <p className='text-main font-medium'>{item.text}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-            <Link href="/blog" legacyBehavior>
-              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('blog')}</p>
-            </Link>
-          </div>
+              <Link href="/blog" legacyBehavior>
+                <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('blog')}</p>
+              </Link>
+            </div>
 
-        <div className="flex items-center space-x-4">
-          <Link href="/register" legacyBehavior>
+          <div className="flex items-center space-x-4">
             <Button 
               label='Register'
               type='secondary' 
-              onClick={() => console.log("here")} 
+              onClick={() => setIsRegisterModalOpen(true)} 
             />
-          </Link>
-          <Link href="/login" legacyBehavior>
             <Button 
               label='Login'
               type='outline' 
-              onClick={() => console.log("here")} 
+              onClick={() => setIsLoginModalOpen(true)}
             />
-          </Link>
-          {locale === 'en'
-            ? <Link href="/" locale="de">
-              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p>
-            </Link>
-            : <Link href="/" locale="en">
-              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p>
-            </Link>
-          }
+            {locale === 'en'
+              ? <Link href="/" locale="de">
+                <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p>
+              </Link>
+              : <Link href="/" locale="en">
+                <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p>
+              </Link>
+            }
+          </div>
         </div>
-
-      </div>
-    </nav>
+      </nav>
+      <Modal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}>
+        <h2 className="text-xl font-bold">Login Modal Title</h2>
+        <p className="mt-4 text-gray-600">This is the modal content.</p>
+        <button
+          onClick={() => setIsLoginModalOpen(false)}
+          className="mt-6 px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700"
+        >
+          Close Modal
+        </button>
+      </Modal>
+      <Modal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)}>
+        <h2 className="text-xl font-bold">Register Modal Title</h2>
+        <p className="mt-4 text-gray-600">This is the modal content.</p>
+        <button
+          onClick={() => setIsRegisterModalOpen(false)}
+          className="mt-6 px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700"
+        >
+          Close Modal
+        </button>
+      </Modal>
+    </>
   );
 };
 
