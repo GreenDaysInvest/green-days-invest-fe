@@ -92,5 +92,9 @@
   "CannabisPage": {
     "title": "Discover the key to grow your business",
     "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+  },
+  "BlogPage": {
+    "title": "Blog Page",
+    "subtitle": "Our Latest Blog"
   }
 }
