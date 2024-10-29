@@ -1,9 +1,10 @@
+"use client";
 import Image from "next/image";
 import flower from '../../../../../public/flower.png'
 import avatar from '../../../../../public/avatar.png'
 import BlogCard from "@/app/components/BlogCard/BlogCard";
-import { blogs } from "../page";
 import { useTranslations } from "next-intl";
+import { blogs } from "../consts";
 
 
 const BlogDetail = () => {

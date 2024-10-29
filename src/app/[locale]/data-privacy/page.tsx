@@ -1,5 +1,5 @@
 
-
+"use client";
 const DataPrivacy = () => {
     return (
         <div>

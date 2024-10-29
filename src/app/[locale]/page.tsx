@@ -1,3 +1,4 @@
+"use client";
 import Header from "@/app/components/Header/Header";
 import Partners from "../components/Partners/Partners";
 import { partnersData } from "../consts";

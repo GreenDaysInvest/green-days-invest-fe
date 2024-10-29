@@ -1,3 +1,4 @@
+"use client";
 import Faq from "@/app/components/Faq/Faq";
 
 

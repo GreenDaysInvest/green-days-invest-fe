@@ -1,5 +1,5 @@
 
-
+"use client";
 const TermsConditions = () => {
     return (
         <div>
