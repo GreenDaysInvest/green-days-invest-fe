@@ -16,8 +16,9 @@ const CannabisAvailability = () => {
                     <p className="text-secondary w-2/4 mx-auto text-center my-6">{t('subtitle')}</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {canabis.map(item => ( 
+                    {canabis.map((item, _id) => ( 
                         <CanabisCard
+                            key={_id}
                             image={item.image}
                             title={item.title}
                             type={item.type}

@@ -1,3 +1,4 @@
+// src/app/components/Navbar.tsx
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
@@ -6,18 +7,23 @@ import Button from '../Button/Button';
 import { Link } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 import { IoBag } from 'react-icons/io5';
-import Modal from '../Modal/Modal';
+import LoginModal from '../AuthModal/LoginModal';
+import RegisterModal from '../AuthModal/RegisterModal';
+import { useApp } from '@/app/context/AppContext';
+import { useAuth } from '@/app/context/AuthContext';
 
 const Navbar: React.FC = () => {
+  const {  setIsLoginModalOpen, setIsRegisterModalOpen } = useApp();
   const locale = useLocale();
   const t = useTranslations('Navbar');
   const tHomePage = useTranslations('HomePage');
+  const { user, loading } = useAuth();
+  console.log(user,"user")
+
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [dropdownWidth, setDropdownWidth] = useState<number>(0);
   const [dropdownOffset, setDropdownOffset] = useState<number>(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   const handleMouseEnter = (menu: string) => {
     setDropdownOpen(menu);
@@ -84,15 +90,23 @@ const Navbar: React.FC = () => {
     <>
       <nav className="bg-white p-4 md:p-8 relative">
         <div className="container mx-auto flex items-center justify-between">
-          <Link href="/" legacyBehavior>
-            <Image className='cursor-pointer' src={'/logo.svg'} alt="logo" width={180} height={24} />
+          <Link href="/">
+            <Image 
+              className='cursor-pointer' 
+              src={'/logo.svg'} 
+              alt="logo" 
+              width={180} 
+              height={24} 
+              sizes="(max-width: 600px) 100vw, 180px" 
+              style={{ width: "100%", height: "auto" }}
+            />
           </Link>
 
           <div className="hidden md:flex items-center space-x-10 ml-10">
-            <Link href="/" legacyBehavior>
+            <Link href="/">
               <p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('home')}</p>
             </Link>
-            <Link href="/cannabis" legacyBehavior>
+            <Link href="/cannabis">
               <p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('cannabisAvailability')}</p>
             </Link>
 
@@ -102,7 +116,7 @@ const Navbar: React.FC = () => {
               onMouseLeave={handleMouseLeave}
               ref={dropdownRef}
             >
-              <Link href="/diseases" legacyBehavior>
+              <Link href="/diseases">
                 <p className="cursor-pointer flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
                   <span>{t('diseases')}</span>
                   <FaChevronDown className="text-sm" />
@@ -133,22 +147,30 @@ const Navbar: React.FC = () => {
               </div>
             </div>
 
-              <Link href="/blog" legacyBehavior>
-                <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('blog')}</p>
-              </Link>
-            </div>
+            <Link href="/blog" >
+              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('blog')}</p>
+            </Link>
+          </div>
 
           <div className="flex items-center space-x-4">
-            <Button 
-              label='Register'
-              type='secondary' 
-              onClick={() => setIsRegisterModalOpen(true)} 
-            />
-            <Button 
-              label='Login'
-              type='outline' 
-              onClick={() => setIsLoginModalOpen(true)}
-            />
+            {!user 
+              ? <>
+                <Button 
+                  label='Register'
+                  variant='secondary' 
+                  onClick={() => setIsRegisterModalOpen(true)} 
+                />
+                <Button 
+                  label='Login'
+                  variant='outline' 
+                  onClick={() => setIsLoginModalOpen(true)}
+                />
+              </>
+              : 
+                <span className="rounded-full bg-main w-[35px] h-[35px] text-white flex justify-center items-center">
+                  <p className='text-white font-medium'>{user?.displayName?.charAt(0)}</p>
+                </span> 
+            }
             {locale === 'en'
               ? <Link href="/" locale="de">
                 <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p>
@@ -160,26 +182,8 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </nav>
-      <Modal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}>
-        <h2 className="text-xl font-bold">Login Modal Title</h2>
-        <p className="mt-4 text-gray-600">This is the modal content.</p>
-        <button
-          onClick={() => setIsLoginModalOpen(false)}
-          className="mt-6 px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700"
-        >
-          Close Modal
-        </button>
-      </Modal>
-      <Modal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)}>
-        <h2 className="text-xl font-bold">Register Modal Title</h2>
-        <p className="mt-4 text-gray-600">This is the modal content.</p>
-        <button
-          onClick={() => setIsRegisterModalOpen(false)}
-          className="mt-6 px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700"
-        >
-          Close Modal
-        </button>
-      </Modal>
+      <LoginModal />
+      <RegisterModal />
     </>
   );
 };

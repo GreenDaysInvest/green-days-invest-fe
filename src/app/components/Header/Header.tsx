@@ -18,11 +18,11 @@ const Header: React.FC = () => {
                 <div className="flex space-x-4">
                   <Button
                     label="Request treatment"
-                    type="white"
+                    variant="white"
                     onClick={() => console.log("here")} />
                   <Button 
                     label="Check live inventory"
-                    type="tertiary"
+                    variant="tertiary"
                     onClick={() => console.log("here")} />
                 </div>
               </div>

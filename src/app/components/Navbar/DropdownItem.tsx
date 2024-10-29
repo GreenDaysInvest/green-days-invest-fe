@@ -16,7 +16,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
   icon,
 }) => {
   return (
-    <Link href={href} legacyBehavior>
+    <Link href={href} >
       <a className="flex items-start space-x-3 p-2 hover:bg-gray-100 rounded-md w-full">
         <span className="bg-main rounded-full w-[40px] h-[40px] flex items-center justify-center flex-shrink-0">
           {icon}

@@ -8,6 +8,8 @@ import { Poppins } from 'next/font/google';
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import Footer from "../components/Footer/Footer";
+import { AuthProvider } from "../context/AuthContext";
+import { AppProvider } from "../context/AppContext";
 
 const poppins = Poppins({
   subsets: ['latin'], 
@@ -35,11 +37,15 @@ export default async function RootLayout({
       <body
         className={` ${poppins.variable} bg-white antialiased`}
       >
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          {children}
-          <Footer />
-        </NextIntlClientProvider>
+        <AuthProvider>
+          <AppProvider>
+            <NextIntlClientProvider messages={messages}>
+              <Navbar />
+              {children}
+              <Footer />
+            </NextIntlClientProvider>
+          </AppProvider>
+        </AuthProvider>
       </body>
     </html>
   );

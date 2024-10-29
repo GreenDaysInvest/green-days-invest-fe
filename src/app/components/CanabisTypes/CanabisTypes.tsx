@@ -72,8 +72,9 @@ const CanabisTypes = () => {
                     <p className="text-2xl text-white">{t('CanabisTypes.subtitle')}</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-6">
-                    {canabis.slice(0, 3).map(item => (
+                    {canabis.slice(0, 3).map((item, _id) => (
                         <CanabisCard
+                            key={_id}
                             image={item.image}
                             title={item.title}
                             type={item.type}

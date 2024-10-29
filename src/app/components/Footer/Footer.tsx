@@ -34,8 +34,16 @@ const Footer = () => {
                 </div>
                 <div className="flex justify-between mt-16 pt-16 border-t border-tertiary">
                     <div className="flex w-1/4 flex-col">
-                        <Link href="/" legacyBehavior>
-                            <Image className='cursor-pointer' src={'/logo-white.svg'} alt="logo" width={180} height={24} />
+                        <Link href="/" >
+                            <Image 
+                                className='cursor-pointer' 
+                                src={'/logo-white.svg'} 
+                                alt="logo" 
+                                width={180} 
+                                height={24}
+                                sizes="(max-width: 600px) 100vw, 180px" 
+                                style={{ width: "100%", height: "auto" }}
+                                />
                         </Link>
                         <p className="text-white my-6">
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -49,56 +57,56 @@ const Footer = () => {
                     </div>
                     <div className="flex gap-10 space-x-40">
                         <div className="flex flex-col">
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">About us</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Mission</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Our team</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Testimonials</p>
                             </Link>
                         </div>
                         <div className="flex flex-col">
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">Services</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Web design</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Web development</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Mobile design</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">UI/UX design</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Branding design</p>
                             </Link>
                         </div>
                         <div className="flex flex-col">
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">Contact us</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Information</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Request a quote</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Consultation</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Help center</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Terms and conditions</p>
                             </Link>
                         </div>

@@ -58,7 +58,7 @@ const Partners: React.FC<PartnersSectionProps> = ({ partners }) => {
                 height={30}
                 src={partner.content}
                 alt='Partner logo'
-                className="mx-auto"
+                className="mx-auto w-auto h-auto"
               />
             </div>
           ))}

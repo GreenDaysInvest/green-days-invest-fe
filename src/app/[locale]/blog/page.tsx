@@ -3,7 +3,7 @@ import flower from '../../../../public/flower.png'
 import avatar from '../../../../public/avatar.png'
 import BlogCard from "@/app/components/BlogCard/BlogCard";
 
-const blogs = [
+export const blogs = [
     {
         id:1,
         image: flower,
@@ -124,6 +124,7 @@ const Blog = () => {
                         title={item.title}
                         description={item.description}
                         client={item.client}
+                        isBackground={true}
                         />
                     )}
                 </div>

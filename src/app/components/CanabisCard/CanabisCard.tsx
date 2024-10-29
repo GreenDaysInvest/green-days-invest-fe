@@ -50,7 +50,7 @@ const CanabisCard:React.FC<Props> = ({ image, title, type, price, isBorder }) =>
                 <p className="text-secondary mb-8">{type}</p>
                 <div className="flex justify-between items-center">
                     <p className="text-lightGreen text-2xl">ab <span className="text-secondary text-3xl">{price} €</span> gr</p>
-                    <Button type="dark" label="See More" onClick={() => console.log("here")} />
+                    <Button variant="dark" label="See More" onClick={() => console.log("here")} />
                 </div>
             </div>
         </div>

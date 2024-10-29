@@ -11,6 +11,7 @@ interface Props {
         avatar: StaticImageData;
         position: string;
     }
+    isBackground: boolean;
 }
 
 const BlogCard: React.FC<Props> = ({ 
@@ -22,11 +23,13 @@ const BlogCard: React.FC<Props> = ({
         name, 
         avatar, 
         position
-    }}
-) => {
+    },
+    isBackground
+}) => {
+    console.log(isBackground,"11isBackground")
     return (
         <Link href={`/blog/${id}`}>
-            <div className="flex flex-col bg-tertiary rounded-2xl p-6">
+            <div className={`flex flex-col ${isBackground ? 'bg-tertiary' : 'bg-white'}  rounded-2xl p-6`}>
                 <Image 
                     src={image} 
                     alt={`${image}-img`}
