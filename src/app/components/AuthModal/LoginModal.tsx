@@ -10,6 +10,7 @@ import { signInWithPopup } from 'firebase/auth';
 import { useApp } from '@/app/context/AppContext.tsx';
 import { useRouter } from '@/i18n/routing.ts';
 import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
+import { useAuth } from '@/app/context/AuthContext.tsx';
 
 interface Props {
 }
@@ -17,6 +18,7 @@ interface Props {
 const LoginModal: React.FC<Props> = () => {
 
     const router = useRouter();
+    const {user} = useAuth();
     const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useApp()
 
     const loginValidationSchema = Yup.object({
@@ -26,9 +28,14 @@ const LoginModal: React.FC<Props> = () => {
 
     const handleOAuthLogin = async (provider: any) => {
         try {
+            console.log(user,"para")
             const result = await signInWithPopup(auth, provider);
-            router.push('/dashboard');
-            setIsLoginModalOpen(false);
+            console.log(result,"result")
+            console.log(user,"mas")
+            if(result.user) {
+                router.push('/dashboard');
+                setIsLoginModalOpen(false);
+            }
         } catch (error) {
             console.error('Error logging in with provider:', error);
         }

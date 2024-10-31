@@ -10,6 +10,7 @@ import { getMessages } from "next-intl/server";
 import Footer from "../components/Footer/Footer";
 import { AuthProvider } from "../context/AuthContext";
 import { AppProvider } from "../context/AppContext";
+import { ScraperDataProvider } from "../context/ScraperDataContext";
 
 const poppins = Poppins({
   subsets: ['latin'], 
@@ -39,11 +40,13 @@ export default async function RootLayout({
       >
         <AuthProvider>
           <AppProvider>
-            <NextIntlClientProvider messages={messages}>
-              <Navbar />
-              {children}
-              <Footer />
-            </NextIntlClientProvider>
+            <ScraperDataProvider>
+              <NextIntlClientProvider messages={messages}>
+                <Navbar />
+                {children}
+                <Footer />
+              </NextIntlClientProvider>
+            </ScraperDataProvider>
           </AppProvider>
         </AuthProvider>
       </body>

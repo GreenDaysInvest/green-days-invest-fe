@@ -30,7 +30,7 @@ const DiseaseList = () => {
 
   return (
     <div className="bg-secondary">
-      <div className="container mx-auto py-20">
+      <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-0">
         <h2 className="text-5xl font-medium text-tertiary text-center mb-8 w-2/4 mx-auto mb-20">
           {t('Disease.title')}
         </h2>

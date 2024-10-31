@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from '@/i18n/routing';
-import { useApp } from '@/app/context/AppContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -10,13 +9,11 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user, loading } = useAuth();
-  const { setIsLoginModalOpen } = useApp()
   const router = useRouter();
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/');
-      setIsLoginModalOpen(true)
     }
   }, [user, loading, router]);
 

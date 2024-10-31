@@ -21,7 +21,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <ProtectedRoute>
-      <div className="container mx-auto">
+      <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-0">
         <div className="flex">
           <Sidebar setActiveTab={setActiveTab} activeTab={activeTab} />
           <div className="flex-grow p-6">

@@ -37,7 +37,7 @@ const BlogCard: React.FC<Props> = ({
                     height={200}
                     className="rounded-md w-full h-[200px] object-cover mb-6"
                     />
-                <p className="text-2xl text-secondary text-medium mb-3">{title}</p>
+                <p className="text-lg lg:text-2xl text-secondary text-medium mb-3">{title}</p>
                 <p className="text-main mb-3">{description}</p>
                 <div className="flex items-center mt-3">
                     <Image 
