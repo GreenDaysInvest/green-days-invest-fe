@@ -15,7 +15,7 @@ const DiscoverBannerSection: React.FC<Props> = ({ title, subTitle, image, cardTi
 
     return (
         <>
-            <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-4">
+            <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
                 <h1 className="text-center text-lightGreen text-5xl font-normal">
                     {title}
                 </h1>

@@ -30,11 +30,11 @@ const DiseaseList = () => {
 
   return (
     <div className="bg-secondary">
-      <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-4">
-        <h2 className="text-5xl font-medium text-tertiary text-center mb-8 w-2/4 mx-auto mb-20">
+      <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-tertiary text-center mb-8 w-full md:w-2/4 mx-auto mb-20">
           {t('Disease.title')}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {[
             t('Disease.list.sleepDisorder'),
             t('Disease.list.migraine'),

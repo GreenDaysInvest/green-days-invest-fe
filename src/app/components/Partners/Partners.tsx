@@ -61,10 +61,10 @@ const Partners: React.FC<PartnersSectionProps> = ({ partners }) => {
             <div key={partner.id} className="px-4"> 
               <Image
                 width={100}
-                height={30}
+                height={50}
                 src={partner.content}
                 alt='Partner logo'
-                className="mx-auto w-auto h-auto"
+                className="mx-auto w-auto h-[30px]"
               />
             </div>
           ))}

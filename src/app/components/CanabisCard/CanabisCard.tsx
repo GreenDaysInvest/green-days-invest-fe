@@ -22,7 +22,7 @@ const CanabisCard: React.FC<Props> = ({
           alt={`${name}-cannabis`}
           width={200} 
           height={200} 
-          className="object-cover rounded-md w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[140px] md:h-[140px] lg:w-[150px] lg:h-[150px] 2xl:w-[200px] 2xl:h-[200px]"
+          className="object-cover rounded-md w-[130px] h-[130px] sm:w-[180px] sm:h-[180px] md:w-[140px] md:h-[140px] lg:w-[150px] lg:h-[150px] 2xl:w-[200px] 2xl:h-[200px]"
         />
         <div className="flex flex-col">
           <div className="flex space-x-3">

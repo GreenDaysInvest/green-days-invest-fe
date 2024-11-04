@@ -16,7 +16,7 @@ const TextImage: React.FC<Props> = ({ smallText, title, subTitle, image, isRever
 
     return (
         <>
-        <div className={`container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-4`}>
+        <div className={`container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4`}>
             <div className="w-1/2">
                 {smallText && <p className="text-sm uppercase text-lightGreen">
                     {smallText}

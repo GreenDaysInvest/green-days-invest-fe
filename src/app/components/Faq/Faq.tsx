@@ -20,7 +20,7 @@ const Faq: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-4">
+    <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
       <p className="text-lightGreen text-3xl md:text-4xl lg:text-5xl text-center font-medium">{t('Faq.title')}</p>
       <p className="text-secondary md:w-3/4 lg:w-2/4 mx-auto text-center my-6">{t('Faq.subtitle')}</p>
 

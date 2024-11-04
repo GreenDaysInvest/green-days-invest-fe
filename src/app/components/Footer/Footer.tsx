@@ -11,8 +11,8 @@ const Footer = () => {
     const t = useTranslations('Footer');
     return (
         <div className="bg-darkGreen">
-            <div className="container mx-auto pt-20 pb-4 px-4 sm:px-0 md:px-8 lg:px-4">
-                <div className="flex flex-col lg:flex-row lg:space-x-10 bg-lightGreen w-full p-8 rounded-2xl">
+            <div className="container mx-auto pt-14 lg:pt-20 pb-8 sm:pb-4 px-4 md:px-8 lg:px-4">
+                <div className="flex flex-col lg:flex-row lg:space-x-10 bg-lightGreen w-full p-8 rounded-2xl hidden lg:flex">
                     <div className="flex flex-col w-full lg:w-1/2 mb-6 lg:mb-0">
                         <p className="text-3xl text-secondary font-medium mb-4 lg:text-left md:text-center text-center">{t('title')}</p>
                         <p className="lg:text-left md:text-center text-center">{t('subtitle')}</p>
@@ -32,17 +32,16 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row justify-between mt-16 pt-16 border-t border-tertiary">
+                <div className="flex flex-col lg:flex-row justify-between lg:mt-16 lg:pt-16 lg:border-t lg:border-tertiary">
                     <div className="flex w-full lg:w-1/4 flex-col mb-10 lg:mb-0">
                         <Link href="/" >
                             <Image 
-                                className='cursor-pointer' 
+                                className='cursor-pointer mx-auto lg:mx-0' 
                                 src={'/logo-white.svg'} 
                                 alt="logo" 
-                                width={180} 
+                                width={200} 
                                 height={24}
                                 sizes="(max-width: 600px) 100vw, 180px" 
-                                style={{ width: "60%", height: "auto" }}
                             />
                         </Link>
                         <Link href="mailto:info@greendaysinvest.com">
@@ -52,8 +51,8 @@ const Footer = () => {
                             <p className="text-white lg:text-left md:text-center text-center">+49 163 7343363</p>
                         </Link>
                     </div>
-                    <div className="flex  md:flex-row gap-5 lg:gap-10 space-x-0 md:space-x-8 lg:space-x-20 md:justify-center">
-                        <div className="flex flex-col">
+                    <div className="flex flex-col sm:flex-row gap-5 lg:gap-10 space-x-0 md:space-x-8 lg:space-x-20 sm:justify-between items-center sm:items-start">
+                        <div className="flex flex-col items-center sm:items-start">
                             <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">About us</p>
                             </Link>
@@ -67,7 +66,7 @@ const Footer = () => {
                                 <p className="text-white mb-3">Testimonials</p>
                             </Link>
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col items-center sm:items-start">
                             <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">Services</p>
                             </Link>
@@ -87,7 +86,7 @@ const Footer = () => {
                                 <p className="text-white mb-3">Branding design</p>
                             </Link>
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col items-center sm:items-start">
                             <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">Contact us</p>
                             </Link>
@@ -109,7 +108,7 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-center border-t border-white pt-4 mt-16">
+                <div className="flex justify-center border-t border-white pt-4 mt-6 lg:mt-14">
                     <p className="text-white text-center">Copyright © 2025 Green Day Invest | All Rights Reserved</p>
                 </div>
             </div>
