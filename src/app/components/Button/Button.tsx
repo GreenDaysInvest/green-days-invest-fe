@@ -11,7 +11,7 @@ type ButtonProps = {
 };
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, type, variant = 'primary', disabled = false, className, icon }) => {
-  let buttonStyle = 'px-4 lg:px-6 py-2 lg:py-3 rounded font-normal focus:outline-none transition duration-300 ease-in-out flex items-center justify-center'; 
+  let buttonStyle = 'px-4 lg:px-6 py-2 lg:py-3 rounded-lg font-normal focus:outline-none transition duration-300 ease-in-out flex items-center justify-center'; 
 
   switch (variant) {
     case 'primary':

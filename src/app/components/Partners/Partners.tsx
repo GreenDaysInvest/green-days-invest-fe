@@ -53,7 +53,7 @@ const Partners: React.FC<PartnersSectionProps> = ({ partners }) => {
         {t('Partners.title')}
       </p>
 
-      <div className="relative container mx-auto items-center px-4 sm:px-0 md:px-8 lg:px-0">
+      <div className="relative container mx-auto items-center px-4 sm:px-0 md:px-8 lg:px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white pointer-events-none z-10"></div>
 
         <Slider {...sliderSettings} className="custom-slider overflow-hidden z-0">

@@ -10,7 +10,7 @@ const CanabisTypes = () => {
 
   return (
     <div className="bg-secondary py-20">
-      <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-0">
+      <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-4">
         <div className="flex justify-between items-end mb-10">
           <p className="text-tertiary text-5xl font-medium">{t("CanabisTypes.title")}</p>
           <p className="text-2xl text-white">{t("CanabisTypes.subtitle")}</p>

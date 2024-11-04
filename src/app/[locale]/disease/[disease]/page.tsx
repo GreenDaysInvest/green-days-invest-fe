@@ -10,7 +10,7 @@ const Disease = () => {
 
     return (
         <div className="">
-            <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-0">
+            <div className="container mx-auto pt-0 pb-20 px-4 sm:px-0 md:px-8 lg:px-4">
                 <DiscoverBannerSection
                     title={t('DiscoverSection.Top.title')}
                     subTitle={t('DiscoverSection.Top.subtitle')}

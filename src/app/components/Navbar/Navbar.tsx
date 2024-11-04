@@ -34,8 +34,8 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-white py-4 px-0 md:p-8 relative">
-        <div className="container mx-auto flex items-center justify-between px-4 sm:px-0 md:px-8 lg:px-0">
+      <nav className="bg-white py-4 px-0 md:py-8 relative">
+        <div className="container mx-auto flex items-center justify-between px-4 sm:px-0 md:px-8 lg:px-4">
           <Link href="/">
             <Image className="cursor-pointer" src={'/logo.svg'} alt="logo" width={180} height={24} sizes="(max-width: 600px) 100vw, 180px" style={{ width: "100%", height: "auto" }} />
           </Link>
@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
                   dropdownOpen === 'diseases' ? 'opacity-100 max-h-screen visible' : 'opacity-0 max-h-0 invisible'
                 }`}
               >
-                <div className="container mx-auto py-4 px-4 sm:px-0 md:px-8 lg:px-0">
+                <div className="container mx-auto py-4 px-4 sm:px-0 md:px-8 lg:px-4">
                   <div className="grid grid-cols-3 gap-4">
                     {dropdownItems.map((item, _id) => (
                       <Link key={_id} href={`/disease/${item.href}`}>

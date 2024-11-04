@@ -9,6 +9,8 @@ import Testimonials from "../components/Testimonials/Testimonials";
 import Faq from "../components/Faq/Faq";
 import TextImage from "../components/DiscoverSections/TextImage";
 import { useTranslations } from "next-intl";
+import { testimonals } from "./const";
+
 
 export default function Home() {
 
@@ -33,7 +35,7 @@ export default function Home() {
         />
       <DiseaseList />
       <CanabisTypes />
-      <Testimonials />
+      <Testimonials items={testimonals} />
       <Faq />
     </div>
   );

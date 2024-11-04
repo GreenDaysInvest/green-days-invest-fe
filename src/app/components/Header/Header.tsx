@@ -10,7 +10,7 @@ const Header: React.FC = () => {
 
   return (
     <div className="bg-darkGreen">
-      <div className="container mx-auto py-20 px-4 sm:px-0 md:px-8 lg:px-0">
+      <div className="container mx-auto px-4 sm:px-0 md:px-8 lg:px-4">
         <div className="overflow-hidden flex flex-row items-center">
               <div className="w-full lg:w-1/2 mb-8 lg:mb-0 text-left order-2 lg:order-1">
                 <h1 className="text-5xl text-tertiary font-medium leading-tight">{t('title')}</h1>

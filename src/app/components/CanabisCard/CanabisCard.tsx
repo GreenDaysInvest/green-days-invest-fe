@@ -22,7 +22,7 @@ const CanabisCard: React.FC<Props> = ({
           alt={`${name}-cannabis`}
           width={200} 
           height={200} 
-          className="object-cover rounded-md w-[200px] h-[200px] md:w-[150px] md:h-[150px]" // Use lg: to override for large screens
+          className="object-cover rounded-md w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[140px] md:h-[140px] lg:w-[150px] lg:h-[150px] 2xl:w-[200px] 2xl:h-[200px]"
         />
         <div className="flex flex-col">
           <div className="flex space-x-3">
@@ -46,10 +46,10 @@ const CanabisCard: React.FC<Props> = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-between h-[200px]">
+      <div className="flex flex-col justify-between h-[180px] md:h-[200px]">
         <div>
             <p className="text-secondary text-xl lg:text-2xl font-medium mt-6 mb-3">{name}</p>
-            <p className="text-secondary  mb-8">{genetic}</p>
+            <p className="text-secondary mb-4 md:mb-8">{genetic}</p>
         </div>
         <div className="flex justify-between items-center">
           <p className="text-lightGreen text-xl lg:text-2xl">

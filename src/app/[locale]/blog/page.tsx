@@ -10,7 +10,7 @@ const Blog = () => {
 
     return (
         <div className="md:pt-0 md:pb-10 pt-10 pb-20">
-            <div className="container mx-auto py-0 md:py-10 lg:py-20 px-4 sm:px-0 md:px-8 lg:px-0">
+            <div className="container mx-auto py-0 md:py-10 lg:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
                 <div className="flex justify-between items-end mb-10 lg:mb-20">
                     <p className="text-secondary text-3xl md:text-4xl lg:text-5xl font-medium">{t('title')}</p>
                     <p className="text-lg lg:text-2xl text-secondary">{t('subtitle')}</p>

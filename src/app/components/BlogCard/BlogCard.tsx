@@ -1,3 +1,4 @@
+import { Client } from "@/app/types/Client.type";
 import { Link } from "@/i18n/routing";
 import Image, { StaticImageData } from "next/image";
 
@@ -6,11 +7,7 @@ interface Props {
     image: StaticImageData,
     title: string,
     description: string,
-    client: {
-        name: string;
-        avatar: StaticImageData;
-        position: string;
-    }
+    client: Client;
     isBackground: boolean;
 }
 
@@ -26,7 +23,6 @@ const BlogCard: React.FC<Props> = ({
     },
     isBackground
 }) => {
-    console.log(isBackground,"11isBackground")
     return (
         <Link href={`/blog/${id}`}>
             <div className={`flex flex-col ${isBackground ? 'bg-tertiary' : 'bg-white'}  rounded-2xl p-6`}>

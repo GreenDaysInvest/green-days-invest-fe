@@ -11,7 +11,7 @@ const Footer = () => {
     const t = useTranslations('Footer');
     return (
         <div className="bg-darkGreen">
-            <div className="container mx-auto pt-20 pb-4 px-4 sm:px-0 md:px-8 lg:px-0">
+            <div className="container mx-auto pt-20 pb-4 px-4 sm:px-0 md:px-8 lg:px-4">
                 <div className="flex flex-col lg:flex-row lg:space-x-10 bg-lightGreen w-full p-8 rounded-2xl">
                     <div className="flex flex-col w-full lg:w-1/2 mb-6 lg:mb-0">
                         <p className="text-3xl text-secondary font-medium mb-4 lg:text-left md:text-center text-center">{t('title')}</p>
@@ -45,11 +45,8 @@ const Footer = () => {
                                 style={{ width: "60%", height: "auto" }}
                             />
                         </Link>
-                        <p className="text-white my-6 lg:text-left md:text-center text-center">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
                         <Link href="mailto:info@greendaysinvest.com">
-                            <p className="text-white mb-1 lg:text-left md:text-center text-center">info@greendaysinvest.com</p>
+                            <p className="text-white mt-8 mb-3 lg:text-left md:text-center text-center">info@greendaysinvest.com</p>
                         </Link>
                         <Link href="tel:+49 163 7343363">
                             <p className="text-white lg:text-left md:text-center text-center">+49 163 7343363</p>
