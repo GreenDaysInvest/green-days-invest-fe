@@ -103,5 +103,8 @@
     "invalidEmail": "Invalid email",
     "passowrdSixChars": "Password must be at least 6 characters",
     "passwordMustMatch": "Passwords must match"
+  },
+  "Dashboard": {
+    "back": "Back"
   }
 }
