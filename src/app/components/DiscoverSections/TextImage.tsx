@@ -17,7 +17,7 @@ const TextImage: React.FC<Props> = ({ smallText, title, subTitle, image, isRever
     return (
         <>
         <div className={`container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4`}>
-            <div className="w-1/2">
+            <div className="lg:w-1/2 mb-10 lg:mb-0">
                 {smallText && <p className="text-sm uppercase text-lightGreen">
                     {smallText}
                 </p>}
@@ -29,8 +29,8 @@ const TextImage: React.FC<Props> = ({ smallText, title, subTitle, image, isRever
                 </p>
             </div>
 
-            <div className={`flex ${isReverse ? 'flex-row-reverse' : 'flex-row'} `}>
-                <div className="w-1/2 pt-20">
+            <div className={`flex flex-col flex-col-reverse ${isReverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} `}>
+                <div className="lg:w-1/2 pt-20">
                     {['first', 'second', 'third'].map((key) => (
                         <CardItem
                             key={key}
@@ -40,7 +40,7 @@ const TextImage: React.FC<Props> = ({ smallText, title, subTitle, image, isRever
                     ))}
                 </div>
 
-                <div className="w-1/2">
+                <div className="lg:w-1/2">
                     <Image
                         src={image}
                         alt="flower"

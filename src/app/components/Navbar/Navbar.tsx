@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaChevronDown, FaBars, FaTimes } from 'react-icons/fa';
 import Image from 'next/image';
 import Button from '../Button/Button';
 import { Link } from '@/i18n/routing';
@@ -19,6 +19,7 @@ const Navbar: React.FC = () => {
   const tHomePage = useTranslations('HomePage');
 
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleMouseEnter = (menu: string) => setDropdownOpen(menu);
   const handleMouseLeave = () => setDropdownOpen(null);
@@ -32,11 +33,16 @@ const Navbar: React.FC = () => {
     { href: "further-complaints", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.furtherComplaints') },
   ];
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setDropdownOpen(null);
+  };
+
   return (
     <>
-      <nav className="bg-white py-4 px-0 md:py-8 relative">
-        <div className="container mx-auto flex items-center justify-between px-4 sm:px-0 md:px-8 lg:px-4">
-          <Link href="/">
+      <nav className="bg-white px-4 py-8 relative">
+        <div className="container mx-auto flex items-center justify-between">
+          <Link href="/" onClick={closeMobileMenu}>
             <Image className="cursor-pointer" src={'/logo.svg'} alt="logo" width={180} height={24} sizes="(max-width: 600px) 100vw, 180px" style={{ width: "100%", height: "auto" }} />
           </Link>
 
@@ -75,25 +81,74 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-4">
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden text-secondary flex items-center justify-center border border-secondary rounded-lg w-[35px] h-[35px]">
+              {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </button>
             {!user ? (
-              <>
-                <Button label='Register' variant='secondary' onClick={() => setIsRegisterModalOpen(true)} />
-                <Button label='Login' variant='outline' onClick={() => setIsLoginModalOpen(true)} />
-              </>
+              <div className="hidden md:flex space-x-4">
+                <Button label='Register' variant='secondary' onClick={() => { setIsRegisterModalOpen(true); closeMobileMenu(); }} />
+                <Button label='Login' variant='outline' onClick={() => { setIsLoginModalOpen(true); closeMobileMenu(); }} />
+              </div>
             ) : (
-              <Link href="/dashboard">
+              <Link href="/dashboard" className="hidden md:flex" onClick={closeMobileMenu}>
                 <span className="rounded-full bg-main w-[35px] h-[35px] my-[7px] text-white flex justify-center items-center cursor-pointer">
                   <p className="text-white font-medium">{user?.displayName?.charAt(0)}</p>
-                </span> 
+                </span>
               </Link>
             )}
             {locale === 'en' ? (
-              <Link href="/" locale="de"><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p></Link>
+              <Link href="/" locale="de" className="hidden md:flex" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p></Link>
             ) : (
-              <Link href="/" locale="en"><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p></Link>
+              <Link href="/" locale="en" className="hidden md:flex" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p></Link>
             )}
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white shadow-lg absolute top-full left-0 w-full pb-4 px-6 z-50 border-t border-lightGreen">
+            <div className="flex flex-col items-center">
+              <Link href="/" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('home')}</p></Link>
+              <Link href="/cannabis" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('cannabisAvailability')}</p></Link>
+              <button onClick={() => setDropdownOpen(dropdownOpen === 'symptoms' ? null : 'symptoms')} className="flex justify-center items-center text-secondary font-normal border-b border-lightGreen w-full text-center py-4">
+                {t('diseases')} <FaChevronDown className="ml-1" />
+              </button>
+              {dropdownOpen === 'symptoms' && (
+                <div className="bg-tertiary w-full py-4 px-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    {dropdownItems.map((item, _id) => (
+                      <Link key={_id} href={`/disease/${item.href}`} onClick={closeMobileMenu}>
+                        <div className="flex justify-center items-center bg-white rounded-md p-4 shadow-sm">
+                          <p className="text-main text-xs text-center">{item.text}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <Link href="/blog" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('blog')}</p></Link>
+
+              {!user ? (
+                <div className='flex justify-center space-x-4 py-4'>
+                  <Button label='Register' variant='secondary' className='px-8' onClick={() => { setIsRegisterModalOpen(true); closeMobileMenu(); }} />
+                  <Button label='Login' variant='outline' className='px-8' onClick={() => { setIsLoginModalOpen(true); closeMobileMenu(); }} />
+                </div>
+              ) : (
+                <Link href="/dashboard" onClick={closeMobileMenu}>
+                  <span className="rounded-full bg-main w-[35px] h-[35px] text-white flex justify-center items-center cursor-pointer">
+                    <p className="text-white font-medium">{user?.displayName?.charAt(0)}</p>
+                  </span>
+                </Link>
+              )}
+              {locale === 'en' ? (
+                <Link href="/" locale="de" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p></Link>
+              ) : (
+                <Link href="/" locale="en" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p></Link>
+              )}
+            </div>
+          </div>
+        )}
       </nav>
       <LoginModal />
       <RegisterModal />
