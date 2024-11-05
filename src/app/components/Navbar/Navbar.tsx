@@ -41,12 +41,12 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav className="bg-white px-4 py-8 relative">
-        <div className="container mx-auto flex items-center justify-between">
+        <div className="container mx-auto flex items-center justify-between md:px-8 lg:px-4">
           <Link href="/" onClick={closeMobileMenu}>
             <Image className="cursor-pointer" src={'/logo.svg'} alt="logo" width={180} height={24} sizes="(max-width: 600px) 100vw, 180px" style={{ width: "100%", height: "auto" }} />
           </Link>
 
-          <div className="hidden md:flex items-center space-x-10 ml-10">
+          <div className="hidden lg:flex items-center space-x-10 ml-10">
             <Link href="/"><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('home')}</p></Link>
             <Link href="/cannabis"><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('cannabisAvailability')}</p></Link>
 
@@ -81,32 +81,32 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden text-secondary flex items-center justify-center border border-secondary rounded-lg w-[35px] h-[35px]">
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden text-secondary flex items-center justify-center border border-secondary rounded-lg w-[35px] h-[35px]">
               {mobileMenuOpen ? <FaTimes /> : <FaBars />}
             </button>
             {!user ? (
-              <div className="hidden md:flex space-x-4">
+              <div className="hidden lg:flex space-x-4">
                 <Button label='Register' variant='secondary' onClick={() => { setIsRegisterModalOpen(true); closeMobileMenu(); }} />
                 <Button label='Login' variant='outline' onClick={() => { setIsLoginModalOpen(true); closeMobileMenu(); }} />
               </div>
             ) : (
-              <Link href="/dashboard" className="hidden md:flex" onClick={closeMobileMenu}>
+              <Link href="/dashboard" className="hidden lg:flex" onClick={closeMobileMenu}>
                 <span className="rounded-full bg-main w-[35px] h-[35px] my-[7px] text-white flex justify-center items-center cursor-pointer">
                   <p className="text-white font-medium">{user?.displayName?.charAt(0)}</p>
                 </span>
               </Link>
             )}
             {locale === 'en' ? (
-              <Link href="/" locale="de" className="hidden md:flex" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p></Link>
+              <Link href="/" locale="de" className="hidden lg:flex" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p></Link>
             ) : (
-              <Link href="/" locale="en" className="hidden md:flex" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p></Link>
+              <Link href="/" locale="en" className="hidden lg:flex" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p></Link>
             )}
           </div>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white shadow-lg absolute top-full left-0 w-full pb-4 px-6 z-50 border-t border-lightGreen">
+          <div className="lg:hidden bg-white shadow-lg absolute top-full left-0 w-full pb-4 px-6 z-50 border-t border-lightGreen">
             <div className="flex flex-col items-center">
               <Link href="/" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('home')}</p></Link>
               <Link href="/cannabis" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('cannabisAvailability')}</p></Link>
