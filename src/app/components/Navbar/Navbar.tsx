@@ -136,15 +136,15 @@ const Navbar: React.FC = () => {
                 </div>
               ) : (
                 <Link href="/dashboard" onClick={closeMobileMenu}>
-                  <span className="rounded-full bg-main w-[35px] h-[35px] text-white flex justify-center items-center cursor-pointer">
+                  <span className="rounded-full bg-main w-[35px] h-[35px] text-white flex justify-center items-center cursor-pointer mt-4">
                     <p className="text-white font-medium">{user?.displayName?.charAt(0)}</p>
                   </span>
                 </Link>
               )}
               {locale === 'en' ? (
-                <Link href="/" locale="de" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p></Link>
+                <Link href="/" locale="de" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer mt-4">DE</p></Link>
               ) : (
-                <Link href="/" locale="en" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p></Link>
+                <Link href="/" locale="en" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer mt-4">ENG</p></Link>
               )}
             </div>
           </div>

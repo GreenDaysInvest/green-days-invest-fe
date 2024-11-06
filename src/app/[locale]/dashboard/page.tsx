@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 const Dashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('questionaries');
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -21,12 +22,24 @@ const Dashboard: React.FC = () => {
 
   return (
     <ProtectedRoute>
-        <div className="flex">
-          <Sidebar setActiveTab={setActiveTab} activeTab={activeTab} />
-          <div className="flex-grow p-6">
-            {renderContent()}
-          </div>
+      <div className="flex">
+        {/* Sidebar */}
+        <div className={`fixed md:static z-10 ${showSidebar ? 'block' : 'hidden md:block'}`}>
+          <Sidebar setActiveTab={setActiveTab} activeTab={activeTab} onClose={() => setShowSidebar(false)} />
         </div>
+
+        {/* Main Content */}
+        <div className="flex-grow p-6">
+          {/* Mobile toggle button */}
+          <button
+            className="md:hidden mb-4 text-secondary"
+            onClick={() => setShowSidebar(!showSidebar)}
+          >
+            {showSidebar ? "Close Sidebar" : "Open Sidebar"}
+          </button>
+          {renderContent()}
+        </div>
+      </div>
     </ProtectedRoute>
   );
 };
