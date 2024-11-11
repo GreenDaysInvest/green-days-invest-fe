@@ -13,6 +13,7 @@ import { AppProvider } from "../context/AppContext";
 import { ScraperDataProvider } from "../context/ScraperDataContext";
 import { usePathname } from 'next/navigation';
 import Layout from "../components/Layout/Layout";
+import ToastProvider from "../components/ToastProvider/ToastProvider";
 
 const poppins = Poppins({
   subsets: ['latin'], 
@@ -44,7 +45,9 @@ export default async function RootLayout({
           <AppProvider>
             <ScraperDataProvider>
               <NextIntlClientProvider messages={messages}>
-                <Layout children={children}/>
+                <ToastProvider>
+                  <Layout children={children}/>
+                </ToastProvider>
               </NextIntlClientProvider>
             </ScraperDataProvider>
           </AppProvider>

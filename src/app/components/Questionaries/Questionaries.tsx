@@ -1,5 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useAuth } from "@/app/context/AuthContext";
+import QuestionnaireService from "@/app/services/questionnaireService";
+import { showErrorToast, showInfoToast } from "@/app/utils/toast";
+import { useState, useEffect } from "react";
 
 interface Question {
   id: number;
@@ -17,11 +20,31 @@ const questions: Question[] = [
 
 const StepQuestionnaire: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [responses, setResponses] = useState<{ [key: number]: string }>({});
+  const [responses, setResponses] = useState<{ question: string; answer: string }[]>([]);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const checkQuestionnaireSubmission = async () => {
+      try {
+        const userQuestionnaires = await QuestionnaireService.getUserQuestionnaires(String(user?.id));
+        if (userQuestionnaires.length > 0) {
+          setHasSubmitted(true);
+        }
+      } catch (error) {
+        showErrorToast("Error checking questionnaire submission status");
+        console.error("Error checking questionnaire submission status:", error);
+      }
+    };
+
+    checkQuestionnaireSubmission();
+  }, [user?.id]);
 
   const handleNext = () => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
+    } else {
+      handleSubmit();
     }
   };
 
@@ -32,11 +55,32 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handleOptionSelect = (option: string) => {
-    setResponses({
-      ...responses,
-      [questions[currentStep].id]: option,
-    });
+    const questionText = questions[currentStep].text;
+    const updatedResponses = [...responses];
+    updatedResponses[currentStep] = { question: questionText, answer: option };
+    setResponses(updatedResponses);
   };
+
+  const handleSubmit = async () => {
+    const questionnaireData = { questions: responses };
+    try {
+      await QuestionnaireService.createQuestionnaire(questionnaireData);
+      showInfoToast("Questionnaire submitted successfully!");
+      setHasSubmitted(true);
+    } catch (error) {
+      showErrorToast("Error submitting questionnaire");
+      console.error("Error submitting questionnaire:", error);
+    }
+  };
+
+  if (hasSubmitted) {
+    return (
+      <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
+        <h2 className="text-3xl font-semibold text-secondary mb-20">Questionnaire</h2>
+        <p className="text-xl text-secondary">You have already submitted your questionnaire.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
@@ -50,7 +94,7 @@ const StepQuestionnaire: React.FC = () => {
               key={index}
               onClick={() => handleOptionSelect(option)}
               className={`px-4 py-2 border rounded-lg ${
-                responses[questions[currentStep].id] === option
+                responses[currentStep]?.answer === option
                   ? "bg-secondary text-white"
                   : "border-secondary text-secondary hover:bg-green-100"
               }`}
@@ -71,7 +115,6 @@ const StepQuestionnaire: React.FC = () => {
         </button>
         <button
           onClick={handleNext}
-          disabled={currentStep === questions.length - 1}
           className="px-4 py-2 bg-secondary text-white rounded-lg"
         >
           {currentStep === questions.length - 1 ? "Finish" : "Next"}

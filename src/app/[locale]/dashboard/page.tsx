@@ -4,6 +4,7 @@ import Sidebar from '@/app/components/Sidebar/Sidebar';
 import Questionaries from '@/app/components/Questionaries/Questionaries';
 import Profile from '@/app/components/Profile/Profile';
 import { useState } from 'react';
+import QuestionnaireList from '@/app/components/QuestionaireList/QuestionaireList';
 
 const Dashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('questionaries');
@@ -13,6 +14,8 @@ const Dashboard: React.FC = () => {
     switch (activeTab) {
       case 'questionaries':
         return <Questionaries />;
+      case 'questionariesList':
+        return <QuestionnaireList />;
       case 'profile':
         return <Profile />;
       default:

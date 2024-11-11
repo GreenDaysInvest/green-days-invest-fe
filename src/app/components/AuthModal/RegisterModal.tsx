@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Modal from "../Modal/Modal";
 import Input from "../Input/Input";
@@ -11,98 +11,78 @@ import { useRouter } from '@/i18n/routing';
 import { useApp } from '@/app/context/AppContext';
 import { useTranslations } from 'next-intl';
 import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
+import AuthService from '@/app/services/authServices';
+import { User } from '@/app/types/Auth.type';
 
-interface Props {
-}
+interface Props {}
 
-const RegisterModal: React.FC<Props> = ({  }) => {
+const RegisterModal: React.FC<Props> = () => {
     const router = useRouter();
-    const t = useTranslations('Validations')
-    const { isRegisterModalOpen, setIsRegisterModalOpen, setIsLoginModalOpen } = useApp()
+    const t = useTranslations('Validations');
+    const { isRegisterModalOpen, setIsRegisterModalOpen, setIsLoginModalOpen } = useApp();
 
     const registerValidationSchema = Yup.object({
         name: Yup.string().required(t('required')),
         surname: Yup.string().required(t('required')),
         email: Yup.string().email('Invalid email').required(t('required')),
         phoneNumber: Yup.string().required(t('required')),
-        password: Yup.string().min(6, t('passowrdSixChars')).required(t('required')),
+        password: Yup.string().min(6, t('passwordSixChars')).required(t('required')),
         repeatPassword: Yup.string()
             .oneOf([Yup.ref('password'), undefined], t('passwordMustMatch'))
             .required(t('required')),
     });
 
-    const handleOAuthRegister = async (provider: AuthProvider) => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-    
-            const displayName = result.user.displayName || '';
-            const [name, ...surnameParts] = displayName.split(' ');
-            const surname = surnameParts.join(' ');
-    
-            const response = await fetch('http://localhost:3000/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    uid: result.user.uid,
-                    name,
-                    surname,
-                    email: result.user.email,
-                    phoneNumber: '',
-                }),
-            });
-    
-            if (response.status === 409) {
-                alert('This account already exists. Please log in.');
-                setIsLoginModalOpen(true);
-                setIsRegisterModalOpen(false);
-                return;
-            }
-    
-            if (!response.ok) {
-                throw new Error('Registration failed');
-            }
-    
-            setIsRegisterModalOpen(false);
-            router.push('/dashboard');
-        } catch (error) {
-            console.error('Error registering with provider:', error);
-        }
-    };
-    
-
-    const handleFormSubmit = async (values: {
+    const handleRegistration = async (values: {
         name: string;
         surname: string;
         email: string;
         phoneNumber: string;
         password: string;
-        repeatPassword: string;
     }) => {
         try {
+            // Create user with Firebase Authentication
             const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-    
-            await fetch('http://localhost:3000/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    uid: userCredential.user.uid,
-                    name: values.name,
-                    surname: values.surname,
-                    email: values.email,
-                    phoneNumber: values.phoneNumber,
-                    password: values.password,
-                }),
+
+            // Send registration data to your backend
+            await AuthService.register({
+                uid: userCredential.user.uid,
+                name: values.name,
+                surname: values.surname,
+                email: values.email,
+                phoneNumber: values.phoneNumber,
+                password: values.password, // If you want to save the password, ensure it's hashed in the backend
             });
-    
+
             setIsRegisterModalOpen(false);
             router.push('/dashboard');
         } catch (error) {
             console.error('Registration error:', error);
+            // Handle error (e.g., show a notification)
         }
     };
-    
+
+    const handleOAuthRegister = async (provider: AuthProvider) => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const userData: User = {
+                uid: result.user.uid,
+                email: String(result?.user?.email),
+                name: result.user.displayName?.split(' ')[0] || '',
+                surname: result.user.displayName?.split(' ').slice(1).join(' ') || '',
+                phoneNumber: '', // Optionally gather phone number if necessary
+            };
+
+            // Send registration data to your backend
+            const response = await AuthService.register(userData as User);
+            console.log(response);
+
+            setIsRegisterModalOpen(false);
+            router.push('/dashboard');
+        } catch (error) {
+            console.error('Error registering with provider:', error);
+            // Handle error (e.g., show a notification)
+        }
+    };
 
     return (
         <Modal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)}>
@@ -119,43 +99,42 @@ const RegisterModal: React.FC<Props> = ({  }) => {
                         repeatPassword: ''
                     }}
                     validationSchema={registerValidationSchema}
-                    onSubmit={handleFormSubmit}
+                    onSubmit={handleRegistration}
                 >
                     {() => (
                         <Form className='flex flex-col'>
                             <div className="grid grid-cols-2 gap-4">
-                                <div className='mb-4'>
-                                    <Field name="name" type="text" placeholder="Name" component={Input} />
+                                <div>
+                                    <Input name="name" type="text" placeholder="Name" />
                                     <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
                                 </div>
 
-                                <div className='mb-4'>
-                                    <Field name="surname" type="text" placeholder="Surname" component={Input} />
+                                <div>
+                                    <Input name="surname" type="text" placeholder="Surname" />
                                     <ErrorMessage name="surname" component="div" className="text-red-500 text-sm" />
                                 </div>
                             </div>
 
-                            <div className='mb-4'>
-                                <Field name="email" type="email" placeholder="Email" component={Input} />
+                            <div>
+                                <Input name="email" type="email" placeholder="Email" />
                                 <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
                             </div>
 
-                            <div className='mb-4'>
-                                <Field name="phoneNumber" type="tel" placeholder="Phone number" component={Input} />
+                            <div>
+                                <Input name="phoneNumber" type="tel" placeholder="Phone number" />
                                 <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-sm" />
                             </div>
 
-                            <div className='mb-4'>
-                                <Field name="password" type="password" placeholder="Password" component={Input} />
+                            <div>
+                                <Input name="password" type="password" placeholder="Password" />
                                 <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
                             </div>
 
-                            <div className='mb-4'>
-                                <Field
+                            <div>
+                                <Input
                                     name="repeatPassword"
                                     type="password"
                                     placeholder="Repeat your password"
-                                    component={Input}
                                 />
                                 <ErrorMessage name="repeatPassword" component="div" className="text-red-500 text-sm" />
                             </div>
@@ -163,15 +142,15 @@ const RegisterModal: React.FC<Props> = ({  }) => {
                             <Button type="submit" label="Register" variant="secondary" />
                             <Button  
                                 onClick={() => {
-                                    setIsLoginModalOpen(true)
-                                    setIsRegisterModalOpen(false)
+                                    setIsLoginModalOpen(true);
+                                    setIsRegisterModalOpen(false);
                                 }} 
                                 variant='link' 
                                 label='Go to Log in'
                                 className='text-left ps-0'
                             />
 
-                            <div className="mt-6 flex flex-col justify-center gap-2">
+                            <div className="mt-6 flex flex-col justify-center gap-4">
                                 <Button
                                     type="button"
                                     label="Sign up with Google"

@@ -101,7 +101,7 @@
   "Validations": {
     "required": "Required",
     "invalidEmail": "Invalid email",
-    "passowrdSixChars": "Password must be at least 6 characters",
+    "passwordSixChars": "Password must be at least 6 characters",
     "passwordMustMatch": "Passwords must match"
   },
   "Dashboard": {

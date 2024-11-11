@@ -1,13 +1,13 @@
 "use client";
 import React from 'react';
 import Button from '../Button/Button';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../../../firebase';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { IoIosArrowBack } from 'react-icons/io';
 import { AiOutlineClose } from 'react-icons/ai';
 import Link from 'next/link';
+import AuthService from '@/app/services/authServices';
+import { useAuth } from '@/app/context/AuthContext';
 
 interface SidebarProps {
   setActiveTab: (tab: string) => void;
@@ -16,8 +16,17 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ setActiveTab, activeTab, onClose }) => {
+  const { setUser } = useAuth();
   const t = useTranslations('Dashboard');
-
+  const handleLogout = async () => {
+    try {
+      AuthService.logout(); // Call your custom logout method
+      onClose(); // Close the sidebar after logout
+      setUser(null)
+    } catch (error) {
+      console.error('Logout error:', error); // Handle logout error if necessary
+    }
+  };
   return (
     <div className="w-64 bg-tertiary h-screen p-4 flex flex-col justify-between relative">
    
@@ -53,6 +62,12 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveTab, activeTab, onClose }) =
               Questionaries
             </li>
             <li
+              className={`p-4 border-b border-secondary cursor-pointer text-secondary ${activeTab === 'questionariesList' ? 'font-bold' : ''}`}
+              onClick={() => { setActiveTab('questionariesList'); onClose(); }}
+            >
+              Questionaries
+            </li>
+            <li
               className={`p-4 border-b border-secondary cursor-pointer text-secondary ${activeTab === 'profile' ? 'font-bold' : ''}`}
               onClick={() => { setActiveTab('profile'); onClose(); }}
             >
@@ -61,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveTab, activeTab, onClose }) =
           </ul>
         </div>
       </div>
-      <Button variant='link' className='text-secondary' onClick={() => { signOut(auth); onClose(); }} label='LogOut' />
+      <Button variant='link' className='text-secondary' onClick={handleLogout} label='LogOut' />
     </div>
   );
 };

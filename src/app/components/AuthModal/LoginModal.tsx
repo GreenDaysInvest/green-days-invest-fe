@@ -1,43 +1,61 @@
-"use client";
 import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Modal from "../Modal/Modal";
 import Input from "../Input/Input";
 import Button from '../Button/Button';
-import { auth, googleProvider, facebookProvider, appleProvider } from '../../../../firebase.ts';
+import { auth, googleProvider, facebookProvider, appleProvider } from '../../../../firebase';
 import { signInWithPopup } from 'firebase/auth';
-import { useApp } from '@/app/context/AppContext.tsx';
-import { useRouter } from '@/i18n/routing.ts';
+import { useApp } from '@/app/context/AppContext';
+import { useRouter } from '@/i18n/routing';
 import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
-import { useAuth } from '@/app/context/AuthContext.tsx';
+import AuthService from '@/app/services/authServices';
+import { showErrorToast } from '@/app/utils/toast';
+import { useAuth } from '@/app/context/AuthContext';
 
-interface Props {
-}
+interface Props {}
 
 const LoginModal: React.FC<Props> = () => {
-
     const router = useRouter();
-    const {user} = useAuth();
-    const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useApp()
+    const { setUser } = useAuth();
+    const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useApp();
 
     const loginValidationSchema = Yup.object({
         email: Yup.string().email('Invalid email').required('Required'),
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
     });
 
+    const handleNormalLogin = async (values: { email: string; password: string }) => {
+        try {
+            const token = await AuthService.login(values.email, values.password);
+            console.log('Logged in successfully with token:', token);
+            const userProfile = await AuthService.getProfile();
+            console.log('User profile:', userProfile);
+
+            setUser(userProfile);
+
+            router.push('/dashboard');
+            setIsLoginModalOpen(false);
+        } catch (error) {
+            const errorMessage = (error as Error).message || 'An unexpected error occurred.';
+            showErrorToast(errorMessage);    
+        }
+    };
+
     const handleOAuthLogin = async (provider: any) => {
         try {
-            console.log(user,"para")
             const result = await signInWithPopup(auth, provider);
-            console.log(result,"result")
-            console.log(user,"mas")
-            if(result.user) {
-                router.push('/dashboard');
                 setIsLoginModalOpen(false);
-            }
+            // const token = await result.user?.getIdToken(); // Get the Firebase ID token
+            // if (token) {
+            //     const response = await AuthService.loginWithFirebase(token);
+            //     console.log('Logged in successfully with OAuth, token:', response);
+            //     router.push('/dashboard'); // Redirect to the dashboard
+            //     setIsLoginModalOpen(false);
+            // }
         } catch (error) {
-            console.error('Error logging in with provider:', error);
+            const errorMessage = (error as Error).message || 'An unexpected error occurred.';
+            showErrorToast(errorMessage);    
         }
     };
 
@@ -49,45 +67,34 @@ const LoginModal: React.FC<Props> = () => {
                 <Formik
                     initialValues={{ email: '', password: '' }}
                     validationSchema={loginValidationSchema}
-                    onSubmit={(values) => {
-                        console.log('Login values:', values);
-                    }}
+                    onSubmit={handleNormalLogin}
                 >
                     {() => (
                         <Form className='flex flex-col'>
-                            <div className='mb-4'>
-                                <Field
-                                    name="email"
-                                    type="email"
-                                    placeholder="Email"
-                                    as={Input}
-                                />
-                                <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
-                            </div>
-
-                            <div className='mb-4'>
-                                <Field
-                                    name="password"
-                                    type="password"
-                                    placeholder="Password"
-                                    as={Input}
-                                />
-                                <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
-                            </div>
+                            <Input
+                                name="email"
+                                type="email"
+                                placeholder="Email"
+                            />
+                            <Input
+                                name="password"
+                                type="password"
+                                placeholder="Password"
+                            />
 
                             <Button type="submit" label="Login" variant="secondary" />
 
                             <Button  
                                 onClick={() => {
-                                    setIsLoginModalOpen(false)
-                                    setIsRegisterModalOpen(true)
+                                    setIsLoginModalOpen(false);
+                                    setIsRegisterModalOpen(true);
                                 }} 
                                 variant='link' 
                                 label='Need to register?'
                                 className='text-left ps-0'
                             />
 
-                            <div className="mt-6 flex flex-col justify-center gap-2">
+                            <div className="mt-6 flex flex-col justify-center gap-4">
                                 <Button
                                     type="button"
                                     label="Login with Google"
