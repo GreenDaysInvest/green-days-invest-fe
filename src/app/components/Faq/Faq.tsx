@@ -20,9 +20,9 @@ const Faq: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-20">
-      <p className="text-lightGreen text-5xl text-center font-medium">{t('Faq.title')}</p>
-      <p className="text-secondary w-2/4 mx-auto text-center my-6">{t('Faq.subtitle')}</p>
+    <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
+      <p className="text-lightGreen text-3xl md:text-4xl lg:text-5xl text-center font-medium">{t('Faq.title')}</p>
+      <p className="text-secondary md:w-3/4 lg:w-2/4 mx-auto text-center my-6">{t('Faq.subtitle')}</p>
 
       <div className="w-full max-w-4xl mx-auto mt-10">
         {faqItems.map((faq, index) => (

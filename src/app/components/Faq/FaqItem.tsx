@@ -12,7 +12,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, onClick }) 
         onClick={onClick}
       >
         <p className="text-secondary text-xl">{question}</p>
-        <span className="flex items-center justify-center border border-1 rounded-full w-8 h-8 text-lightGreen text-2xl">
+        <span className="flex items-center justify-center border border-1 rounded-full w-[30px] h-[30px] text-lightGreen text-2xl flex-shrink-0">
           {isOpen ? '-' : '+'}
         </span>
       </div>

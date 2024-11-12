@@ -27,6 +27,12 @@ const sliderSettings = {
         slidesToShow: 2,
       },
     },
+    {
+      breakpoint: 550, // Breakpoint for mobile screens
+      settings: {
+        slidesToShow: 1,
+      },
+    },
   ],
 };
 
@@ -47,7 +53,7 @@ const Partners: React.FC<PartnersSectionProps> = ({ partners }) => {
         {t('Partners.title')}
       </p>
 
-      <div className="relative container mx-auto items-center">
+      <div className="relative container mx-auto items-center px-4 sm:px-0 md:px-8 lg:px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white pointer-events-none z-10"></div>
 
         <Slider {...sliderSettings} className="custom-slider overflow-hidden z-0">
@@ -55,10 +61,10 @@ const Partners: React.FC<PartnersSectionProps> = ({ partners }) => {
             <div key={partner.id} className="px-4"> 
               <Image
                 width={100}
-                height={30}
+                height={50}
                 src={partner.content}
                 alt='Partner logo'
-                className="mx-auto"
+                className="mx-auto w-auto h-[30px]"
               />
             </div>
           ))}

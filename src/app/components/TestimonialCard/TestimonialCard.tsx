@@ -1,17 +1,14 @@
+import { Client } from "@/app/types/Client.type";
 import Image, { StaticImageData } from "next/image";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 
 interface Props {
     rating: number;
     description: string;
-    client: {
-        name: string;
-        image: StaticImageData;
-        position: string;
-    };
+    client: Client;
 }
 
-const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name, image, position } }) => {
+const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name, avatar, position } }) => {
 
     
     const renderStars = () => {
@@ -36,7 +33,7 @@ const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name,
             <p className="text-sm text-white mt-4 mb-3">{description}</p>
             <div className="flex items-center mt-3">
                 <Image 
-                    src={image} 
+                    src={avatar} 
                     alt={name}
                     width={48}
                     height={48}

@@ -1,3 +1,4 @@
+import { Client } from "@/app/types/Client.type";
 import { Link } from "@/i18n/routing";
 import Image, { StaticImageData } from "next/image";
 
@@ -6,11 +7,8 @@ interface Props {
     image: StaticImageData,
     title: string,
     description: string,
-    client: {
-        name: string;
-        avatar: StaticImageData;
-        position: string;
-    }
+    client: Client;
+    isBackground: boolean;
 }
 
 const BlogCard: React.FC<Props> = ({ 
@@ -22,11 +20,12 @@ const BlogCard: React.FC<Props> = ({
         name, 
         avatar, 
         position
-    }}
-) => {
+    },
+    isBackground
+}) => {
     return (
         <Link href={`/blog/${id}`}>
-            <div className="flex flex-col bg-tertiary rounded-2xl p-6">
+            <div className={`flex flex-col ${isBackground ? 'bg-tertiary' : 'bg-white'}  rounded-2xl p-6`}>
                 <Image 
                     src={image} 
                     alt={`${image}-img`}
@@ -34,7 +33,7 @@ const BlogCard: React.FC<Props> = ({
                     height={200}
                     className="rounded-md w-full h-[200px] object-cover mb-6"
                     />
-                <p className="text-2xl text-secondary text-medium mb-3">{title}</p>
+                <p className="text-lg lg:text-2xl text-secondary text-medium mb-3">{title}</p>
                 <p className="text-main mb-3">{description}</p>
                 <div className="flex items-center mt-3">
                     <Image 

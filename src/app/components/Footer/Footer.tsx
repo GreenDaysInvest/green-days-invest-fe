@@ -11,13 +11,13 @@ const Footer = () => {
     const t = useTranslations('Footer');
     return (
         <div className="bg-darkGreen">
-            <div className="container mx-auto pt-20 pb-4">
-                <div className="flex space-x-10 bg-lightGreen w-full p-8 rounded-2xl">
-                    <div className="flex flex-col w-1/2">
-                        <p className="text-3xl text-secondary font-medium mb-4">{t('title')}</p>
-                        <p>{t('subtitle')}</p>
+            <div className="container mx-auto pt-14 lg:pt-20 pb-8 sm:pb-4 px-4 md:px-8 lg:px-4">
+                <div className="flex flex-col lg:flex-row lg:space-x-10 bg-lightGreen w-full p-8 rounded-2xl hidden lg:flex">
+                    <div className="flex flex-col w-full lg:w-1/2 mb-6 lg:mb-0">
+                        <p className="text-3xl text-secondary font-medium mb-4 lg:text-left md:text-center text-center">{t('title')}</p>
+                        <p className="lg:text-left md:text-center text-center">{t('subtitle')}</p>
                     </div>
-                    <div className="flex items-center justify-end w-1/2">
+                    <div className="flex items-center justify-center lg:justify-end w-full lg:w-1/2">
                         <div className="flex w-full max-w-[400px] border-darkGreen rounded-lg overflow-hidden">
                             <input
                                 type="email"
@@ -32,80 +32,84 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-between mt-16 pt-16 border-t border-tertiary">
-                    <div className="flex w-1/4 flex-col">
-                        <Link href="/" legacyBehavior>
-                            <Image className='cursor-pointer' src={'/logo-white.svg'} alt="logo" width={180} height={24} />
+                <div className="flex flex-col lg:flex-row justify-between lg:mt-16 lg:pt-16 lg:border-t lg:border-tertiary">
+                    <div className="flex w-full lg:w-1/4 flex-col mb-10 lg:mb-0">
+                        <Link href="/" >
+                            <Image 
+                                className='cursor-pointer mx-auto lg:mx-0' 
+                                src={'/logo-white.svg'} 
+                                alt="logo" 
+                                width={200} 
+                                height={24}
+                                sizes="(max-width: 600px) 100vw, 180px" 
+                            />
                         </Link>
-                        <p className="text-white my-6">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
                         <Link href="mailto:info@greendaysinvest.com">
-                            <p className="text-white mb-1">info@greendaysinvest.com</p>
+                            <p className="text-white mt-8 mb-3 lg:text-left md:text-center text-center">info@greendaysinvest.com</p>
                         </Link>
                         <Link href="tel:+49 163 7343363">
-                            <p className="text-white">+49 163 7343363</p>
+                            <p className="text-white lg:text-left md:text-center text-center">+49 163 7343363</p>
                         </Link>
                     </div>
-                    <div className="flex gap-10 space-x-40">
-                        <div className="flex flex-col">
-                            <Link href="/" legacyBehavior>
+                    <div className="flex flex-col sm:flex-row gap-5 lg:gap-10 space-x-0 md:space-x-8 lg:space-x-20 sm:justify-between items-center sm:items-start">
+                        <div className="flex flex-col items-center sm:items-start">
+                            <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">About us</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Mission</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Our team</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Testimonials</p>
                             </Link>
                         </div>
-                        <div className="flex flex-col">
-                            <Link href="/" legacyBehavior>
+                        <div className="flex flex-col items-center sm:items-start">
+                            <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">Services</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Web design</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Web development</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Mobile design</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">UI/UX design</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Branding design</p>
                             </Link>
                         </div>
-                        <div className="flex flex-col">
-                            <Link href="/" legacyBehavior>
+                        <div className="flex flex-col items-center sm:items-start">
+                            <Link href="/" >
                                 <p className="text-tertiary font-bold text-xl mb-6">Contact us</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Information</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Request a quote</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Consultation</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Help center</p>
                             </Link>
-                            <Link href="/" legacyBehavior>
+                            <Link href="/" >
                                 <p className="text-white mb-3">Terms and conditions</p>
                             </Link>
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-center border-t border-white pt-4 mt-16">
-                    <p className="text-white">Copyright © 2025 Green Day Invest | All Rights Reserved</p>
+                <div className="flex justify-center border-t border-white pt-4 mt-6 lg:mt-14">
+                    <p className="text-white text-center">Copyright © 2025 Green Day Invest | All Rights Reserved</p>
                 </div>
             </div>
         </div>

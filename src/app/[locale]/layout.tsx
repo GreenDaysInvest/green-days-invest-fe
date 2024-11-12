@@ -8,6 +8,12 @@ import { Poppins } from 'next/font/google';
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import Footer from "../components/Footer/Footer";
+import { AuthProvider } from "../context/AuthContext";
+import { AppProvider } from "../context/AppContext";
+import { ScraperDataProvider } from "../context/ScraperDataContext";
+import { usePathname } from 'next/navigation';
+import Layout from "../components/Layout/Layout";
+import ToastProvider from "../components/ToastProvider/ToastProvider";
 
 const poppins = Poppins({
   subsets: ['latin'], 
@@ -23,23 +29,29 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params: {locale}
+  params: { locale }
 }: Readonly<{
   children: React.ReactNode;
-  params: {locale: string};
+  params: { locale: string };
 }>) {
   const messages = await getMessages();
- 
+
   return (
     <html lang="de">
       <body
-        className={` ${poppins.variable} bg-white antialiased`}
+        className={`${poppins.variable} bg-white antialiased`}
       >
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          {children}
-          <Footer />
-        </NextIntlClientProvider>
+        <AuthProvider>
+          <AppProvider>
+            <ScraperDataProvider>
+              <NextIntlClientProvider messages={messages}>
+                <ToastProvider>
+                  <Layout children={children}/>
+                </ToastProvider>
+              </NextIntlClientProvider>
+            </ScraperDataProvider>
+          </AppProvider>
+        </AuthProvider>
       </body>
     </html>
   );

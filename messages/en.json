@@ -95,6 +95,16 @@
   },
   "BlogPage": {
     "title": "Blog Page",
-    "subtitle": "Our Latest Blog"
+    "subtitle": "Our Latest Blog",
+    "latestBlogs": "Latests Blogs"
+  },
+  "Validations": {
+    "required": "Required",
+    "invalidEmail": "Invalid email",
+    "passwordSixChars": "Password must be at least 6 characters",
+    "passwordMustMatch": "Passwords must match"
+  },
+  "Dashboard": {
+    "back": "Back"
   }
 }
