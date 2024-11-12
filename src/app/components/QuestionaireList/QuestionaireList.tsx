@@ -10,22 +10,22 @@ interface Questionnaire {
 const QuestionnaireList: React.FC = () => {
   const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
   const [selectedQuestionnaire, setSelectedQuestionnaire] = useState<Questionnaire | null>(null);
-  const { user: { id: userId } } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchQuestionnaires = async () => {
       try {
-        const userQuestionnaires = await QuestionnaireService.getUserQuestionnaires(userId);
+        const userQuestionnaires = await QuestionnaireService.getUserQuestionnaires(String(user?.id));
         setQuestionnaires(userQuestionnaires);
       } catch (error) {
         console.error("Error fetching questionnaires:", error);
       }
     };
 
-    if (userId) {
+    if (user?.id) {
       fetchQuestionnaires();
     }
-  }, [userId]);
+  }, [user?.id]);
 
   const openQuestionnaire = (questionnaire: Questionnaire) => {
     setSelectedQuestionnaire(questionnaire);
