@@ -36,8 +36,7 @@ const AuthService = {
   login: async (email: string, password: string): Promise<string> => {
     try {
       const response = await axiosInstance.post('/auth/login', { email, password });
-      console.log(response,"Resi")
-      AuthService.saveToken(response.data); // Use AuthService here
+      AuthService.saveToken(response.data.token); // Use AuthService here
       return response.data; 
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

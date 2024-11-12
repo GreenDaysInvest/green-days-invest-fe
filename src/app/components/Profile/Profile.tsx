@@ -36,8 +36,22 @@ const Profile: React.FC = () => {
   };
 
   const handleSubmit = async (values: User) => {
+    let payload;
+    if(values.password === "" ) {
+      payload = {
+        name: values.name,
+        surname: values.surname,
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        street: values.street,
+        country: values.country,
+        zip: values.zip,
+      }
+    } else {
+      payload = values;
+    }
     try {
-      await AuthService.updateProfile(values);
+      await AuthService.updateProfile(payload);
       showInfoToast("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);

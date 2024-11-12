@@ -5,14 +5,13 @@ import Questionaries from '@/app/components/Questionaries/Questionaries';
 import Profile from '@/app/components/Profile/Profile';
 import { useState } from 'react';
 import QuestionnaireList from '@/app/components/QuestionaireList/QuestionaireList';
-import { useAuth } from '@/app/context/AuthContext';
+import { useApp } from '@/app/context/AppContext';
 
 const Dashboard: React.FC = () => {
   
-  const { user } = useAuth()
-  const [activeTab, setActiveTab] = useState(user?.isAdmin ? 'questionariesList' : 'questionaries');
+  const { activeTab } = useApp();
   const [showSidebar, setShowSidebar] = useState(false);
-
+console.log(activeTab,"actvetab")
   const renderContent = () => {
     switch (activeTab) {
       case 'questionaries':
@@ -31,7 +30,7 @@ const Dashboard: React.FC = () => {
       <div className="flex">
         {/* Sidebar */}
         <div className={`fixed md:static z-10 ${showSidebar ? 'block' : 'hidden md:block'}`}>
-          <Sidebar setActiveTab={setActiveTab} activeTab={activeTab} onClose={() => setShowSidebar(false)} />
+          <Sidebar onClose={() => setShowSidebar(false)} />
         </div>
 
         {/* Main Content */}

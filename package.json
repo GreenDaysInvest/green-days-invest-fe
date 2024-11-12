@@ -22,6 +22,7 @@
     "react-toastify": "^10.0.6",
     "sass": "^1.79.5",
     "slick-carousel": "^1.8.1",
+    "uuid": "^11.0.3",
     "yup": "^1.4.0"
   },
   "devDependencies": {

@@ -15,7 +15,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
-              console.log("here")
                 // Handle Firebase user
                 const firebaseUser: User = {
                     id: currentUser.uid,
@@ -26,10 +25,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 };
                 setUser(firebaseUser);
             } else {
-              console.log("or herehere")
                 // If no Firebase user, check if user exists in your backend
                 const sessionUser = await AuthService.getUserFromSession(); // Check if user data exists in local storage
-                console.log(sessionUser,"user sesion")
                 if (sessionUser) {
                     setUser(sessionUser);
                 } else {

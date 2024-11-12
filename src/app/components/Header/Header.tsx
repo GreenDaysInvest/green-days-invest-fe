@@ -3,9 +3,30 @@ import React from 'react';
 import VerticalGallery from '../VerticalGallery/VericalGallery';
 import Button from '../Button/Button';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/routing';
+import { useAuth } from '@/app/context/AuthContext';
+import { useApp } from '@/app/context/AppContext';
 
 const Header: React.FC = () => {
+
+  const router = useRouter();
+  const { user } = useAuth();
+  const { setIsRegisterModalOpen, setActiveTab } = useApp();
   const t = useTranslations('Header');
+
+
+  const handleRequestTreatment = () => {
+    if(!user) {
+      setIsRegisterModalOpen(true) 
+    } else {
+      router.push('/dashboard')
+      if(!user.isAdmin) {
+        setActiveTab('questionaries')
+      } else {
+        setActiveTab('questionariesList')
+      }
+    }
+  }
 
   return (
     <div className="bg-darkGreen">
@@ -19,12 +40,12 @@ const Header: React.FC = () => {
               <Button
                 label="Request treatment"
                 variant="white"
-                onClick={() => console.log("here")}
+                onClick={handleRequestTreatment}
               />
               <Button
                 label="Check live inventory"
                 variant="tertiary"
-                onClick={() => console.log("here")}
+                onClick={() => router.push('/cannabis')}
               />
             </div>
           </div>

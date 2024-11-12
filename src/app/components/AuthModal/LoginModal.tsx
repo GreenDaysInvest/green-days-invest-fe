@@ -28,9 +28,7 @@ const LoginModal: React.FC<Props> = () => {
     const handleNormalLogin = async (values: { email: string; password: string }) => {
         try {
             const token = await AuthService.login(values.email, values.password);
-            console.log('Logged in successfully with token:', token);
             const userProfile = await AuthService.getProfile();
-            console.log('User profile:', userProfile);
 
             setUser(userProfile);
 
@@ -45,14 +43,12 @@ const LoginModal: React.FC<Props> = () => {
     const handleOAuthLogin = async (provider: any) => {
         try {
             const result = await signInWithPopup(auth, provider);
+            const token = await result.user?.getIdToken(); // Get the Firebase ID token
+            if (token) {
+                const response = await AuthService.loginWithFirebase(token);
+                router.push('/dashboard'); // Redirect to the dashboard
                 setIsLoginModalOpen(false);
-            // const token = await result.user?.getIdToken(); // Get the Firebase ID token
-            // if (token) {
-            //     const response = await AuthService.loginWithFirebase(token);
-            //     console.log('Logged in successfully with OAuth, token:', response);
-            //     router.push('/dashboard'); // Redirect to the dashboard
-            //     setIsLoginModalOpen(false);
-            // }
+            }
         } catch (error) {
             const errorMessage = (error as Error).message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    

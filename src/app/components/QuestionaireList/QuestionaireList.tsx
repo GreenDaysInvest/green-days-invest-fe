@@ -46,7 +46,7 @@ const QuestionnaireList: React.FC = () => {
       <table className="w-full border border-secondary rounded-lg">
         <thead className="bg-secondary">
           <tr>
-            <th className="py-4 px-4 text-white text-left">Questionnaire ID</th>
+            <th className="py-4 px-4 text-white text-left">Questionnaire Name</th>
             <th className="py-4 px-4 text-white text-left">Actions</th>
           </tr>
         </thead>

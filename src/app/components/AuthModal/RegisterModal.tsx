@@ -6,13 +6,14 @@ import Modal from "../Modal/Modal";
 import Input from "../Input/Input";
 import Button from '../Button/Button';
 import { auth, googleProvider, facebookProvider, appleProvider } from '../../../../firebase';
-import { createUserWithEmailAndPassword, signInWithPopup, AuthProvider } from 'firebase/auth';
+import { signInWithPopup, AuthProvider } from 'firebase/auth';
 import { useRouter } from '@/i18n/routing';
 import { useApp } from '@/app/context/AppContext';
 import { useTranslations } from 'next-intl';
 import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
 import AuthService from '@/app/services/authServices';
 import { User } from '@/app/types/Auth.type';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Props {}
 
@@ -40,22 +41,21 @@ const RegisterModal: React.FC<Props> = () => {
         password: string;
     }) => {
         try {
-            // Create user with Firebase Authentication
-            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
 
+            const uid = uuidv4();
             // Send registration data to your backend
             await AuthService.register({
-                uid: userCredential.user.uid,
+                uid: uid,
                 name: values.name,
                 surname: values.surname,
                 email: values.email,
                 phoneNumber: values.phoneNumber,
                 password: values.password,
-                isAdmin: false // If you want to save the password, ensure it's hashed in the backend
+                isAdmin: false
             });
 
             setIsRegisterModalOpen(false);
-            router.push('/dashboard');
+            setIsLoginModalOpen(true)
         } catch (error) {
             console.error('Registration error:', error);
             // Handle error (e.g., show a notification)
@@ -67,18 +67,18 @@ const RegisterModal: React.FC<Props> = () => {
             const result = await signInWithPopup(auth, provider);
             const userData: User = {
                 uid: result.user.uid,
-                email: String(result?.user?.email),
                 name: result.user.displayName?.split(' ')[0] || '',
                 surname: result.user.displayName?.split(' ').slice(1).join(' ') || '',
+                email: String(result?.user?.email),
                 phoneNumber: '', // Optionally gather phone number if necessary
+                isAdmin: false
             };
 
             // Send registration data to your backend
             const response = await AuthService.register(userData as User);
-            console.log(response);
 
             setIsRegisterModalOpen(false);
-            router.push('/dashboard');
+            setIsLoginModalOpen(true)
         } catch (error) {
             console.error('Error registering with provider:', error);
             // Handle error (e.g., show a notification)

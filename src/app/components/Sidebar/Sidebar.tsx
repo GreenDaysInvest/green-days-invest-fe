@@ -8,15 +8,15 @@ import { AiOutlineClose } from 'react-icons/ai';
 import Link from 'next/link';
 import AuthService from '@/app/services/authServices';
 import { useAuth } from '@/app/context/AuthContext';
+import { useApp } from '@/app/context/AppContext';
 
 interface SidebarProps {
-  setActiveTab: (tab: string) => void;
-  activeTab: string;
   onClose: () => void; 
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ setActiveTab, activeTab, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({  onClose }) => {
   const { user, setUser } = useAuth();
+  const { activeTab, setActiveTab } = useApp();
   const t = useTranslations('Dashboard');
   const handleLogout = async () => {
     try {
