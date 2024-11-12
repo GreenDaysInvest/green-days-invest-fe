@@ -105,6 +105,19 @@
     "passwordMustMatch": "Passwords must match"
   },
   "Dashboard": {
-    "back": "Back"
+    "back": "Back",
+    "questionnaireSubmited": "You have already submitted your questionnaire.",
+    "finish": "Finish",
+    "previous": "Previous",
+    "next": "Next",
+    "logout": "Log Out",
+    "questionnaireResponses": "Questionnaire Responses",
+    "close": "Close",
+    "Sidebar": {
+      "questionnaire": "Questionnaire",
+      "questionnaires": "Questionnaires",
+      "questionnaireList": "Questionnaire List",
+      "profile": "Profile"
+    }
   }
 }

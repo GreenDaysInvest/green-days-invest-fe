@@ -50,7 +50,8 @@ const RegisterModal: React.FC<Props> = () => {
                 surname: values.surname,
                 email: values.email,
                 phoneNumber: values.phoneNumber,
-                password: values.password, // If you want to save the password, ensure it's hashed in the backend
+                password: values.password,
+                isAdmin: false // If you want to save the password, ensure it's hashed in the backend
             });
 
             setIsRegisterModalOpen(false);

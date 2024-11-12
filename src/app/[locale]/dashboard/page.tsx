@@ -5,9 +5,12 @@ import Questionaries from '@/app/components/Questionaries/Questionaries';
 import Profile from '@/app/components/Profile/Profile';
 import { useState } from 'react';
 import QuestionnaireList from '@/app/components/QuestionaireList/QuestionaireList';
+import { useAuth } from '@/app/context/AuthContext';
 
 const Dashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('questionaries');
+  
+  const { user } = useAuth()
+  const [activeTab, setActiveTab] = useState(user?.isAdmin ? 'questionariesList' : 'questionaries');
   const [showSidebar, setShowSidebar] = useState(false);
 
   const renderContent = () => {

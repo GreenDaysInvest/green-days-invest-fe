@@ -10,6 +10,7 @@ export interface User {
     street?: string;
     country?: string;
     zip?: string;
+    isAdmin?: boolean;
 }
 
 export interface AuthContextType {

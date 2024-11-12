@@ -2,6 +2,7 @@
 import { useAuth } from "@/app/context/AuthContext";
 import QuestionnaireService from "@/app/services/questionnaireService";
 import { showErrorToast, showInfoToast } from "@/app/utils/toast";
+import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 
 interface Question {
@@ -19,10 +20,12 @@ const questions: Question[] = [
 ];
 
 const StepQuestionnaire: React.FC = () => {
+
+  const t = useTranslations('Dashboard');
+  const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [responses, setResponses] = useState<{ question: string; answer: string }[]>([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const { user } = useAuth();
 
   useEffect(() => {
     const checkQuestionnaireSubmission = async () => {
@@ -76,15 +79,15 @@ const StepQuestionnaire: React.FC = () => {
   if (hasSubmitted) {
     return (
       <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
-        <h2 className="text-3xl font-semibold text-secondary mb-20">Questionnaire</h2>
-        <p className="text-xl text-secondary">You have already submitted your questionnaire.</p>
+        <h2 className="text-3xl font-semibold text-secondary mb-20">{t('Sidebar.questionnaire')}</h2>
+        <p className="text-xl text-secondary">{t('questionnaireSubmited')}</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
-      <h2 className="text-3xl font-semibold text-secondary mb-20">Questionnaire</h2>
+      <h2 className="text-3xl font-semibold text-secondary mb-20">{t('Sidebar.questionnaires')}</h2>
       
       <div className="w-full text-secondary text-center">
         <p className="text-2xl font-medium mb-8">{questions[currentStep].text}</p>
@@ -111,13 +114,13 @@ const StepQuestionnaire: React.FC = () => {
           disabled={currentStep === 0}
           className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 disabled:opacity-50"
         >
-          Previous
+          {t('previous')}
         </button>
         <button
           onClick={handleNext}
           className="px-4 py-2 bg-secondary text-white rounded-lg"
         >
-          {currentStep === questions.length - 1 ? "Finish" : "Next"}
+          {currentStep === questions.length - 1 ? t('finish') : t('next')}
         </button>
       </div>
     </div>

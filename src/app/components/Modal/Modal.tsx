@@ -23,7 +23,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
       <div className="relative w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 p-1 text-gray-600 hover:text-gray-900"
+          className="absolute top-6 right-6 p-1 text-gray-600 hover:text-gray-900"
         >
           ✕
         </button>

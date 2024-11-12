@@ -62,7 +62,10 @@ const AuthService = {
 
   getProfile: async (): Promise<any> => {
     const token = localStorage.getItem('token'); // Retrieve token from localStorage
-    if (!token) throw new Error("Token not found"); // Handle missing token
+    if (!token) {
+      console.warn("Token not found, user might be logged out.");
+      return null; // Return null if no token, or handle accordingly
+    }
     try {
       const response = await axiosInstance.get('/auth/profile', {
         headers: {

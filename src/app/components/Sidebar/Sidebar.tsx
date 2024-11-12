@@ -16,7 +16,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ setActiveTab, activeTab, onClose }) => {
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
   const t = useTranslations('Dashboard');
   const handleLogout = async () => {
     try {
@@ -55,28 +55,28 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveTab, activeTab, onClose }) =
             height={24} 
           />
           <ul>
-            <li
+            {!user?.isAdmin && <li
               className={`p-4 border-b border-secondary cursor-pointer text-secondary ${activeTab === 'questionaries' ? 'font-bold' : ''}`}
               onClick={() => { setActiveTab('questionaries'); onClose(); }}
             >
-              Questionaries
-            </li>
-            <li
+              {t('Sidebar.questionnaires')}
+            </li>}
+            {user?.isAdmin && <li
               className={`p-4 border-b border-secondary cursor-pointer text-secondary ${activeTab === 'questionariesList' ? 'font-bold' : ''}`}
               onClick={() => { setActiveTab('questionariesList'); onClose(); }}
             >
-              Questionaries
-            </li>
+              {t('Sidebar.questionnaireList')}
+            </li>}
             <li
               className={`p-4 border-b border-secondary cursor-pointer text-secondary ${activeTab === 'profile' ? 'font-bold' : ''}`}
               onClick={() => { setActiveTab('profile'); onClose(); }}
             >
-              Profile
+              {t('Sidebar.profile')}
             </li>
           </ul>
         </div>
       </div>
-      <Button variant='link' className='text-secondary' onClick={handleLogout} label='LogOut' />
+      <Button variant='link' className='text-secondary' onClick={handleLogout} label={t('logout')} />
     </div>
   );
 };
