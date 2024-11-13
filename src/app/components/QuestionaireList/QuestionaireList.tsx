@@ -20,8 +20,8 @@ const QuestionnaireList: React.FC = () => {
   useEffect(() => {
     const fetchQuestionnaires = async () => {
       try {
-        const userQuestionnaires = await QuestionnaireService.getAllQuestionnaires();
-        setQuestionnaires(userQuestionnaires);
+        const questionnaireList = await QuestionnaireService.getAllQuestionnaires();
+        setQuestionnaires(questionnaireList);
       } catch (error) {
         console.error("Error fetching questionnaires:", error);
       }
@@ -42,12 +42,12 @@ const QuestionnaireList: React.FC = () => {
 
   return (
     <div className="container mx-auto py-10 px-4 max-w-2xl">
-      <h2 className="text-3xl font-semibold text-secondary mb-20">{t('Sidebar.questionnaireList')}</h2>
+      <h2 className="text-3xl font-semibold text-center text-secondary mb-20">{t('Sidebar.questionnaireList')}</h2>
       <table className="w-full border border-secondary rounded-lg">
         <thead className="bg-secondary">
           <tr>
-            <th className="py-4 px-4 text-white text-left">Questionnaire Name</th>
-            <th className="py-4 px-4 text-white text-left">Actions</th>
+            <th className="py-4 px-4 text-white text-left">{t('userName')}</th>
+            <th className="py-4 px-4 text-white text-left">{t('responses')}</th>
           </tr>
         </thead>
         <tbody className="border border-secondary">

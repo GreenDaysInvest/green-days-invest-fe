@@ -65,6 +65,9 @@ const Footer = () => {
                             <Link href="/" >
                                 <p className="text-white mb-3">Testimonials</p>
                             </Link>
+                            <Link href="/faq" >
+                                <p className="text-white mb-3">FAQ</p>
+                            </Link>
                         </div>
                         <div className="flex flex-col items-center sm:items-start">
                             <Link href="/" >

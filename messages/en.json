@@ -104,6 +104,10 @@
     "passwordSixChars": "Password must be at least 6 characters",
     "passwordMustMatch": "Passwords must match"
   },
+  "FAQ": {
+    "title": "Do you have any questions?",
+    "inThisGuide": "In this guide"
+  },
   "Dashboard": {
     "back": "Back",
     "questionnaireSubmited": "You have already submitted your questionnaire.",
@@ -113,6 +117,8 @@
     "logout": "Log Out",
     "questionnaireResponses": "Questionnaire Responses",
     "close": "Close",
+    "userName": "Name of User",
+    "responses": "Responses",
     "Sidebar": {
       "questionnaire": "Questionnaire",
       "questionnaires": "Questionnaires",

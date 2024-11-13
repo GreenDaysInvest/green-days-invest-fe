@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, FieldProps } from 'formik';
 
 interface InputProps {
-  name: string; // Add the name prop to be passed to Field
+  name: string;
   type?: string;
   placeholder?: string;
   disabled?: boolean;
