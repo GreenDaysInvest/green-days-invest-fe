@@ -14,14 +14,14 @@ const Dashboard: React.FC = () => {
 console.log(activeTab,"actvetab")
   const renderContent = () => {
     switch (activeTab) {
-      case 'questionaries':
-        return <Questionaries />;
       case 'questionariesList':
         return <QuestionnaireList />;
+      case 'questionaries':
+        return <Questionaries />;
       case 'profile':
         return <Profile />;
       default:
-        return <Questionaries />;
+        return <QuestionnaireList />;
     }
   };
 

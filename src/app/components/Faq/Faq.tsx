@@ -27,7 +27,7 @@ const Faq: React.FC = () => {
       <p className="text-secondary md:w-3/4 lg:w-2/4 mx-auto text-center my-6">{t('Faq.subtitle')}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          {topics.map((item) => <FaqCard id={item.id} title={item.title} description={item.description} />)}
+          {topics.map((item) => <FaqCard key={item.id} id={item.id} title={item.title} description={item.description} />)}
       </div>
       {/* <div className="w-full max-w-4xl mx-auto mt-10">
         {faqItems.map((faq, index) => (
