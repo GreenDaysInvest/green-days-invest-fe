@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import FAQItem from './FaqItem';
 import FaqCard from '../FaqCard/FaqCard';
-import { topics } from '@/app/[locale]/faq/page';
+import { topics } from '@/app/[locale]/faq/const';
 
 const Faq: React.FC = () => {
   const t = useTranslations('HomePage');
