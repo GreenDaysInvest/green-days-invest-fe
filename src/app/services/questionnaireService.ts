@@ -57,6 +57,27 @@ const QuestionnaireService = {
       throw error;
     }
   },
+
+  searchQuestionnaires: async (query: string): Promise<any[]> => {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error("Token not found");
+    try {
+      const response = await axiosInstance.get(`/questionnaires/search`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          query,
+        },
+      });
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        throw error.response?.data;
+      }
+      throw error;
+    }
+  },
 };
 
 export default QuestionnaireService;

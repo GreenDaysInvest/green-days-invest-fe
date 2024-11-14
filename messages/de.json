@@ -119,6 +119,8 @@
     "close": "Close",
     "userName": "Name of User",
     "responses": "Responses",
+    "viewResponses": "View Responses",
+    "searchQuestionnaire": "Search Questionnaire",
     "Sidebar": {
       "questionnaire": "Questionnaire",
       "questionnaires": "Questionnaires",

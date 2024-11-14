@@ -16,21 +16,29 @@ const QuestionnaireList: React.FC = () => {
   const { user } = useAuth();
   const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
   const [selectedQuestionnaire, setSelectedQuestionnaire] = useState<Questionnaire | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchQuestionnaires = async () => {
       try {
-        const questionnaireList = await QuestionnaireService.getAllQuestionnaires();
+        let questionnaireList;
+        if (searchTerm) {
+          questionnaireList = await QuestionnaireService.searchQuestionnaires(searchTerm);
+        } else {
+          questionnaireList = await QuestionnaireService.getAllQuestionnaires();
+        }
         setQuestionnaires(questionnaireList);
       } catch (error) {
         console.error("Error fetching questionnaires:", error);
+        setError("Failed to fetch questionnaires. Please try again.");
       }
     };
 
     if (user?.id) {
       fetchQuestionnaires();
     }
-  }, [user?.id]);
+  }, [user?.id, searchTerm]);
 
   const openQuestionnaire = (questionnaire: Questionnaire) => {
     setSelectedQuestionnaire(questionnaire);
@@ -40,9 +48,26 @@ const QuestionnaireList: React.FC = () => {
     setSelectedQuestionnaire(null);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <div className="container mx-auto py-10 px-4 max-w-2xl">
       <h2 className="text-3xl font-semibold text-center text-secondary mb-20">{t('Sidebar.questionnaireList')}</h2>
+
+      <div className="mb-8">
+        <input
+          type="text"
+          placeholder={t('searchQuestionnaire')}
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="w-full p-2 border border-secondary rounded-md"
+        />
+      </div>
+
+      {error && <p className="text-red-500">{error}</p>}
+
       <table className="w-full border border-secondary rounded-lg">
         <thead className="bg-secondary">
           <tr>
@@ -68,7 +93,7 @@ const QuestionnaireList: React.FC = () => {
                   }}
                   className="text-lightGreen underline"
                 >
-                  View Responses
+                  {t('viewResponses')}
                 </button>
               </td>
             </tr>
