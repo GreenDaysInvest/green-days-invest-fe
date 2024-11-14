@@ -28,6 +28,7 @@ const StepQuestionnaire: React.FC = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
+    console.log(user,"useri1")
     const checkQuestionnaireSubmission = async () => {
       try {
         const userQuestionnaires = await QuestionnaireService.getUserQuestionnaires(String(user?.id));
@@ -40,7 +41,7 @@ const StepQuestionnaire: React.FC = () => {
       }
     };
 
-    checkQuestionnaireSubmission();
+    if(user?.questionnaires) checkQuestionnaireSubmission();
   }, [user?.id]);
 
   const handleNext = () => {

@@ -11,6 +11,7 @@ export interface User {
     country?: string;
     zip?: string;
     isAdmin?: boolean;
+    questionnaires?: any[]
 }
 
 export interface AuthContextType {

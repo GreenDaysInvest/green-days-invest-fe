@@ -27,7 +27,7 @@ const LoginModal: React.FC<Props> = () => {
 
     const handleNormalLogin = async (values: { email: string; password: string }) => {
         try {
-            const token = await AuthService.login(values.email, values.password);
+            await AuthService.login(values.email, values.password);
             const userProfile = await AuthService.getProfile();
 
             setUser(userProfile);
@@ -45,7 +45,11 @@ const LoginModal: React.FC<Props> = () => {
             const result = await signInWithPopup(auth, provider);
             const token = await result.user?.getIdToken(); // Get the Firebase ID token
             if (token) {
-                const response = await AuthService.loginWithFirebase(token);
+                await AuthService.loginWithFirebase(token);
+                const userProfile = await AuthService.getProfile();
+    
+                setUser(userProfile);
+    
                 router.push('/dashboard'); // Redirect to the dashboard
                 setIsLoginModalOpen(false);
             }
