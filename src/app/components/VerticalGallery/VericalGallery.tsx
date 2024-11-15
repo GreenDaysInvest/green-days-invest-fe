@@ -32,7 +32,7 @@ const VerticalGallery = () => {
             <div className="grid grid-rows-1 lg:[grid-template-rows:none] grid-cols-4 mx-[-140px] lg:mx-0 lg:grid-cols-1 gap-4 lg:gap-5 xl:gap-6 lg:my-[-130px] h-[140px] md:h-[180px] h-[200px] lg:h-auto">
                 {images2.map((item, index) => (
                     <div key={index} className="relative lg:w-[235px] lg:h-[235px] xl:w-[260px] xl:h-[260px]">
-                        <Image 
+                        <Image   
                             src={item} 
                             alt={`flower-image-${index}`}
                             fill
