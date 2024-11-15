@@ -77,6 +77,43 @@ const QuestionnaireService = {
       }
       throw error;
     }
+
+  },
+  
+  acceptQuestionnaire: async (questionnaireId: string): Promise<any> => {
+    const token = localStorage.getItem('token'); 
+    if (!token) throw new Error("Token not found"); 
+    try {
+      const response = await axiosInstance.patch(`/questionnaires/${questionnaireId}/accept`, undefined, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        throw error.response?.data;
+      }
+      throw error;
+    }
+  },
+
+  declineQuestionnaire: async (questionnaireId: string): Promise<any> => {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error("Token not found");
+    try {
+      const response = await axiosInstance.patch(`/questionnaires/${questionnaireId}/decline`, undefined, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        throw error.response?.data;
+      }
+      throw error;
+    }
   },
 };
 

@@ -19,8 +19,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const { user } = useAuth();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  // here check it also check all questionnaires tab for admin if they are rendred correctly
-  console.log(user?.isAdmin,"isadmininini")
   const [activeTab, setActiveTab] = useState<string>('questionaries');
   
   useEffect(() => {

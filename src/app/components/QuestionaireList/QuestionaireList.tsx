@@ -2,14 +2,10 @@ import { useEffect, useState } from "react";
 import QuestionnaireService from "@/app/services/questionnaireService";
 import { useAuth } from "@/app/context/AuthContext";
 import { useTranslations } from "next-intl";
-import { User } from "@/app/types/Auth.type";
+import { Questionnaire } from "@/app/types/Questionnaire.type";
 import Modal from "../Modal/Modal";
-
-interface Questionnaire {
-  id: string;
-  user: User;
-  questions: { question: string; answer: string }[];
-}
+import Button from "../Button/Button";
+import { showInfoToast } from "@/app/utils/toast";
 
 const QuestionnaireList: React.FC = () => {
   const t = useTranslations('Dashboard');
@@ -17,18 +13,16 @@ const QuestionnaireList: React.FC = () => {
   const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
   const [selectedQuestionnaire, setSelectedQuestionnaire] = useState<Questionnaire | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [error, setError] = useState<string | null>(null);
 
+  const pageSize = 10;
+  
   useEffect(() => {
     const fetchQuestionnaires = async () => {
       try {
-        let questionnaireList;
-        if (searchTerm) {
-          questionnaireList = await QuestionnaireService.searchQuestionnaires(searchTerm);
-        } else {
-          questionnaireList = await QuestionnaireService.getAllQuestionnaires();
-        }
-        setQuestionnaires(questionnaireList);
+        const data = await QuestionnaireService.getAllQuestionnaires();
+        setQuestionnaires(data);
       } catch (error) {
         console.error("Error fetching questionnaires:", error);
         setError("Failed to fetch questionnaires. Please try again.");
@@ -38,7 +32,22 @@ const QuestionnaireList: React.FC = () => {
     if (user?.id) {
       fetchQuestionnaires();
     }
-  }, [user?.id, searchTerm]);
+  }, [user?.id]);
+
+  const filteredQuestionnaires = questionnaires.filter((q) =>
+    `${q?.user?.name} ${q?.user?.surname}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const paginatedQuestionnaires = filteredQuestionnaires.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const totalPages = Math.ceil(filteredQuestionnaires.length / pageSize);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const openQuestionnaire = (questionnaire: Questionnaire) => {
     setSelectedQuestionnaire(questionnaire);
@@ -50,12 +59,34 @@ const QuestionnaireList: React.FC = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to the first page on search
+  };
+
+  const handleAccept = async (id: string) => {
+    try {
+      await QuestionnaireService.acceptQuestionnaire(id);
+      showInfoToast("Questionnaire accepted!");
+      setSelectedQuestionnaire(null);
+    } catch (error) {
+      console.error('Error accepting questionnaire:', error);
+    }
+  };
+
+  const handleDecline = async (id: string) => {
+    try {
+      await QuestionnaireService.declineQuestionnaire(id);
+      showInfoToast("Questionnaire declined!");
+      setSelectedQuestionnaire(null);
+    } catch (error) {
+      console.error('Error declining questionnaire:', error);
+    }
   };
 
   return (
     <div className="container mx-auto py-10 px-4 max-w-2xl">
       <h2 className="text-3xl font-semibold text-center text-secondary mb-20">{t('Sidebar.questionnaireList')}</h2>
 
+      {/* Search */}
       <div className="mb-8">
         <input
           type="text"
@@ -66,24 +97,27 @@ const QuestionnaireList: React.FC = () => {
         />
       </div>
 
+      {/* Error Message */}
       {error && <p className="text-red-500">{error}</p>}
 
+      {/* Table */}
       <table className="w-full border border-secondary rounded-lg">
         <thead className="bg-secondary">
           <tr>
             <th className="py-4 px-4 text-white text-left">{t('userName')}</th>
             <th className="py-4 px-4 text-white text-left">{t('responses')}</th>
+            <th className="py-4 px-4 text-white text-left">{t('status')}</th>
           </tr>
         </thead>
         <tbody className="border border-secondary">
-          {questionnaires.map((questionnaire) => (
+          {paginatedQuestionnaires.map((questionnaire) => (
             <tr
               key={questionnaire.id}
               onClick={() => openQuestionnaire(questionnaire)}
               className="cursor-pointer hover:bg-gray-50 border border-secondary transition"
             >
               <td className="py-4 px-4 text-secondary capitalize border border-secondary">
-                {String(questionnaire?.user?.name) + ' ' + String(questionnaire?.user?.surname)}
+                {`${questionnaire?.user?.name} ${questionnaire?.user?.surname}`}
               </td>
               <td className="py-4 px-4 text-secondary border border-secondary">
                 <button
@@ -96,11 +130,28 @@ const QuestionnaireList: React.FC = () => {
                   {t('viewResponses')}
                 </button>
               </td>
+              <td className="py-4 px-4 text-secondary capitalize border border-secondary">
+                {questionnaire?.status}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
 
+      {/* Pagination */}
+      <div className="flex justify-center mt-4 space-x-2">
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => handlePageChange(page)}
+            className={`px-4 py-2 border rounded-md ${page === currentPage ? 'bg-secondary text-white' : 'bg-white text-secondary'}`}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
+
+      {/* Modal */}
       <Modal isOpen={!!selectedQuestionnaire} onClose={closeQuestionnaire}>
         {selectedQuestionnaire && (
           <>
@@ -113,12 +164,10 @@ const QuestionnaireList: React.FC = () => {
                 </li>
               ))}
             </ul>
-            <button
-              onClick={closeQuestionnaire}
-              className="mt-6 px-4 py-2 bg-secondary text-white rounded-lg"
-            >
-              {t('close')}
-            </button>
+            <div className="flex justify-between mt-6">
+              <Button variant="danger" label="Decline" onClick={() => handleDecline(selectedQuestionnaire.id)} />
+              <Button label="Accept" onClick={() => handleAccept(selectedQuestionnaire.id)} />
+            </div>
           </>
         )}
       </Modal>

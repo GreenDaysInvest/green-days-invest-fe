@@ -119,8 +119,11 @@
     "close": "Close",
     "userName": "Name of User",
     "responses": "Responses",
+    "status": "Status",
     "viewResponses": "View Responses",
     "searchQuestionnaire": "Search Questionnaire",
+    "medicationDeclined": "Your medication got declined!",
+    "pleaseStartAgain": "Please start again!",
     "Sidebar": {
       "questionnaire": "Questionnaire",
       "questionnaires": "Questionnaires",
