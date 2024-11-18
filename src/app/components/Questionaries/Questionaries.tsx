@@ -21,6 +21,7 @@ const questions: Question[] = [
 
 const StepQuestionnaire: React.FC = () => {
   const t = useTranslations("Dashboard");
+  const tNotifications = useTranslations('Notifications');
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [responses, setResponses] = useState<{ question: string; answer: string }[]>([]);
@@ -37,7 +38,7 @@ const StepQuestionnaire: React.FC = () => {
           setHasSubmitted(true);
         }
       } catch (error) {
-        showErrorToast("Error checking questionnaire submission status");
+        showErrorToast(tNotifications('errorQuestionnaireStatus'));
         console.error("Error checking questionnaire submission status:", error);
       }
     };
@@ -70,15 +71,15 @@ const StepQuestionnaire: React.FC = () => {
     const questionnaireData = { questions: responses };
     try {
       await QuestionnaireService.createQuestionnaire(questionnaireData);
-      showInfoToast("Questionnaire submitted successfully!");
+      showInfoToast(tNotifications('questionnaireSubmitedSuccesfully'));
       setHasSubmitted(true);
     } catch (error) {
-      showErrorToast("Error submitting questionnaire");
+      showErrorToast(tNotifications('errorSubmitingQuestionnaire'));
       console.error("Error submitting questionnaire:", error);
     }
   };
 
-  if (questionnaireStatus === "accepted" || questionnaireStatus === "pending") {
+  if (hasSubmitted || questionnaireStatus === "accepted" || questionnaireStatus === "pending") {
     return (
       <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
         <h2 className="text-3xl font-semibold text-secondary mb-20">{t("Sidebar.questionnaire")}</h2>

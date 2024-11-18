@@ -5,10 +5,11 @@ import { useTranslations } from "next-intl";
 import { Questionnaire } from "@/app/types/Questionnaire.type";
 import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
-import { showInfoToast } from "@/app/utils/toast";
+import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 
 const QuestionnaireList: React.FC = () => {
   const t = useTranslations('Dashboard');
+  const tNotifications = useTranslations('Notifications');
   const { user } = useAuth();
   const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
   const [selectedQuestionnaire, setSelectedQuestionnaire] = useState<Questionnaire | null>(null);
@@ -19,20 +20,20 @@ const QuestionnaireList: React.FC = () => {
   const pageSize = 10;
   
   useEffect(() => {
-    const fetchQuestionnaires = async () => {
-      try {
-        const data = await QuestionnaireService.getAllQuestionnaires();
-        setQuestionnaires(data);
-      } catch (error) {
-        console.error("Error fetching questionnaires:", error);
-        setError("Failed to fetch questionnaires. Please try again.");
-      }
-    };
-
     if (user?.id) {
       fetchQuestionnaires();
     }
   }, [user?.id]);
+
+  const fetchQuestionnaires = async () => {
+    try {
+      const data = await QuestionnaireService.getAllQuestionnaires();
+      setQuestionnaires(data);
+    } catch (error) {
+      console.error("Error fetching questionnaires:", error);
+      setError("Failed to fetch questionnaires. Please try again.");
+    }
+  };
 
   const filteredQuestionnaires = questionnaires.filter((q) =>
     `${q?.user?.name} ${q?.user?.surname}`.toLowerCase().includes(searchTerm.toLowerCase())
@@ -59,14 +60,15 @@ const QuestionnaireList: React.FC = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to the first page on search
+    setCurrentPage(1);
   };
 
   const handleAccept = async (id: string) => {
     try {
       await QuestionnaireService.acceptQuestionnaire(id);
-      showInfoToast("Questionnaire accepted!");
+      showInfoToast(tNotifications('questionnaireAccepted'));
       setSelectedQuestionnaire(null);
+      fetchQuestionnaires();
     } catch (error) {
       console.error('Error accepting questionnaire:', error);
     }
@@ -75,8 +77,9 @@ const QuestionnaireList: React.FC = () => {
   const handleDecline = async (id: string) => {
     try {
       await QuestionnaireService.declineQuestionnaire(id);
-      showInfoToast("Questionnaire declined!");
+      showErrorToast(tNotifications('questionnaireDeclined'));
       setSelectedQuestionnaire(null);
+      fetchQuestionnaires();
     } catch (error) {
       console.error('Error declining questionnaire:', error);
     }

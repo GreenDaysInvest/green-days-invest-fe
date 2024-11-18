@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
-import axios from 'axios';
+import React from 'react';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
@@ -9,6 +8,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import { User } from '@/app/types/Auth.type';
 import AuthService from '@/app/services/authServices';
 import { showInfoToast } from '@/app/utils/toast';
+import { useTranslations } from 'next-intl';
 
 const ProfileSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -22,6 +22,7 @@ const ProfileSchema = Yup.object().shape({
 });
 
 const Profile: React.FC = () => {
+  const t = useTranslations('Notifications');
   const { user } = useAuth(); 
 
   const initialValues: User = {
@@ -52,7 +53,7 @@ const Profile: React.FC = () => {
     }
     try {
       await AuthService.updateProfile(payload);
-      showInfoToast("Profile updated successfully!");
+      showInfoToast(t('profileUpdate'));
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile.");

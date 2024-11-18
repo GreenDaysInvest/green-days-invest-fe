@@ -130,5 +130,13 @@
       "questionnaireList": "Questionnaire List",
       "profile": "Profile"
     }
+  },
+  "Notifications": {
+    "profileUpdate": "Profile updated successfully!",
+    "questionnaireAccepted": "Questionnaire accepted!",
+    "questionnaireDeclined": "Questionnaire declined!",
+    "questionnaireSubmitedSuccesfully": "Questionnaire submitted successfully!",
+    "errorQuestionnaireStatus": "Error checking questionnaire submission status",
+    "errorSubmitingQuestionnaire": "Error submitting questionnaire"
   }
 }
