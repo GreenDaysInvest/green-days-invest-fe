@@ -16,7 +16,11 @@ const Disease = () => {
                     subTitle={t('DiscoverSection.Top.subtitle')}
                     image='/flower.png'
                     cardTitle={t('DiscoverSection.Top.Card.title')}
-                    cardSubTitle={t('DiscoverSection.Top.Card.subtitle')}
+                    firstLi={t('DiscoverSection.Top.Card.list.first')}
+                    secondLi={t('DiscoverSection.Top.Card.list.second')}
+                    thirdLi={t('DiscoverSection.Top.Card.list.third')}
+                    fourthLi={t('DiscoverSection.Top.Card.list.fourth')}
+                    fifthLi={t('DiscoverSection.Top.Card.list.fifth')}
                     />
                 <TextImage
                     smallText={t('DiscoverSection.Bottom.smallText')} 
