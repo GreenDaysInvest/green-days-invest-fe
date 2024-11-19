@@ -8,7 +8,7 @@ interface Props {
     client: Client;
 }
 
-const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name, avatar, position } }) => {
+const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name, avatar } }) => {
 
     
     const renderStars = () => {
@@ -26,11 +26,13 @@ const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name,
     };
 
     return (
-        <div className="flex flex-col bg-main rounded-lg p-5">
-            <div className="flex">
-                {renderStars()} 
+        <div className="h-[250px] flex justify-between flex-col bg-main rounded-lg p-5">
+            <div>
+                <div className="flex">
+                    {renderStars()} 
+                </div>
+                <p className="text-sm text-white mt-4 mb-3">{description}</p>
             </div>
-            <p className="text-sm text-white mt-4 mb-3">{description}</p>
             <div className="flex items-center mt-3">
                 <Image 
                     src={avatar} 
@@ -41,7 +43,6 @@ const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name,
                 />
                 <div className="flex flex-col ml-3">
                     <p className="text-white font-bold">{name}</p>
-                    <p className="text-white text-xs">{position}</p>
                 </div>
             </div>
         </div>

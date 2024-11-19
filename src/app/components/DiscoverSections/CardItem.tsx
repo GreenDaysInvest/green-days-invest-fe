@@ -18,12 +18,6 @@ const CardItem: React.FC<CardItemProps> = ({ title, subtitle }) => {
             <div className="flex flex-col w-3/4">
                 <p className="text-xl font-medium text-secondary">{title}</p>
                 <p className="text-main text-sm md:text-base my-2">{subtitle}</p>
-                <Link href="/">
-                    <p className="w-[100px] text-xs md:text-sm text-black flex items-center">
-                        {t('readMore')}
-                        <FaArrowRight className="ml-2" />
-                    </p>
-                </Link>
             </div>
         </div>
     );

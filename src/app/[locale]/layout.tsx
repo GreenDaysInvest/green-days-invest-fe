@@ -3,15 +3,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../globals.css";
 import "../globals.scss";
-import Navbar from "../components/Navbar/Navbar";
 import { Poppins } from 'next/font/google';
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import Footer from "../components/Footer/Footer";
 import { AuthProvider } from "../context/AuthContext";
 import { AppProvider } from "../context/AppContext";
 import { ScraperDataProvider } from "../context/ScraperDataContext";
-import { usePathname } from 'next/navigation';
 import Layout from "../components/Layout/Layout";
 import ToastProvider from "../components/ToastProvider/ToastProvider";
 

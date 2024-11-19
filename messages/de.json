@@ -3,15 +3,17 @@
     "home": "Home",
     "about": "About",
     "cannabisAvailability": "Cannabis Availability",
-    "diseases": "Diseases",
+    "diseases": "Erkrankungen",
     "dataPrivacy": "Data Privacy",
     "termsConditions": "Terms Conditions",
     "blog": "Blog",
     "faq": "FAQ"
   },
   "Header": {
-    "title": "Discover the key to grow your business",
-    "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+    "title": "Cannabis-Therapie auf Knopfdruck - einfach und bequem",
+    "subtitle": "Einfach, schnell und zuverlässig: Mit unserem Service erhältst du dein Cannabis-Rezept bequem von zu Hause aus",
+    "firstButton": "Behandlung anfragen",
+    "secondButton": "Livebestand prüfen"
   },
   "Footer": {
     "title": "Always up to date",
@@ -20,73 +22,71 @@
     "submit": "Submit"
   },
   "HomePage": {
-    "readMore": "Read More",
-    "Partners": {
-      "title": "Trusted by top-tier teams worldwide"
-    },
+    "more": "Weitere",
+    "readMore": "Weitere Informationen",
     "DiscoverSection": {
       "Top": {
-        "title": "Discover the key to grow your business",
-        "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.",
+        "title": "Alles Rund ums medizinische Cannabis!",
+        "subtitle": "Dein Rezept, deine Blüte, deine Gesundheit – alles auf einer Plattform. CannabisRezepte24 bietet Dir die Ganzheitliche Lösung.",
         "Card": {
-          "title": "Discover the key to grow your business",
-          "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+          "title": "Following please change the design such as Bloomwell the 4th sector (Bist du auf der Suche nach medizinischem Cannabis?)",
+          "list": {
+            "first":"Schnelle Bearbeitung",
+            "second":"Beste Verfügbarkeit auf dem Markt",
+            "third":"Günstigste Preise",
+            "fourth":"Einfache Online-Zahlung",
+            "fifth":"Seriöser Anbieter aus Deutschland"
+          }
         }
       },
       "Bottom": {
-        "smallText": "Features",
-        "title": "Discover the key to grow your business",
-        "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.",
+        "title": "Wie fange ich eine Behandlung an?",
+        "subtitle": "Unser Prozess ist speziell darauf ausgerichtet, dir den Weg zum Rezept so stressfrei wie möglich zu machen.",
         "Keys": {
             "first": {
-              "title": "Lorem Ipsum Dolor Sit Atem",
-              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+              "title": "Fragebogen ausfüllen",
+              "subtitle": "Ein medizinischer Fragebogen erfasst deine Symptome, bisherigen Therapien und Vorerkrankungen. Damit kann eine individuelle Therapieempfehlung erstellt werden."
             },
             "second": {
-              "title": "Lorem Ipsum Dolor Sit Atem",
-              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+              "title": "Auswahl der Cannabisblüte",
+              "subtitle": "Wähle aus einer Liste von Sorten, die regelmäßig aktualisiert wird. Unsere Plattform zeigt dir nur verfügbare Sorten an, um Verzögerungen zu vermeiden."
             },
             "third": {
-              "title": "Lorem Ipsum Dolor Sit Atem",
-              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+              "title": "Wunschapotheke auswählen:",
+              "subtitle": "Wähle eine Apotheke aus unserer Liste oder entscheide dich für eine freie Apotheke. Partnerapotheken garantieren eine schnelle Lieferung und hohe Verfügbarkeit."
+            },
+            "fourth": {
+              "title": "Ärztliche Prüfung",
+              "subtitle": "Dein Fragebogen wird von einem spezialisierten Arzt geprüft. Falls notwendig, kann der Arzt weitere Fragen stellen oder eine Videokonsultation anfordern."
+            },
+            "fifth": {
+              "title": "Rezeptausstellung",
+              "subtitle": "Bei positiver Prüfung wird ein Privatrezept ausgestellt. Dieses wird dir als e-Rezept oder in Papierform zugestellt."
+            },
+            "sixth": {
+              "title": "Rezeptversand",
+              "subtitle": "Auf Wunsch übermitteln wir dein Rezept direkt an eine Apotheke, sodass du dich nicht um den Versand kümmern musst."
             }
         }
       }
     },
     "Disease": {
-      "title": "Which illnesses does medical cannabis help with?",
+      "title": "Welche Krankheiten kann man mit Cannabis bekämpfen?",
       "list": {
-        "sleepDisorder": "Sleep Disorders",
-        "migraine": "Migraine",
-        "chronicPain": "Chronic Pain",
-        "adhd": "ADHD",
-        "depresion": "Depresion",
-        "furtherComplaints": "Further Complaints"
+        "sleepDisorder": "Schlafstörungen",
+        "migraine": "Migräne",
+        "chronicPain": "Chronische Schmerzen",
+        "adhd": "ADHS",
+        "depresion": "Depressionen",
+        "furtherComplaints": "Weitere Krankheiten"
       }
-    },
-    "CanabisTypes": {
-      "title": "Find the right flower",
-      "subtitle": "Live Now In Our Page"
     },
     "Testimonials": {
-      "title": "What Our Clients Have To Say",
-      "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+      "title": "Meinungen unserer Patienten"
     },
     "Faq": {
-      "title": "Frequently Asked Questions",
-      "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques.",
-      "items": {
-        "q1": "This is just dummy text to represent FAQ?",
-        "a1": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations.",
-        "q2": "This is just dummy text to represent FAQ?",
-        "a2": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations.",
-        "q3": "This is just dummy text to represent FAQ?",
-        "a3": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations.",
-        "q4": "This is just dummy text to represent FAQ?",
-        "a4": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations.",
-        "q5": "This is just dummy text to represent FAQ?",
-        "a5": "This is body text. All of this text is editable. Simply click anywhere in the paragraph or heading text and start typing. You can copy and paste your own content in to see what it looks like with these font combinations."
-      }
+      "title": "Häufig gestellte Fragen",
+      "subtitle": "Hier findest du alle notwendigen Informationen. Hast du noch weitere Fragen? Dann kontaktiere unseren Support."
     }
   },
   "CannabisPage": {

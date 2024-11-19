@@ -38,12 +38,12 @@ const Header: React.FC = () => {
             <p className="text-white mt-8 mb-10">{t('subtitle')}</p>
             <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
               <Button
-                label="Request treatment"
+                label={t('firstButton')}
                 variant="white"
                 onClick={handleRequestTreatment}
               />
               <Button
-                label="Check live inventory"
+                label={t('secondButton')}
                 variant="tertiary"
                 onClick={() => router.push('/cannabis')}
               />
