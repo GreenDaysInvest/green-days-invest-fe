@@ -46,9 +46,10 @@ const Navbar: React.FC = () => {
             <Image className="cursor-pointer" src={'/logo.svg'} alt="logo" width={180} height={24} sizes="(max-width: 600px) 100vw, 180px" style={{ width: "100%", height: "auto" }} />
           </Link>
 
-          <div className="hidden lg:flex items-center space-x-10 ml-10">
-            <Link href="/"><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('home')}</p></Link>
-            <Link href="/cannabis"><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('cannabisAvailability')}</p></Link>
+          <div className="hidden lg:flex items-center space-x-6 lg:space-x-10 ml-10">
+            <Link href="/"><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('home')}</p></Link>
+            <Link href="/how-it-works"><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('howItWorks')}</p></Link>
+            <Link href="/cannabis"><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('cannabisAvailability')}</p></Link>
 
             <div className="relative" onMouseEnter={() => handleMouseEnter('diseases')} onMouseLeave={handleMouseLeave}>
               <Link href="">
@@ -108,8 +109,9 @@ const Navbar: React.FC = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white shadow-lg absolute top-full left-0 w-full pb-4 px-6 z-50 border-t border-lightGreen">
             <div className="flex flex-col items-center">
-              <Link href="/" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('home')}</p></Link>
-              <Link href="/cannabis" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary font-normal hover:text-gray-500">{t('cannabisAvailability')}</p></Link>
+              <Link href="/" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('home')}</p></Link>
+              <Link href="/how-it-works" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('howItWorks')}</p></Link>
+              <Link href="/cannabis" className='border-b border-lightGreen w-full text-center py-4' onClick={closeMobileMenu}><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('cannabisAvailability')}</p></Link>
               <button onClick={() => setDropdownOpen(dropdownOpen === 'symptoms' ? null : 'symptoms')} className="flex justify-center items-center text-secondary font-normal border-b border-lightGreen w-full text-center py-4">
                 {t('diseases')} <FaChevronDown className="ml-1" />
               </button>

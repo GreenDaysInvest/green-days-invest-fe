@@ -1,46 +1,50 @@
 "use client";
 import Image from "next/image";
-import flower from '../../../../../public/flower.png'
-import avatar from '../../../../../public/avatar.png'
+import blogData from "../blogData.json";
+import { usePathname } from "@/i18n/routing";
 import BlogCard from "@/app/components/BlogCard/BlogCard";
-import { useTranslations } from "next-intl";
-import { blogs } from "../consts";
-
+import flower from '../../../../../public/flower.png'
 
 const BlogDetail = () => {
-    const t = useTranslations('BlogPage')
+    const pathname = usePathname();
+    const id = pathname.split('/').pop();
+
+    const blog = blogData.find(b => b.id === parseInt(id as string));
+
+    if (!blog) return <p>Blog not found</p>;
+
     return (
         <div className="pt-10">
             <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
                 <div className="flex flex-col items-center">
-                    <Image 
-                        src={flower} 
-                        alt={`${flower}-img`}
+                    <Image
+                        src={flower}
+                        // src={blog?.image}
+                        alt={`${blog.title}-img`}
                         width={336}
                         height={400}
                         className="rounded-md w-full h-[400px] object-cover mb-6"
-                        />
-                    <div className="w-4/4 lg:w-3/4">
-                        <p className="text-4xl md:text-5xl text-secondary text-left mt-8 mb-6">Blog 1</p>
-                        <p className="text-main text-sm md:text-base">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.Contrary to popular belief, Lorem Ipsum is not simply random text.<br/><br/>
-                        </p>
-                        <p className="text-main text-sm md:text-base">
-                        It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.Contrary to popular belief, Lorem Ipsum is not simply random text. <br/><br/>
-                        </p>
-                        <p className="text-main text-sm md:text-base">It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-                        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+                    />
+                    <div className="w-full lg:w-2/4">
+                        <p className="text-4xl md:text-5xl text-secondary text-left mt-8 mb-6">{blog.title}</p>
+                        <p className="text-main text-sm md:text-base mb-2">{blog.description}</p>
+                        {blog.sections.map((section, index) => (
+                            <div key={index} className="mb-6">
+                                <p className="text-xl font-bold text-secondary mb-2">{section.subtitle}</p>
+                                <p className="text-main text-sm md:text-base">{section.content}</p>
+                            </div>
+                        ))}
                         <div className="flex items-center mt-12">
-                            <Image 
-                                src={avatar} 
-                                alt={`${avatar}-name`}
+                            <Image
+                                src={blog.client.avatar}
+                                alt={`${blog.client.name}`}
                                 width={60}
                                 height={60}
-                                className="rounded-full" 
+                                className="rounded-full"
                             />
                             <div className="flex flex-col ml-3">
-                                <p className="text-secondary text-xl font-bold">John Doe</p>
-                                <p className="text-secondary ">Co founder</p>
+                                <p className="text-secondary text-xl font-bold">{blog.client.name}</p>
+                                <p className="text-secondary">{blog.client.position}</p>
                             </div>
                         </div>
                     </div>
@@ -48,25 +52,25 @@ const BlogDetail = () => {
             </div>
             <div className="bg-tertiary flex flex-col mt-6 lg:mt-20 py-20">
                 <div className="container mx-auto px-4 sm:px-0 md:px-8 lg:px-4">
-                    <p className="text-secondary text-3xl lg:text-4xl mb-10">
-                        {t('latestBlogs')}
-                    </p>
+                    <p className="text-secondary text-3xl lg:text-4xl mb-10">Latest Blogs</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {blogs.slice(0, 3).map(item => <BlogCard 
-                            key={item.title}
-                            id={item.id}
-                            image={item.image}
-                            title={item.title}
-                            description={item.description}
-                            client={item.client}
-                            isBackground={false}
+                        {blogData.slice(0, 3).map(item => (
+                            <BlogCard
+                                key={item.id}
+                                id={item.id}
+                                image={flower}
+                                // image={item?.image}
+                                title={item.title}
+                                description={item.description}
+                                client={item.client}
+                                isBackground={false}
                             />
-                        )}
+                        ))}
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default BlogDetail;

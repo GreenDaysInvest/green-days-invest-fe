@@ -2,6 +2,7 @@
   "Navbar": {
     "home": "Home",
     "about": "About",
+    "howItWorks": "Wie funktioniert’s?",
     "cannabisAvailability": "Cannabis Availability",
     "diseases": "Erkrankungen",
     "dataPrivacy": "Data Privacy",
@@ -22,6 +23,7 @@
     "submit": "Submit"
   },
   "HomePage": {
+    "more": "Weitere",
     "readMore": "Weitere Informationen",
     "DiscoverSection": {
       "Top": {
@@ -43,16 +45,28 @@
         "subtitle": "Unser Prozess ist speziell darauf ausgerichtet, dir den Weg zum Rezept so stressfrei wie möglich zu machen.",
         "Keys": {
             "first": {
-              "title": "Lorem Ipsum Dolor Sit Atem",
-              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+              "title": "Fragebogen ausfüllen",
+              "subtitle": "Ein medizinischer Fragebogen erfasst deine Symptome, bisherigen Therapien und Vorerkrankungen. Damit kann eine individuelle Therapieempfehlung erstellt werden."
             },
             "second": {
-              "title": "Lorem Ipsum Dolor Sit Atem",
-              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+              "title": "Auswahl der Cannabisblüte",
+              "subtitle": "Wähle aus einer Liste von Sorten, die regelmäßig aktualisiert wird. Unsere Plattform zeigt dir nur verfügbare Sorten an, um Verzögerungen zu vermeiden."
             },
             "third": {
-              "title": "Lorem Ipsum Dolor Sit Atem",
-              "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
+              "title": "Wunschapotheke auswählen:",
+              "subtitle": "Wähle eine Apotheke aus unserer Liste oder entscheide dich für eine freie Apotheke. Partnerapotheken garantieren eine schnelle Lieferung und hohe Verfügbarkeit."
+            },
+            "fourth": {
+              "title": "Ärztliche Prüfung",
+              "subtitle": "Dein Fragebogen wird von einem spezialisierten Arzt geprüft. Falls notwendig, kann der Arzt weitere Fragen stellen oder eine Videokonsultation anfordern."
+            },
+            "fifth": {
+              "title": "Rezeptausstellung",
+              "subtitle": "Bei positiver Prüfung wird ein Privatrezept ausgestellt. Dieses wird dir als e-Rezept oder in Papierform zugestellt."
+            },
+            "sixth": {
+              "title": "Rezeptversand",
+              "subtitle": "Auf Wunsch übermitteln wir dein Rezept direkt an eine Apotheke, sodass du dich nicht um den Versand kümmern musst."
             }
         }
       }
@@ -94,6 +108,37 @@
   "FAQ": {
     "title": "Do you have any questions?",
     "inThisGuide": "In this guide"
+  },
+  "HowItWorksPage": {
+    "title": "Behandlungsablauf",
+    "strongSubTitle": "Registrierung: ",
+    "subtitle": "Melde dich auf unserer Website an und erstelle ein Benutzerkonto. Gib grundlegende Informationen zu deinem Gesundheitszustand an.",
+    "list": [
+      {
+        "title": "Fragebogen ausfüllen:",
+        "description": "Ein medizinischer Fragebogen erfasst deine Symptome, bisherigen Therapien und Vorerkrankungen. Dieser Schritt ist entscheidend, um eine individuelle Therapieempfehlung zu erstellen."
+      },
+      {
+        "title": "Auswahl der Cannabisblüte:",
+        "description": "Wähle aus einer Liste von Sorten, die regelmäßig aktualisiert wird. Unsere Plattform zeigt dir nur verfügbare Sorten an, um Verzögerungen zu vermeiden."
+      },
+      {
+        "title": "Wunschapotheke auswählen:",
+        "description": "Wähle eine Apotheke aus unserer Liste oder entscheide dich für eine freie Apotheke. Partnerapotheken garantieren eine schnelle Lieferung und hohe Verfügbarkeit."
+      },
+      {
+        "title": "Ärztliche Prüfung:",
+        "description": "Dein Fragebogen wird von einem spezialisierten Arzt geprüft. Falls notwendig, kann der Arzt weitere Fragen stellen oder eine Videokonsultation anfordern."
+      },
+      {
+        "title": "Rezeptausstellung:",
+        "description": "Bei positiver Prüfung wird ein Privatrezept ausgestellt. Dieses wird dir als e-Rezept oder in Papierform zugestellt."
+      },
+      {
+        "title": "Rezeptversand:",
+        "description": "Auf Wunsch übermitteln wir dein Rezept direkt an eine Apotheke, sodass du dich nicht um den Versand kümmern musst."
+      }
+    ]
   },
   "Dashboard": {
     "back": "Back",

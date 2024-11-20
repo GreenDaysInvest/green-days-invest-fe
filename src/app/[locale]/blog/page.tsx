@@ -1,12 +1,12 @@
 "use client";
+
 import { useTranslations } from "next-intl";
 import BlogCard from "@/app/components/BlogCard/BlogCard";
-import { blogs } from "./consts";
+import blogData from "./blogData.json";
 
-
+import flower from '../../../../public/flower.png'
 const Blog = () => {
-
-    const t = useTranslations('BlogPage')
+    const t = useTranslations('BlogPage');
 
     return (
         <div className="md:pt-0 md:pb-10 pt-10 pb-20">
@@ -16,20 +16,22 @@ const Blog = () => {
                     <p className="text-lg lg:text-2xl text-secondary">{t('subtitle')}</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {blogs.map(item => <BlogCard 
-                        key={item.title}
-                        id={item.id}
-                        image={item.image}
-                        title={item.title}
-                        description={item.description}
-                        client={item.client}
-                        isBackground={true}
+                    {blogData.map(blog => (
+                        <BlogCard
+                            key={blog.id}
+                            id={blog.id}
+                            // image={blog?.image}
+                            image={flower}
+                            title={blog.title}
+                            description={blog.description}
+                            client={blog.client}
+                            isBackground={true}
                         />
-                    )}
+                    ))}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Blog;
