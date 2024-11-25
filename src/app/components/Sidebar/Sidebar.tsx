@@ -73,7 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({  onClose }) => {
             >
               {t('Sidebar.profile')}
             </li>
-            {!user?.isAdmin && <li
+            {((user && !user?.isAdmin) && user.questionnaires && user.questionnaires?.length > 0 && user?.questionnaires[user.questionnaires.length - 1]?.status === "accepted") && <li
               className={`p-4 border-b border-secondary cursor-pointer text-secondary ${activeTab === 'basket' ? 'font-bold' : ''}`}
               onClick={() => { setActiveTab('basket'); onClose(); }}
             >

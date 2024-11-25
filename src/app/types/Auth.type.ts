@@ -1,3 +1,4 @@
+import { Questionnaire } from "./Questionnaire.type";
 
 export interface User {
     id?: string; // For normal users from your backend
@@ -11,7 +12,7 @@ export interface User {
     country?: string;
     zip?: string;
     isAdmin?: boolean;
-    questionnaires?: any[]
+    questionnaires?: Questionnaire[]
 }
 
 export interface AuthContextType {

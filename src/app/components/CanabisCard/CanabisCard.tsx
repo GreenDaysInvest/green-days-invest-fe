@@ -72,7 +72,7 @@ const CanabisCard: React.FC<Props> = ({ item, isBorder }) => {
             ab <span className="text-secondary text-lg lg:text-3xl">{item.price}</span> gr
           </p>
           <div className="flex items-center">
-            {user && !user?.isAdmin && (
+            {((user && !user?.isAdmin) && user.questionnaires && user.questionnaires?.length > 0 && user?.questionnaires[user.questionnaires.length - 1]?.status === "accepted")  && (
               <button className="p-4 me-4" onClick={handleAddToBasket}>
                 <FaCartPlus className="text-secondary text-2xl" />
               </button>
