@@ -10,8 +10,10 @@ import LoginModal from '../AuthModal/LoginModal';
 import RegisterModal from '../AuthModal/RegisterModal';
 import { useApp } from '@/app/context/AppContext';
 import { useAuth } from '@/app/context/AuthContext';
+import { useBasket } from '@/app/context/BasketContext';
 
 const Navbar: React.FC = () => {
+  const { basket } = useBasket();
   const { setIsLoginModalOpen, setIsRegisterModalOpen } = useApp();
   const { user } = useAuth();
   const locale = useLocale();
@@ -92,7 +94,8 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <Link href="/dashboard" className="hidden lg:flex" onClick={closeMobileMenu}>
-                <span className="rounded-full bg-main w-[35px] h-[35px] my-[7px] text-white flex justify-center items-center cursor-pointer">
+                <span className="relative rounded-full bg-main w-[35px] h-[35px] my-[7px] text-white flex justify-center items-center cursor-pointer">
+                  <span className='absolute top-[-5px] right-[-5px] rounded-full w-[20px] h-[20px] flex justify-center items-center bg-tertiary font-red text-sm'>{basket.length}</span>
                   <p className="text-white font-medium capitalize">{user?.name?.charAt(0)}</p>
                 </span>
               </Link>

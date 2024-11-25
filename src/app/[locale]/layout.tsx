@@ -11,6 +11,7 @@ import { AppProvider } from "../context/AppContext";
 import { ScraperDataProvider } from "../context/ScraperDataContext";
 import Layout from "../components/Layout/Layout";
 import ToastProvider from "../components/ToastProvider/ToastProvider";
+import { BasketProvider } from "../context/BasketContext";
 
 const poppins = Poppins({
   subsets: ['latin'], 
@@ -38,17 +39,19 @@ export default async function RootLayout({
       <body
         className={`${poppins.variable} bg-white antialiased`}
       >
-        <AuthProvider>
-          <AppProvider>
-            <ScraperDataProvider>
-              <NextIntlClientProvider messages={messages}>
-                <ToastProvider>
-                  <Layout children={children}/>
-                </ToastProvider>
-              </NextIntlClientProvider>
-            </ScraperDataProvider>
-          </AppProvider>
-        </AuthProvider>
+        <NextIntlClientProvider messages={messages}>
+          <AuthProvider>
+            <AppProvider>
+              <BasketProvider>
+                <ScraperDataProvider>
+                    <ToastProvider>
+                      <Layout children={children}/>
+                    </ToastProvider>
+                </ScraperDataProvider>
+              </BasketProvider>
+            </AppProvider>
+          </AuthProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -160,8 +160,16 @@
       "questionnaire": "Questionnaire",
       "questionnaires": "Questionnaires",
       "questionnaireList": "Questionnaire List",
-      "profile": "Profile"
-    }
+      "profile": "Profile",
+      "basket": "Korb"
+    },
+    "addedToBasket": "Item is added to basket",
+    "removedFromBasket": "Item removed from basket!",
+    "itemExistsInBasket": "Item exists in basket!",
+    "quantityIncreased": "Quantity increased!",
+    "quantityDecreased": "Quantity decreased!",
+    "emptyBasket": "Your basket is empty.",
+    "total": "Total"
   },
   "Notifications": {
     "profileUpdate": "Profile updated successfully!",

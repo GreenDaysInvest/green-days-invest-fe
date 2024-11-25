@@ -14,7 +14,7 @@ const BlogDetail = () => {
     if (!blog) return <p>Blog not found</p>;
 
     return (
-        <div className="pt-10">
+        <div>
             <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
                 <div className="flex flex-col items-center">
                     <Image

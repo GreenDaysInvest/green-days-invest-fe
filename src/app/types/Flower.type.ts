@@ -1,5 +1,6 @@
 
 export interface Flower {
+    id?: string;
     image: string;
     name: string;
     link: string;
@@ -8,4 +9,10 @@ export interface Flower {
     cbd: string;
     availability: string;
     price: string;
+}
+
+export interface Basket {
+    id?: string;
+    flower: Flower;
+    quantity: number;
 }

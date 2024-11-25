@@ -23,6 +23,7 @@ const ProfileSchema = Yup.object().shape({
 
 const Profile: React.FC = () => {
   const t = useTranslations('Notifications');
+  const tDashboard = useTranslations('Dashboard');
   const { user } = useAuth(); 
 
   const initialValues: User = {
@@ -62,7 +63,7 @@ const Profile: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <h2 className="text-3xl font-semibold text-center text-secondary mb-10">Profile</h2>
+      <h2 className="text-3xl font-semibold text-center text-secondary mb-10">{tDashboard('Sidebar.profile')}</h2>
       <Formik
         initialValues={initialValues}
         enableReinitialize

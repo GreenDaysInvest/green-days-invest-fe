@@ -6,6 +6,7 @@ import Profile from '@/app/components/Profile/Profile';
 import { useState } from 'react';
 import QuestionnaireList from '@/app/components/QuestionaireList/QuestionaireList';
 import { useApp } from '@/app/context/AppContext';
+import Basket from '@/app/components/Basket/Basket';
 
 const Dashboard: React.FC = () => {
   
@@ -20,6 +21,8 @@ console.log(activeTab,"actvetab")
         return <Questionaries />;
       case 'profile':
         return <Profile />;
+      case 'basket':
+        return <Basket />;
       default:
         return <QuestionnaireList />;
     }

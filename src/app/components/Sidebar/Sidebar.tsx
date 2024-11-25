@@ -20,11 +20,11 @@ const Sidebar: React.FC<SidebarProps> = ({  onClose }) => {
   const t = useTranslations('Dashboard');
   const handleLogout = async () => {
     try {
-      AuthService.logout(); // Call your custom logout method
-      onClose(); // Close the sidebar after logout
+      AuthService.logout();
+      onClose();
       setUser(null)
     } catch (error) {
-      console.error('Logout error:', error); // Handle logout error if necessary
+      console.error('Logout error:', error);
     }
   };
   return (
@@ -73,6 +73,12 @@ const Sidebar: React.FC<SidebarProps> = ({  onClose }) => {
             >
               {t('Sidebar.profile')}
             </li>
+            {!user?.isAdmin && <li
+              className={`p-4 border-b border-secondary cursor-pointer text-secondary ${activeTab === 'basket' ? 'font-bold' : ''}`}
+              onClick={() => { setActiveTab('basket'); onClose(); }}
+            >
+              {t('Sidebar.basket')}
+            </li>}
           </ul>
         </div>
       </div>
