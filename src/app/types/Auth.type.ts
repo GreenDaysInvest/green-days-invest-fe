@@ -7,13 +7,17 @@ export interface User {
     surname?: string;
     email?: string;
     phoneNumber?: string;
+    birthdate?: string;
     password?: string;
     street?: string;
-    country?: string;
+    city?: string;
     zip?: string;
     isAdmin?: boolean;
     questionnaires?: Questionnaire[]
     verificationStatus?: string;
+    verificationDocumentUrl?: string;
+    verificationDate?: string;
+    stripeCustomerId?: string;
 }
 
 export interface AuthContextType {

@@ -9,15 +9,17 @@ import { User } from '@/app/types/Auth.type';
 import AuthService from '@/app/services/authServices';
 import { showInfoToast } from '@/app/utils/toast';
 import { useTranslations } from 'next-intl';
+import { GoUnverified, GoVerified } from 'react-icons/go';
 
 const ProfileSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   surname: Yup.string().required("Surname is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   phoneNumber: Yup.string(),
+  birthdate: Yup.string(),
   password: Yup.string(),
   street: Yup.string(),
-  country: Yup.string(),
+  city: Yup.string(),
   zip: Yup.string(),
 });
 
@@ -31,9 +33,10 @@ const Profile: React.FC = () => {
     surname: user?.surname || "",
     email: user?.email || "",
     phoneNumber: user?.phoneNumber || "",
+    birthdate: user?.birthdate || "",
     password: "",
     street: user?.street || "",
-    country: user?.country || "",
+    city: user?.city || "",
     zip: user?.zip || "",
   };
 
@@ -45,8 +48,9 @@ const Profile: React.FC = () => {
         surname: values.surname,
         email: values.email,
         phoneNumber: values.phoneNumber,
+        birthdate: values.birthdate,
         street: values.street,
-        country: values.country,
+        city: values.city,
         zip: values.zip,
       }
     } else {
@@ -64,6 +68,10 @@ const Profile: React.FC = () => {
   return (
     <div className="max-w-md mx-auto p-6">
       <h2 className="text-3xl font-semibold text-center text-secondary mb-10">{tDashboard('Sidebar.profile')}</h2>
+      <div className="flex items-center mb-4">
+        <p className='text-secondary text-xl mr-4'>Verification Status:</p>
+        {user?.verificationStatus === 'PENDING'  ? <GoUnverified className='text-secondary text-3xl' /> : <GoVerified className='text-secondary text-3xl' />}
+      </div>
       <Formik
         initialValues={initialValues}
         enableReinitialize
@@ -85,21 +93,20 @@ const Profile: React.FC = () => {
               <Input name="phoneNumber" placeholder="Phone Number" />
             </div>
             <div className="mb-4">
+              <Input name="birthdate" type='date' placeholder="Birthdate" />
+            </div>
+            <div className="mb-4">
               <Input name="password" type="password" placeholder="Password" />
             </div>
             <div className="mb-4">
               <Input name="street" placeholder="Street" />
             </div>
             <div className="mb-4">
-              <Input name="country" placeholder="Country" />
+              <Input name="city" placeholder="City" />
             </div>
             <div className="mb-4">
               <Input name="zip" placeholder="Zip Code" />
             </div>
-            <p>Verification Status: {user?.verificationStatus}</p>
-            {user?.verificationStatus === 'PENDING' && (
-              <p>Your verification is under review. Please wait for approval.</p>
-            )}
             <Button 
                 type="submit" 
                 label={isSubmitting ? "Updating..." : "Update Profile"} 

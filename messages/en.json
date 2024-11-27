@@ -3,7 +3,7 @@
     "home": "Home",
     "about": "About",
     "howItWorks": "Wie funktioniert’s?",
-    "cannabisAvailability": "Cannabis Availability",
+    "cannabisAvailability": "Cannabis",
     "diseases": "Erkrankungen",
     "dataPrivacy": "Data Privacy",
     "termsConditions": "Terms Conditions",
@@ -161,7 +161,8 @@
       "questionnaires": "Questionnaires",
       "questionnaireList": "Questionnaire List",
       "profile": "Profile",
-      "basket": "Korb"
+      "basket": "Korb",
+      "verificationPage": "Verification Page"
     },
     "addedToBasket": "Item is added to basket",
     "removedFromBasket": "Item removed from basket!",

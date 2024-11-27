@@ -27,6 +27,7 @@ const RegisterModal: React.FC<Props> = () => {
         surname: Yup.string().required(t('required')),
         email: Yup.string().email('Invalid email').required(t('required')),
         phoneNumber: Yup.string().required(t('required')),
+        birthdate: Yup.string().required(t('required')),
         password: Yup.string().min(6, t('passwordSixChars')).required(t('required')),
         repeatPassword: Yup.string()
             .oneOf([Yup.ref('password'), undefined], t('passwordMustMatch'))
@@ -38,6 +39,7 @@ const RegisterModal: React.FC<Props> = () => {
         surname: string;
         email: string;
         phoneNumber: string;
+        birthdate: string;
         password: string;
     }) => {
         try {
@@ -50,6 +52,7 @@ const RegisterModal: React.FC<Props> = () => {
                 surname: values.surname,
                 email: values.email,
                 phoneNumber: values.phoneNumber,
+                birthdate: values.birthdate,
                 password: values.password,
                 isAdmin: false
             });
@@ -96,6 +99,7 @@ const RegisterModal: React.FC<Props> = () => {
                         surname: '',
                         email: '',
                         phoneNumber: '',
+                        birthdate: '',
                         password: '',
                         repeatPassword: ''
                     }}
@@ -124,6 +128,11 @@ const RegisterModal: React.FC<Props> = () => {
                             <div>
                                 <Input name="phoneNumber" type="tel" placeholder="Phone number" />
                                 <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-sm" />
+                            </div>
+
+                            <div>
+                                <Input name="birthdate" type="date" placeholder="Birth date" />
+                                <ErrorMessage name="birthdate" component="div" className="text-red-500 text-sm" />
                             </div>
 
                             <div>

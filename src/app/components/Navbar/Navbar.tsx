@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
     { href: "migrane", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.migraine') },
     { href: "chronic-pain", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.chronicPain') },
     { href: "adhd", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.adhd') },
-    { href: "depresion", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.depresion') },
+    { href: "depression", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.depresion') },
     { href: "further-complaints", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.furtherComplaints') },
   ];
 

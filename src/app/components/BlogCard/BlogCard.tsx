@@ -24,9 +24,11 @@ const BlogCard: React.FC<Props> = ({
     },
     isBackground
 }) => {
+    const truncateText = (text: string, maxLength: number): string => 
+        text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
     return (
         <Link href={`/blog/${id}`}>
-            <div className={`flex flex-col justify-between ${isBackground ? 'bg-tertiary' : 'bg-white'} rounded-2xl p-6 h-[605px]`}>
+            <div className={`flex flex-col justify-between ${isBackground ? 'bg-tertiary' : 'bg-white'} rounded-2xl p-6 h-[540px]`}>
                 <div>
                     <Image 
                         src={image} 
@@ -35,8 +37,8 @@ const BlogCard: React.FC<Props> = ({
                         height={200}
                         className="rounded-md w-full h-[200px] object-cover mb-6"
                         />
-                    <p className="text-lg lg:text-2xl text-secondary text-medium mb-3">{title}</p>
-                    <p className="text-main mb-3">{description}</p>
+                    <p className="text-lg lg:text-2xl text-secondary text-medium mb-3">{truncateText(title, 45)}</p>
+                    <p className="text-main mb-3"> {truncateText(description, 150)}</p>
                 </div>
                 <div className="flex items-center mt-3">
                     <Image 
