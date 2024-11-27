@@ -13,6 +13,7 @@ export interface User {
     zip?: string;
     isAdmin?: boolean;
     questionnaires?: Questionnaire[]
+    verificationStatus?: string;
 }
 
 export interface AuthContextType {

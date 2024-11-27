@@ -7,12 +7,15 @@ import { useState } from 'react';
 import QuestionnaireList from '@/app/components/QuestionaireList/QuestionaireList';
 import { useApp } from '@/app/context/AppContext';
 import Basket from '@/app/components/Basket/Basket';
+import Checkout from '@/app/components/Checkout/Checkout';
+import StripeProvider from '@/app/components/StripeProvider/StripeProvider';
+import VerificationForm from '@/app/components/VerificationForm/VerificationForm';
 
 const Dashboard: React.FC = () => {
   
   const { activeTab } = useApp();
   const [showSidebar, setShowSidebar] = useState(false);
-console.log(activeTab,"actvetab")
+
   const renderContent = () => {
     switch (activeTab) {
       case 'questionariesList':
@@ -23,6 +26,10 @@ console.log(activeTab,"actvetab")
         return <Profile />;
       case 'basket':
         return <Basket />;
+      case 'verificationForm':
+        return <VerificationForm />;
+      case 'checkout':
+        return <Checkout />;
       default:
         return <QuestionnaireList />;
     }
@@ -30,6 +37,7 @@ console.log(activeTab,"actvetab")
 
   return (
     <ProtectedRoute>
+      <StripeProvider>
       <div className="flex">
         {/* Sidebar */}
         <div className={`fixed md:static z-10 ${showSidebar ? 'block' : 'hidden md:block'}`}>
@@ -48,6 +56,7 @@ console.log(activeTab,"actvetab")
           {renderContent()}
         </div>
       </div>
+      </StripeProvider>
     </ProtectedRoute>
   );
 };

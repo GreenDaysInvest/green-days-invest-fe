@@ -96,6 +96,10 @@ const Profile: React.FC = () => {
             <div className="mb-4">
               <Input name="zip" placeholder="Zip Code" />
             </div>
+            <p>Verification Status: {user?.verificationStatus}</p>
+            {user?.verificationStatus === 'PENDING' && (
+              <p>Your verification is under review. Please wait for approval.</p>
+            )}
             <Button 
                 type="submit" 
                 label={isSubmitting ? "Updating..." : "Update Profile"} 

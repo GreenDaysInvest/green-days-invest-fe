@@ -1,3 +1,4 @@
+"use client";
 import { useBasket } from "@/app/context/BasketContext";
 import { showInfoToast } from "@/app/utils/toast";
 import { Link } from "@/i18n/routing";
@@ -5,8 +6,12 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { MdDeleteForever } from "react-icons/md";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import Button from "../Button/Button";
+import { useApp } from "@/app/context/AppContext";
 
 const Basket = () => {
+
+  const { setActiveTab } = useApp();
   const { basket, removeFromBasket, updateItemQuantity } = useBasket();
   const t = useTranslations('Dashboard');
 
@@ -35,6 +40,10 @@ const Basket = () => {
     removeFromBasket(itemId);
     showInfoToast(t("removedFromBasket"));
   };
+  
+  const handleCheckout = () => {
+    setActiveTab('checkout');
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -83,6 +92,7 @@ const Basket = () => {
           </div>
           <div className="mt-8 p-4 border-t border-secondary text-right">
             <h3 className="text-xl font-semibold text-secondary">{t("total")}: {calculateTotal()}€</h3>
+            <Button label={t("proceedToCheckout")} variant="secondary" onClick={handleCheckout}/>
           </div>
         </>
       ) : (

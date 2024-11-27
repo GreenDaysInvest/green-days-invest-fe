@@ -161,7 +161,8 @@
       "questionnaires": "Questionnaires",
       "questionnaireList": "Questionnaire List",
       "profile": "Profile",
-      "basket": "Korb"
+      "basket": "Korb",
+      "verificationPage": "Verification Page"
     },
     "addedToBasket": "Item is added to basket",
     "removedFromBasket": "Item removed from basket!",
