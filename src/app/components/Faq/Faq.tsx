@@ -1,37 +1,66 @@
 "use client";
-import React from "react";
+
+import React, { useRef } from "react";
 import { useTranslations } from "next-intl";
 import FaqCard from "../FaqCard/FaqCard";
 import faqData from "../../[locale]/faq/faqData.json";
+import { motion, useInView } from "framer-motion";
 
 const Faq: React.FC = () => {
   const t = useTranslations("HomePage");
 
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, ease: "easeInOut" },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeInOut" } },
+  };
+
   return (
-    <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
-      <p className="text-lightGreen text-3xl md:text-4xl lg:text-5xl text-center font-medium">
+    <motion.div
+      className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4"
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "show" : "hidden"}
+      variants={containerVariants}
+    >
+      <motion.p
+        className="text-lightGreen text-3xl md:text-4xl lg:text-5xl text-center font-medium"
+        variants={itemVariants}
+      >
         {t("Faq.title")}
-      </p>
-      <p className="text-secondary md:w-3/4 lg:w-2/4 mx-auto text-center my-6">
+      </motion.p>
+      <motion.p
+        className="text-secondary md:w-3/4 lg:w-2/4 mx-auto text-center my-6"
+        variants={itemVariants}
+      >
         {t("Faq.subtitle")}
-      </p>
+      </motion.p>
 
-      <div className="grid grid-cols-2 gap-6 mt-10">
+      <motion.div
+        className="grid grid-cols-2 gap-6 mt-10"
+        variants={containerVariants}
+      >
         {Object.entries(faqData).map(([id, section]: [string, any]) => {
-
           const list = section.items.map((item: any) => item.title);
 
           return (
-            <FaqCard
-              key={id}
-              id={id}
-              title={section.mainTitle}
-              list={list}
-            />
+            <motion.div key={id} variants={itemVariants}>
+              <FaqCard id={id} title={section.mainTitle} list={list} />
+            </motion.div>
           );
         })}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

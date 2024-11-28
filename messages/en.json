@@ -18,12 +18,6 @@
     "firstButton": "Behandlung anfragen",
     "secondButton": "Livebestand prüfen"
   },
-  "Footer": {
-    "title": "Always up to date",
-    "subtitle": "Sign up for our newsletter now! You'll always be the first to receive the latest information from Green Day Invest about promotions, new offers and current research results on medical cannabis.",
-    "email": "Email",
-    "submit": "Submit"
-  },
   "HomePage": {
     "more": "Weitere",
     "readMore": "Weitere Informationen",
@@ -97,19 +91,20 @@
     "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
   },
   "BlogPage": {
-    "title": "Blog Page",
-    "subtitle": "Our Latest Blog",
-    "latestBlogs": "Latests Blogs"
+    "title": "Blog Seite",
+    "subtitle": "Unsere neuesten Blogs",
+    "latestBlogs": "Neueste Blogs",
+    "blogNotFound": "Blog nicht gefunden"
   },
   "Validations": {
-    "required": "Required",
-    "invalidEmail": "Invalid email",
-    "passwordSixChars": "Password must be at least 6 characters",
-    "passwordMustMatch": "Passwords must match"
+    "required": "Erforderlich",
+    "invalidEmail": "Ungültige E-Mail",
+    "passwordSixChars": "Das Passwort muss mindestens 6 Zeichen lang sein",
+    "passwordMustMatch": "Passwörter müssen übereinstimmen"
   },
   "FAQ": {
-    "title": "Do you have any questions?",
-    "inThisGuide": "In this guide"
+    "title": "Haben Sie fragen?",
+    "inThisGuide": "In diesem Handbuch"
   },
   "HowItWorksPage": {
     "title": "Behandlungsablauf",
@@ -143,45 +138,45 @@
     ]
   },
   "Dashboard": {
-    "back": "Back",
-    "questionnaireSubmited": "You have already submitted your questionnaire.",
-    "finish": "Finish",
-    "previous": "Previous",
-    "next": "Next",
-    "logout": "Log Out",
-    "questionnaireResponses": "Questionnaire Responses",
-    "close": "Close",
-    "userName": "Name of User",
-    "responses": "Responses",
+    "back": "Zurück",
+    "questionnaireSubmited": "Sie haben Ihren Fragebogen bereits abgeschickt.",
+    "finish": "Beenden",
+    "previous": "Vorherige",
+    "next": "Nächste",
+    "logout": "Ausloggen",
+    "questionnaireResponses": "Fragebogen Antworten",
+    "close": "Schließen",
+    "userName": "Name des Benutzers",
+    "responses": "Antwort",
     "status": "Status",
-    "viewResponses": "View Responses",
-    "searchQuestionnaire": "Search Questionnaire",
-    "medicationDeclined": "Your medication got declined!",
-    "pleaseStartAgain": "Please start again!",
+    "viewResponses": "Antworten anzeigen",
+    "searchQuestionnaire": "Fragebogen durchsuchen",
+    "medicationDeclined": "Ihr Medikament wurde abgelehnt!",
+    "pleaseStartAgain": "Bitte nochmal von vorne beginnen!",
     "Sidebar": {
-      "questionnaire": "Questionnaire",
-      "questionnaires": "Questionnaires",
-      "questionnaireList": "Questionnaire List",
-      "profile": "Profile",
+      "questionnaire": "Fragebogen",
+      "questionnaires": "Fragebögen",
+      "questionnaireList": "Fragebogenliste",
+      "profile": "Profil",
       "basket": "Korb",
-      "verificationPage": "Verification Page"
+      "verificationPage": "Bestätigungsseite"
     },
-    "addedToBasket": "Item is added to basket",
-    "removedFromBasket": "Item removed from basket!",
-    "itemExistsInBasket": "Item exists in basket!",
-    "quantityIncreased": "Quantity increased!",
-    "quantityDecreased": "Quantity decreased!",
-    "emptyBasket": "Your basket is empty.",
-    "total": "Total",
+    "addedToBasket": "Artikel wurde in den Warenkorb gelegt",
+    "removedFromBasket": "Artikel aus dem Warenkorb entfernt!",
+    "itemExistsInBasket": "Artikel ist im Warenkorb!",
+    "quantityIncreased": "Menge erhöht!",
+    "quantityDecreased": "Menge reduziert!",
+    "emptyBasket": "Ihr Warenkorb ist leer.",
+    "total": "Gesamt",
     "proceedToCheckout": "Zur Kasse gehen"
   },
   "Notifications": {
-    "profileUpdate": "Profile updated successfully!",
-    "questionnaireAccepted": "Questionnaire accepted!",
-    "questionnaireDeclined": "Questionnaire declined!",
-    "questionnaireSubmitedSuccesfully": "Questionnaire submitted successfully!",
-    "errorQuestionnaireStatus": "Error checking questionnaire submission status",
-    "errorSubmitingQuestionnaire": "Error submitting questionnaire"
+    "profileUpdate": "Profil erfolgreich aktualisiert!",
+    "questionnaireAccepted": "Fragebogen angenommen!",
+    "questionnaireDeclined": "Fragebogen abgelehnt!",
+    "questionnaireSubmitedSuccesfully": "Fragebogen erfolgreich übermittelt!",
+    "errorQuestionnaireStatus": "Fehler beim Prüfen des Fragebogen Übermittlungsstatus",
+    "errorSubmitingQuestionnaire": "Fehler beim Senden des Fragebogens"
   },
   "Checkout": {
     "stipeIsNotLoaded": "Stripe ist noch nicht geladen.",

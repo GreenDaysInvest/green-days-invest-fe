@@ -1,59 +1,83 @@
 "use client";
+
 import { useTranslations } from "next-intl";
 import TestimonialCard from "../TestimonialCard/TestimonialCard";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { Testimonial } from "@/app/types/Testimonial.type";
 import Slider from "react-slick";
+import { motion, useInView } from "framer-motion";
 
 interface Props {
-    items: Testimonial[];
+  items: Testimonial[];
 }
 
 const Testimonials: FC<Props> = ({ items }) => {
-    const t = useTranslations("HomePage");
-  
-    const settings = {
-        dots: false,
-        arrows: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 2,
-        slidesToScroll: 2,
-        autoplay: true,
-        autoplaySpeed: 10000,
-        responsive: [
-            {
-                breakpoint: 550,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    };
+  const t = useTranslations("HomePage");
 
-    return (
-        <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
-            <p className="text-lightGreen text-3xl md:text-4xl lg:text-5xl text-center font-medium mb-12">
-                {t("Testimonials.title")}
-            </p>
-            <div className="-mx-2">
-                <Slider
-                    {...settings}
-                    className="custom-slider"
-                >
-                    {items.map((item, index) => (
-                        <div key={index} className="px-2">
-                            <TestimonialCard
-                                rating={item.rating}
-                                description={item.description}
-                                client={item.client}
-                            />
-                        </div>
-                    ))}
-                </Slider>
-            </div>
-        </div>
-    );
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.2, ease: "easeInOut" } },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeInOut" } },
+  };
+
+  const settings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 2,
+    autoplay: true,
+    autoplaySpeed: 10000,
+    responsive: [
+      {
+        breakpoint: 550,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  return (
+    <motion.div
+      className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4"
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "show" : "hidden"}
+      variants={containerVariants}
+    >
+      <motion.p
+        className="text-lightGreen text-3xl md:text-4xl lg:text-5xl text-center font-medium mb-12"
+        variants={itemVariants}
+      >
+        {t("Testimonials.title")}
+      </motion.p>
+      <motion.div
+        className="-mx-2"
+        variants={itemVariants}
+      >
+        <Slider {...settings} className="custom-slider">
+          {items.map((item, index) => (
+            <motion.div key={index} className="px-2" variants={itemVariants}>
+              <TestimonialCard
+                rating={item.rating}
+                description={item.description}
+                client={item.client}
+              />
+            </motion.div>
+          ))}
+        </Slider>
+      </motion.div>
+    </motion.div>
+  );
 };
 
 export default Testimonials;
