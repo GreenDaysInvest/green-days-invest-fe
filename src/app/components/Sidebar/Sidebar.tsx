@@ -79,12 +79,6 @@ const Sidebar: React.FC<SidebarProps> = ({  onClose }) => {
             >
               {t('Sidebar.basket')}
             </li>}
-            {(user && !user?.isAdmin) && <li
-              className={`p-4 border-b border-secondary cursor-pointer text-secondary ${activeTab === 'verificationForm' ? 'font-bold' : ''}`}
-              onClick={() => { setActiveTab('verificationForm'); onClose(); }}
-            >
-              {t('Sidebar.verificationPage')}
-            </li>}
           </ul>
         </div>
       </div>

@@ -5,10 +5,12 @@
     "howItWorks": "Wie funktioniert’s?",
     "cannabisAvailability": "Cannabis",
     "diseases": "Erkrankungen",
-    "dataPrivacy": "Data Privacy",
-    "termsConditions": "Terms Conditions",
+    "dataPrivacy": "Datenschutz",
+    "termsConditions": "Geschäftsbedingungen",
     "blog": "Blog",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "termsPrivacy": "Bedingungen & Datenschutz",
+    "allRightsReserved": "Alle Rechte vorbehalten"
   },
   "Header": {
     "title": "Cannabis-Therapie auf Knopfdruck - einfach und bequem",
@@ -170,7 +172,8 @@
     "quantityIncreased": "Quantity increased!",
     "quantityDecreased": "Quantity decreased!",
     "emptyBasket": "Your basket is empty.",
-    "total": "Total"
+    "total": "Total",
+    "proceedToCheckout": "Zur Kasse gehen"
   },
   "Notifications": {
     "profileUpdate": "Profile updated successfully!",
@@ -179,5 +182,14 @@
     "questionnaireSubmitedSuccesfully": "Questionnaire submitted successfully!",
     "errorQuestionnaireStatus": "Error checking questionnaire submission status",
     "errorSubmitingQuestionnaire": "Error submitting questionnaire"
+  },
+  "Checkout": {
+    "stipeIsNotLoaded": "Stripe ist noch nicht geladen.",
+    "paymentSuccessful": "Zahlung erfolgreich!"
+  },
+  "Validation": {
+    "addBirthdateBeforeVerify": "Bitte fügen Sie Ihr Geburtsdatum in Ihrem Profil hinzu, bevor Sie sich verifizieren!",
+    "pleaseSelectOrDragDrop": "Bitte wählen Sie ein Dokument zum Hochladen aus oder ziehen Sie es per Drag & Drop.",
+    "uploadedSucessfulWaitForReview": "Dokument erfolgreich hochgeladen. Wartet auf Überprüfung."
   }
 }

@@ -32,7 +32,8 @@ const Navbar: React.FC = () => {
     { href: "chronic-pain", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.chronicPain') },
     { href: "adhd", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.adhd') },
     { href: "depression", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.depresion') },
-    { href: "further-complaints", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.furtherComplaints') },
+    { href: "../", // "further-complaints",
+      icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.furtherComplaints') },
   ];
 
   const closeMobileMenu = () => {
@@ -100,11 +101,11 @@ const Navbar: React.FC = () => {
                 </span>
               </Link>
             )}
-            {locale === 'en' ? (
+            {/* {locale === 'en' ? (
               <Link href="/" locale="de" className="hidden lg:flex" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">DE</p></Link>
             ) : (
               <Link href="/" locale="en" className="hidden lg:flex" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">ENG</p></Link>
-            )}
+            )} */}
           </div>
         </div>
 
@@ -147,11 +148,11 @@ const Navbar: React.FC = () => {
                   </span>
                 </Link>
               )}
-              {locale === 'en' ? (
+              {/* {locale === 'en' ? (
                 <Link href="/" locale="de" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer mt-4">DE</p></Link>
               ) : (
                 <Link href="/" locale="en" onClick={closeMobileMenu}><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer mt-4">ENG</p></Link>
-              )}
+              )} */}
             </div>
           </div>
         )}

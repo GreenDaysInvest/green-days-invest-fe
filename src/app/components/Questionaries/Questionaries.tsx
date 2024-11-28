@@ -83,7 +83,7 @@ const StepQuestionnaire: React.FC = () => {
     return (
       <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
         <h2 className="text-3xl font-semibold text-secondary mb-20">{t("Sidebar.questionnaire")}</h2>
-        <p className="text-xl text-secondary">{t("questionnaireSubmited")}</p>
+        <p className="text-xl text-center text-secondary">{t("questionnaireSubmited")}</p>
       </div>
     );
   }

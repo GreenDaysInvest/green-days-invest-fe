@@ -17,7 +17,8 @@ const DiseaseCard: FC<DiseaseCardProps> = ({ title}) => {
     "Chronische Schmerzen": "chronic-pain",
     "ADHS": "adhd",
     "Depressionen": "depression",
-    "Weitere Krankheiten": "further-complaints"
+    "Weitere Krankheiten": "../"
+    // "Weitere Krankheiten": "further-complaints"
   }
   
   return (

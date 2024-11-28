@@ -42,7 +42,8 @@ const Basket = () => {
   };
   
   const handleCheckout = () => {
-    setActiveTab('checkout');
+    setActiveTab('verificationForm');
+    // setActiveTab('checkout');
   }
 
   return (

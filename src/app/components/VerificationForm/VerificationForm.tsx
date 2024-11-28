@@ -6,8 +6,15 @@ import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import axios from "axios";
 import React, { useState } from "react";
 import Button from "../Button/Button";
+import { useApp } from "@/app/context/AppContext";
+import { useAuth } from "@/app/context/AuthContext";
+import { useTranslations } from "next-intl";
 
 const VerificationForm = () => {
+
+  const t = useTranslations("Validation");
+  const { setActiveTab } = useApp();
+  const { user } = useAuth(); 
   const [document, setDocument] = useState<File | null>(null);
   const [message, setMessage] = useState("");
 
@@ -26,17 +33,21 @@ const VerificationForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user?.birthdate) {
+      showErrorToast(t('addBirthdateBeforeVerify'));
+      setActiveTab('profile')
+      return;
+    }
     if (!document) {
-      setMessage("Please select or drag a document to upload.");
-      showErrorToast("Please select or drag a document to upload.");
+      showErrorToast(t('pleaseSelectOrDragDrop'));
       return;
     }
 
     try {
       await VerificationService.uploadDocument(document);
-      setMessage("Document uploaded successfully. Awaiting review.");
-      showInfoToast("Document uploaded successfully. Awaiting review.");
+      showInfoToast(t('uploadedSucessfulWaitForReview'));
       setDocument(null);
+      setActiveTab('checkout');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error?.response?.data?.message || "An unexpected error occurred.";

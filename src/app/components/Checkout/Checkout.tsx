@@ -2,13 +2,16 @@
 
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useBasket } from "@/app/context/BasketContext";
 import PaymentService from "@/app/services/paymentService";
 import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import axios from "axios";
 import Button from "../Button/Button";
+import { useTranslations } from "next-intl";
 
 const Checkout = () => {
+  const t = useTranslations("Checkout");
   const stripe = useStripe();
   const elements = useElements();
   const { basket } = useBasket();
@@ -18,17 +21,19 @@ const Checkout = () => {
   const calculateTotal = () => {
     return basket
       .reduce((total, item) => {
-        const itemPrice = parseFloat(item.flower.price.replace(/[^\d,]/g, "").replace(",", "."));
+        const itemPrice = parseFloat(
+          item.flower.price.replace(/[^\d,]/g, "").replace(",", ".")
+        );
         return total + itemPrice * item.quantity;
       }, 0)
       .toFixed(2);
   };
 
-  const handlePayment = async (e: React.FormEvent) => {
+  const handleStripePayment = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
-      showErrorToast("Stripe is not loaded yet.");
+      showErrorToast(t("stripeIsNotLoaded"));
       return;
     }
 
@@ -48,12 +53,13 @@ const Checkout = () => {
         showErrorToast(result.error.message || "Payment failed.");
         setMessage(result.error.message || "Payment failed.");
       } else if (result.paymentIntent?.status === "succeeded") {
-        showInfoToast("Payment successful!");
-        setMessage("Payment successful!");
+        showInfoToast(t("paymentSuccessful"));
+        setMessage(t("paymentSuccessful"));
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const errorMessage = error?.response?.data?.message || "An unexpected error occurred.";
+        const errorMessage =
+          error?.response?.data?.message || "An unexpected error occurred.";
         showErrorToast(errorMessage);
       }
     } finally {
@@ -61,10 +67,30 @@ const Checkout = () => {
     }
   };
 
+  const handlePayPalSuccess = async (orderId: string) => {
+    try {
+      await PaymentService.capturePayPalOrder(orderId);
+      showInfoToast(t("paymentSuccessful"));
+      setMessage(t("paymentSuccessful"));
+    } catch (error) {
+      showErrorToast("PayPal payment capture failed. Please try again.");
+      setMessage("PayPal payment failed.");
+    }
+  };
+
+  const handlePayPalError = () => {
+    showErrorToast("PayPal payment failed. Please try again.");
+    setMessage("PayPal payment failed.");
+  };
+  
   return (
     <div className="max-w-xl mx-auto mt-8 p-8 bg-white shadow-lg rounded-lg">
-      <h2 className="text-3xl font-bold text-center text-secondary mb-6">Checkout</h2>
-      <form onSubmit={handlePayment}>
+      <h2 className="text-3xl font-bold text-center text-secondary mb-6">
+        Checkout
+      </h2>
+
+      {/* Stripe Payment Form */}
+      <form onSubmit={handleStripePayment}>
         <div className="mb-6">
           <CardElement
             className="p-4 border border-gray-300 rounded-md shadow-sm"
@@ -97,9 +123,52 @@ const Checkout = () => {
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-green-600 hover:bg-green-700"
           }`}
-          label={isLoading ? "Processing..." : "Pay Now"}
+          label={isLoading ? "Processing..." : "Pay with Stripe"}
         />
       </form>
+
+      <PayPalScriptProvider
+        options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!, currency: "EUR" }}
+      >
+        <div className="mt-6">
+          <PayPalButtons
+            style={{ layout: "vertical" }}
+            createOrder={async (data, actions) => {
+              const amount = parseFloat(calculateTotal());
+              console.log("PayPal createOrder triggered with amount:", amount);
+
+              // Use `actions` as a fallback for testing
+              return await actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      currency_code: "EUR",
+                      value: amount.toString(),
+                    },
+                  },
+                ],
+                intent: "CAPTURE"
+              });
+            }}
+            onApprove={async (data, actions) => {
+              console.log("PayPal onApprove triggered:", data);
+
+              if (actions.order) {
+                const details = await actions.order.capture();
+                console.log("PayPal Order Captured Details:", details);
+                handlePayPalSuccess(data.orderID!);
+              }
+            }}
+            onError={(err) => {
+              console.error("PayPal onError:", err);
+              handlePayPalError();
+            }}
+            onInit={() => console.log("PayPal Buttons Initialized")}
+            onClick={() => console.log("PayPal Button Clicked")}
+          />
+        </div>
+      </PayPalScriptProvider>
+
       {message && (
         <p
           className={`mt-6 text-center text-sm ${
