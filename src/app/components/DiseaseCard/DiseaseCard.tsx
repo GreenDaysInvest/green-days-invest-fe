@@ -22,8 +22,8 @@ const DiseaseCard: FC<DiseaseCardProps> = ({ title}) => {
   }
   
   return (
-    <div className="bg-lightGreen rounded-2xl p-6 flex flex-col items-start">
-      <p className="text-xl sm:text-2xl md:text-3xl font-medium text-white text-left mb-6">{title}</p>
+    <div className="bg-lightGreen rounded-2xl p-6 flex flex-col justify-between items-start h-[190px]">
+      <p className="text-3xl font-medium text-white text-left mb-6">{title}</p>
       <Link href={`/disease/${diseases[title]}`}>
         <div className='flex items-center flex-start rounded-lg bg-white p-3 flex-shrink-0'>
           <p className='text-xs md:text-sm text-secondary font-medium'>{t('readMore')}</p>

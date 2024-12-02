@@ -67,9 +67,7 @@ const TextImage: React.FC<Props> = ({
         }`}
       >
         <motion.div
-          className={`lg:w-1/2 ${hasGap ? "pt-20" : ""} pt-20 lg:pt-0 ${
-            isReverse ? "ps-4 xl:ps-0" : ""
-          }`}
+          className={`lg:w-1/2 ${hasGap ? "pt-10 md:pt-20" : ""} pt-10 md:pt-20 lg:pt-0 `}
           variants={itemVariants}
         >
           {items?.map((key) => (
@@ -88,7 +86,7 @@ const TextImage: React.FC<Props> = ({
             alt="flower"
             width={500}
             height={500}
-            className="rounded-xl object-cover"
+            className="rounded-xl object-cover lg:w-[90%]"
           />
         </motion.div>
       </div>

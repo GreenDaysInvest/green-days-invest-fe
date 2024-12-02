@@ -61,7 +61,7 @@ const LoginModal: React.FC<Props> = () => {
 
     return (
         <Modal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}>
-            <div className="bg-white p-10 flex flex-col space-y-6">
+            <div className="bg-white p-0 sm:p-10 flex flex-col space-y-6">
                 <h2 className="text-4xl text-main text-center font-semibold mb-4">Login</h2>
 
                 <Formik

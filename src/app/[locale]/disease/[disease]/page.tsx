@@ -53,31 +53,37 @@ const Disease = () => {
       animate="show"
       variants={containerVariants}
     >
-      <div className="container mx-auto pt-0 pb-20 px-4 sm:px-0 md:px-8 lg:px-4">
-        <motion.h1
-          className="text-center text-secondary text-3xl md:text-4xl lg:text-5xl mt-14 mb-8 font-normal"
+      <motion.div
+        className="flex flex-col justify-between items-center mb-20 lg:mb-32 bg-secondary px-4"
+        variants={containerVariants}
+      >
+        <motion.p
+          className="text-tertiary text-3xl md:text-4xl lg:text-5xl text-center font-normal mt-20"
           variants={itemVariants}
         >
           {content.sections[0]?.title}
-        </motion.h1>
+        </motion.p>
         <motion.p
-          className="text-center text-sm md:text-base text-secondary mt-5 mb-20 w-3/4 lg:w-1/2 mx-auto"
+          className="text-white text-lg md:w-3/4 lg:w-2/4 mx-auto text-center mt-10 mb-20"
           variants={itemVariants}
         >
           {content.sections[0]?.subtitle}
         </motion.p>
+      </motion.div>
+      <div className="container mx-auto pt-0 pb-20 px-4 sm:px-0 md:px-8 lg:px-4">
+      
 
         {content.sections.slice(1).map((section, index) => (
           <motion.div
             key={index}
-            className={`flex flex-col flex-col-reverse mb-20 ${
+            className={`flex flex-col flex-col-reverse mb-10 lg:mb-20 ${
               index % 2 !== 0 ? "lg:flex-row-reverse" : "lg:flex-row"
             }`}
             variants={containerVariants}
           >
             <motion.div
-              className={`lg:w-1/2 pt-20 lg:pt-0 ${
-                index % 2 !== 0 ? "ps-4 xl:ps-0" : ""
+              className={`lg:w-1/2 pt-10 lg:pt-0 ${
+                index % 2 !== 0 ? "ps-0 lg:ps-4 xl:ps-0" : ""
               }`}
               variants={itemVariants}
             >

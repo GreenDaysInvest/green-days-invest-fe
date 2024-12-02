@@ -46,17 +46,40 @@ const Navbar: React.FC = () => {
       <nav className="bg-white px-4 py-8 relative">
         <div className="container mx-auto flex items-center justify-between md:px-8 lg:px-4">
           <Link href="/" onClick={closeMobileMenu}>
-            <Image className="cursor-pointer" src={'/logo.svg'} alt="logo" width={180} height={24} sizes="(max-width: 600px) 100vw, 180px" style={{ width: "100%", height: "auto" }} />
+            <Image
+              className="cursor-pointer"
+              src={'/logo.svg'}
+              alt="logo"
+              width={180}
+              height={24}
+              sizes="(max-width: 1024px) 160px, 180px"
+              style={{
+                width: "100%",
+                height: "auto",
+                maxWidth: "160px",
+              }}
+            />
           </Link>
-
-          <div className="hidden lg:flex items-center space-x-6 lg:space-x-10 ml-10">
-            <Link href="/"><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('home')}</p></Link>
-            <Link href="/how-it-works"><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('howItWorks')}</p></Link>
-            <Link href="/cannabis"><p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500">{t('cannabisAvailability')}</p></Link>
+          <div className="hidden lg:flex items-center lg:space-x-8 xl:space-x-10 mx-10">
+            <Link href="/">
+              <p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500 text-sm lg:text-base">
+                {t('home')}
+              </p>
+            </Link>
+            <Link href="/how-it-works">
+              <p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500 text-sm lg:text-base">
+                {t('howItWorks')}
+              </p>
+            </Link>
+            <Link href="/cannabis">
+              <p className="cursor-pointer text-secondary text-center font-normal hover:text-gray-500 text-sm lg:text-base">
+                {t('cannabisAvailability')}
+              </p>
+            </Link>
 
             <div className="relative" onMouseEnter={() => handleMouseEnter('diseases')} onMouseLeave={handleMouseLeave}>
               <Link href="">
-                <p className="cursor-pointer flex items-center space-x-1 text-secondary font-normal hover:text-gray-500">
+                <p className="cursor-pointer flex items-center space-x-1 text-secondary font-normal hover:text-gray-500 text-sm lg:text-base">
                   <span>{t('diseases')}</span>
                   <FaChevronDown className="text-sm" />
                 </p>
@@ -71,7 +94,9 @@ const Navbar: React.FC = () => {
                     {dropdownItems.map((item, _id) => (
                       <Link key={_id} href={`/disease/${item.href}`}>
                         <div className="flex items-center bg-white rounded-md p-4">
-                          <span className="flex items-center justify-center bg-main rounded-md w-[38px] h-[38px] mr-4">{item.icon}</span>
+                          <span className="flex items-center justify-center bg-main rounded-md w-[38px] h-[38px] mr-4">
+                            {item.icon}
+                          </span>
                           <p className="text-main font-medium">{item.text}</p>
                         </div>
                       </Link>
@@ -81,17 +106,22 @@ const Navbar: React.FC = () => {
               </div>
             </div>
 
-            <Link href="/blog"><p className="text-secondary font-normal hover:text-gray-500 cursor-pointer">{t('blog')}</p></Link>
+            <Link href="/blog">
+              <p className="text-secondary font-normal hover:text-gray-500 cursor-pointer text-sm lg:text-base">
+                {t('blog')}
+              </p>
+            </Link>
           </div>
 
-          <div className="flex items-center space-x-4">
+
+          <div className="flex items-center">
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden text-secondary flex items-center justify-center border border-secondary rounded-lg w-[35px] h-[35px]">
               {mobileMenuOpen ? <FaTimes /> : <FaBars />}
             </button>
             {!user ? (
-              <div className="hidden lg:flex space-x-4">
+              <div className="hidden lg:flex">
                 <Button label='Register' variant='secondary' onClick={() => { setIsRegisterModalOpen(true); closeMobileMenu(); }} />
-                <Button label='Login' variant='outline' onClick={() => { setIsLoginModalOpen(true); closeMobileMenu(); }} />
+                <Button className='ml-4' label='Login' variant='outline' onClick={() => { setIsLoginModalOpen(true); closeMobileMenu(); }} />
               </div>
             ) : (
               <Link href="/dashboard" className="hidden lg:flex" onClick={closeMobileMenu}>
@@ -142,7 +172,7 @@ const Navbar: React.FC = () => {
                 </div>
               ) : (
                 <Link href="/dashboard" onClick={closeMobileMenu}>
-                  <span className="rounded-full bg-main w-[35px] h-[35px] text-white flex justify-center items-center cursor-pointer mt-4">
+                  <span className="relative rounded-full bg-main w-[35px] h-[35px] text-white flex justify-center items-center cursor-pointer mt-4">
                     {basket.length > 0 && <span className='absolute top-[-5px] right-[-5px] rounded-full w-[20px] h-[20px] flex justify-center items-center bg-tertiary font-red text-sm'>{basket.length}</span>}
                     <p className="text-white font-medium capitalize">{user?.name?.charAt(0)}</p>
                   </span>

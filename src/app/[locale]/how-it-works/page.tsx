@@ -59,43 +59,42 @@ const HowItWorksPage = () => {
   return (
     <motion.div
       ref={ref}
-      className="pt-10 pb-20"
       initial="hidden"
       animate={isInView ? "show" : "hidden"}
       variants={containerVariants}
     >
-      <div className="container mx-auto px-4 sm:px-0 md:px-8 lg:px-4">
-        <motion.div
-          className="flex flex-col justify-between items-center mb-10"
-          variants={containerVariants}
+      <motion.div
+        className="flex flex-col justify-between items-center mb-10 bg-secondary px-4"
+        variants={containerVariants}
+      >
+        <motion.p
+          className="text-tertiary text-3xl md:text-4xl lg:text-5xl text-center font-normal mt-20"
+          variants={itemVariants}
         >
-          <motion.p
-            className="text-lightGreen text-3xl md:text-4xl lg:text-5xl text-center font-medium mt-10"
-            variants={itemVariants}
-          >
-            {t("title")}
-          </motion.p>
-          <motion.p
-            className="text-secondary text-lg md:w-3/4 lg:w-2/4 mx-auto text-center mt-10 mb-20"
-            variants={itemVariants}
-          >
-            <strong>{t("strongSubTitle")}</strong> {t("subtitle")}
-          </motion.p>
-        </motion.div>
+          {t("title")}
+        </motion.p>
+        <motion.p
+          className="text-white text-lg md:w-3/4 lg:w-2/4 mx-auto text-center mt-10 mb-20"
+          variants={itemVariants}
+        >
+          <strong>{t("strongSubTitle")}</strong> {t("subtitle")}
+        </motion.p>
+      </motion.div>
+      <div className="container mx-auto px-4 sm:px-0 md:px-8 lg:px-4">
 
-        <div className="relative max-w-4xl mx-auto mt-12">
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-px bg-main h-full z-0"></div>
+        <div className="relative max-w-4xl mx-auto my-20">
+          <div className="absolute top-0 sm:left-1/2 left-8 transform sm:-translate-x-1/2 w-px bg-main h-full z-0"></div>
           {steps.map((step, index) => (
             <motion.div
               key={index}
-              className={`flex items-start mb-16 w-1/2 overflow-hidden ${
+              className={`flex items-start mb-16 w-full sm:w-1/2 overflow-hidden ${
                 index % 2 === 0
-                  ? "flex-row ms-8"
-                  : "flex-row-reverse justify-self-end me-8"
+                  ? "flex-row-reverse sm:flex-row ms-0 sm:ms-8"
+                  : "flex-row-reverse justify-self-end me-0 sm:me-8"
               }`}
               variants={itemVariants}
             >
-              <div className="ml-2 w-full">
+              <div className="ml-0 sm:ml-2 w-full">
                 <h3 className="text-xl font-semibold text-main mb-4">
                   {step.title}
                 </h3>

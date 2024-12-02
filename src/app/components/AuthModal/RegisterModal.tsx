@@ -90,7 +90,7 @@ const RegisterModal: React.FC<Props> = () => {
 
     return (
         <Modal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)}>
-            <div className="bg-white p-10 flex flex-col space-y-4">
+            <div className="bg-white p-0 sm:p-10 flex flex-col space-y-4">
                 <h2 className="text-4xl text-main text-center font-semibold mb-4">Register</h2>
 
                 <Formik

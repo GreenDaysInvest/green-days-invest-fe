@@ -44,7 +44,7 @@ const DiscoverBannerSection: React.FC<Props> = ({
 
   return (
     <motion.div
-      className="container mx-auto pt-5 pb-10 md:pb-20 px-4 sm:px-0 md:px-8 lg:px-4"
+      className="container mx-auto pt-5 pb-10 xl:pb-20 px-4 sm:px-0 md:px-8 lg:px-4"
       ref={ref}
       initial="hidden"
       animate={isInView ? "show" : "hidden"}
@@ -68,15 +68,15 @@ const DiscoverBannerSection: React.FC<Props> = ({
       >
         <div className="flex flex-col md:flex-row p-10 lg:p-20 xl:p-32 md:space-x-10 xl:space-x-20">
           <motion.div
-            className="w-[180px] h-[180px] md:w-[230px] md:h-[230px] lg:w-[290px] lg:h-[290px] mb-0 md:mb-[-10px]"
+            className="w-full max-w-full sm:max-w-[290px] h-auto md:max-w-[230px] lg:max-w-[290px]"
             variants={itemVariants}
           >
             <Image
-                src={image}
-                alt={`${image}-flower`}
-                width={336}
-                height={350}
-                className="w-[180px] h-[180px] md:w-[230px] md:h-[230px] lg:w-[290px] lg:h-[290px] mb-0 md:mb-[-10px]"
+              src={image}
+              alt={`${image}-flower`}
+              width={336}
+              height={350}
+              className="w-full h-auto"
             />
           </motion.div>
           <motion.div className="flex flex-col mt-10 md:mt-0" variants={itemVariants}>

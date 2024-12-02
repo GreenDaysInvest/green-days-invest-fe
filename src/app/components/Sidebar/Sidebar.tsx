@@ -29,18 +29,16 @@ const Sidebar: React.FC<SidebarProps> = ({  onClose }) => {
   };
   return (
     <div className="w-64 bg-tertiary h-screen p-4 flex flex-col justify-between relative">
-   
-
       <div>
         <div className="flex justify-between">
-          <Link href="/" onClick={onClose}>
+          <Link href="/">
             <button className='w-full cursor-pointer flex items-center py-3'>
               <IoIosArrowBack className='text-secondary me-2' />
               <p className="text-secondary">{t('back')}</p>
             </button>
           </Link>
           <button
-            className="md:hidden text-secondary px-3"
+            className="lg:hidden text-secondary px-3"
             onClick={onClose}
           >
             <AiOutlineClose size={24} />

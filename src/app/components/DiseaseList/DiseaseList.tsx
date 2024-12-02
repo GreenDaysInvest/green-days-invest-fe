@@ -32,9 +32,9 @@ const DiseaseList = () => {
       animate={isInView ? "show" : "hidden"}
       variants={containerVariants}
     >
-      <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
+      <div className="container mx-auto py-10 xl:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
         <motion.h2
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-tertiary text-center mb-10 w-full md:w-2/4 mx-auto lg:mb-20"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-tertiary text-center mt-5 mb-10 w-full md:w-3/4 mx-auto lg:mb-20"
           variants={itemVariants}
         >
           {t("Disease.title")}

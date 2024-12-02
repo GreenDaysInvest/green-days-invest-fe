@@ -7,7 +7,7 @@ import { Loader } from "../Loader/Loader";
 import Button from "../Button/Button";
 import { useRouter } from "@/i18n/routing";
 import { motion, useInView } from "framer-motion";
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const CanabisTypes = () => {
   const t = useTranslations("HomePage");
@@ -16,6 +16,34 @@ const CanabisTypes = () => {
 
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  const [itemsToShow, setItemsToShow] = useState(3);
+
+  // Handle screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      if (width >= 1280) {
+        // Large screens
+        setItemsToShow(3);
+      } else if (width >= 768 && width < 1280) {
+        // Medium screens
+        setItemsToShow(2);
+      } else {
+        // Small screens
+        setItemsToShow(3);
+      }
+    };
+
+    // Initial check
+    handleResize();
+
+    // Event listener for resize
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -35,21 +63,18 @@ const CanabisTypes = () => {
       animate={isInView ? "show" : "hidden"}
       variants={containerVariants}
     >
-      <div className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
+      <div className="container mx-auto pt-10 pb-16 xl:py-20 px-4 sm:px-0 md:px-8 lg:px-4">
         {loader ? (
           <motion.div variants={itemVariants}>
             <Loader isWhite />
           </motion.div>
         ) : (
-          <motion.div
-            className="flex flex-col items-center justify-center"
-            variants={containerVariants}
-          >
+          <motion.div variants={containerVariants}>
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-14"
+              className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-14`}
               variants={containerVariants}
             >
-              {scraperData.slice(0, 3).map((item, index) => (
+              {scraperData.slice(0, itemsToShow).map((item, index) => (
                 <motion.div key={index} variants={itemVariants}>
                   <CanabisCard item={item} isBorder />
                 </motion.div>
@@ -60,6 +85,7 @@ const CanabisTypes = () => {
                 variant="tertiary"
                 label={t("more")}
                 onClick={() => router.push("/cannabis")}
+                className="mx-auto"
               />
             </motion.div>
           </motion.div>

@@ -1,8 +1,6 @@
-"use client";
-
 import { useTranslations } from "next-intl";
 import TestimonialCard from "../TestimonialCard/TestimonialCard";
-import { FC, useRef } from "react";
+import { FC, useRef, useEffect, useState } from "react";
 import { Testimonial } from "@/app/types/Testimonial.type";
 import Slider from "react-slick";
 import { motion, useInView } from "framer-motion";
@@ -16,6 +14,7 @@ const Testimonials: FC<Props> = ({ items }) => {
 
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [maxHeight, setMaxHeight] = useState<number>(250); // Default to 250 for mobile
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -46,9 +45,29 @@ const Testimonials: FC<Props> = ({ items }) => {
     ],
   };
 
+  useEffect(() => {
+    const updateMaxHeight = () => {
+      if (window.innerWidth <= 550) {
+        setMaxHeight(300);
+      } else {
+        const cardHeights = Array.from(
+          document.querySelectorAll(".testimonial-card")
+        ).map((card) => (card as HTMLElement).offsetHeight);
+        setMaxHeight(Math.max(...cardHeights));
+      }
+    };
+
+    updateMaxHeight();
+    window.addEventListener("resize", updateMaxHeight); 
+
+    return () => {
+      window.removeEventListener("resize", updateMaxHeight); 
+    };
+  }, [items]);
+
   return (
     <motion.div
-      className="container mx-auto py-10 md:py-20 px-4 sm:px-0 md:px-8 lg:px-4"
+      className="container mx-auto py-10 xl:py-20 px-4 sm:px-0 md:px-8 lg:px-4"
       ref={ref}
       initial="hidden"
       animate={isInView ? "show" : "hidden"}
@@ -60,10 +79,7 @@ const Testimonials: FC<Props> = ({ items }) => {
       >
         {t("Testimonials.title")}
       </motion.p>
-      <motion.div
-        className="-mx-2"
-        variants={itemVariants}
-      >
+      <motion.div className="-mx-2" variants={itemVariants}>
         <Slider {...settings} className="custom-slider">
           {items.map((item, index) => (
             <motion.div key={index} className="px-2" variants={itemVariants}>
@@ -71,6 +87,7 @@ const Testimonials: FC<Props> = ({ items }) => {
                 rating={item.rating}
                 description={item.description}
                 client={item.client}
+                maxHeight={maxHeight}
               />
             </motion.div>
           ))}

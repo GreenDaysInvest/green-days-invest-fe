@@ -51,14 +51,14 @@ export default function Home() {
         subTitle={t('DiscoverSection.Bottom.subtitle')}
         image='/flower.png'
         items={['first', 'second', 'third']}
-        className='py-10 md:py-20'
+        className='py-10 xl:py-20'
         hasGap
         />
       <TextImage 
         image='/flower.png'
         isReverse
         items={['fourth', 'fifth', 'sixth']}
-        className='pb-10 md:pb-20'
+        className='pb-10 xl:pb-20'
         />
       <DiseaseList />
       <CanabisTypes />
