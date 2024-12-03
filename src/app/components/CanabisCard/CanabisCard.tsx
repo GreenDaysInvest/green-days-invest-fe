@@ -68,8 +68,8 @@ const CanabisCard: React.FC<Props> = ({ item, isBorder }) => {
           <p className="text-secondary mb-4 md:mb-8">{item.genetic}</p>
         </div>
         <div className="flex justify-between items-center">
-          <p className="text-lightGreen text-xl lg:text-2xl">
-            ab <span className="text-secondary text-lg lg:text-3xl">{item.price}</span> gr
+          <p className="text-lightGreen text-lg lg:text-xl">
+            ab <span className="text-secondary text-lg lg:text-2xl">{item.price}</span> gr
           </p>
           <div className="flex items-center">
             {((user && !user?.isAdmin) && user.questionnaires && user.questionnaires?.length > 0 && user?.questionnaires[user.questionnaires.length - 1]?.status === "accepted")  && (
