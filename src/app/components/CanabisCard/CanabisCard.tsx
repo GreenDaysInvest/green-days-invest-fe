@@ -21,7 +21,7 @@ const CanabisCard: React.FC<Props> = ({ item, isBorder }) => {
   const t = useTranslations("Dashboard");
 
   const handleAddToBasket = () => {
-    const exists = basket.some((basketItem) => basketItem.id === item.id);
+    const exists = basket?.some((basketItem) => basketItem.id === item.id);
 
     if (exists) {
       showInfoToast(t("itemExistsInBasket"));

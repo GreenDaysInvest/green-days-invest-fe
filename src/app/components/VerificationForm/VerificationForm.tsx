@@ -4,24 +4,51 @@ import { useDropzone } from "react-dropzone";
 import VerificationService from "@/app/services/verificationService";
 import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Button from "../Button/Button";
 import { useApp } from "@/app/context/AppContext";
 import { useAuth } from "@/app/context/AuthContext";
 import { useTranslations } from "next-intl";
 
 const VerificationForm = () => {
-
   const t = useTranslations("Validation");
   const { setActiveTab } = useApp();
-  const { user } = useAuth(); 
+  const { user, updateUser } = useAuth();
   const [document, setDocument] = useState<File | null>(null);
-  const [message, setMessage] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+
+  const checkVerificationStatus = useCallback(async () => {
+    try {
+      const { isVerified } = await VerificationService.getVerificationStatus();
+      if (isVerified) {
+        await updateUser();
+        showInfoToast(t('verificationSuccessful'));
+        setIsVerifying(false);
+        setActiveTab('checkout');
+      }
+    } catch (error) {
+      console.error('Error checking verification status:', error);
+    }
+  }, [updateUser, setActiveTab, t]);
+
+  useEffect(() => {
+    let intervalId: number;
+    
+    if (isVerifying) {
+      intervalId = window.setInterval(checkVerificationStatus, 5000);
+    }
+
+    return () => {
+      if (intervalId) {
+        window.clearInterval(intervalId);
+      }
+    };
+  }, [isVerifying, checkVerificationStatus]);
 
   const onDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       setDocument(acceptedFiles[0]);
-      setMessage("");
     }
   };
 
@@ -35,7 +62,7 @@ const VerificationForm = () => {
     e.preventDefault();
     if (!user?.birthdate) {
       showErrorToast(t('addBirthdateBeforeVerify'));
-      setActiveTab('profile')
+      setActiveTab('profile');
       return;
     }
     if (!document) {
@@ -44,15 +71,24 @@ const VerificationForm = () => {
     }
 
     try {
-      await VerificationService.uploadDocument(document);
-      showInfoToast(t('uploadedSucessfulWaitForReview'));
+      setIsUploading(true);
+      const response = await VerificationService.uploadDocument(document);
+      
+      // Open Stripe verification URL in a new tab
+      if (response.verificationUrl) {
+        window.open(response.verificationUrl, '_blank');
+        setIsVerifying(true);
+      }
+      
+      showInfoToast(t('documentUploadedPleaseWait'));
       setDocument(null);
-      setActiveTab('checkout');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error?.response?.data?.message || "An unexpected error occurred.";
         showErrorToast(errorMessage);
       }
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -77,9 +113,17 @@ const VerificationForm = () => {
             <p className="text-secondary">Drag and drop a file here, or click to select one.</p>
           )}
         </div>
-        <Button type="submit" label="Upload" />
+        <Button 
+          type="submit" 
+          label={isUploading ? "Uploading..." : "Upload"} 
+          disabled={isUploading || !document}
+        />
       </form>
-      {message && <p className="mt-4 text-center text-sm text-gray-600">{message}</p>}
+      {isVerifying && (
+        <div className="mt-4 text-center">
+          <p className="text-secondary mb-2">Please complete the verification process in the new tab. Once completed, you will be automatically redirected.</p>
+        </div>
+      )}
     </div>
   );
 };

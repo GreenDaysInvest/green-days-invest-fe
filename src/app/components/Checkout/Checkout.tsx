@@ -9,25 +9,48 @@ import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import axios from "axios";
 import Button from "../Button/Button";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/app/context/AuthContext";
+import { useApp } from "@/app/context/AppContext";
+
+const capturePayPalOrder = async (orderId: string) => {
+  try {
+    // Fetch the token from the backend
+    const accessToken = await PaymentService.generatePayPalToken();
+
+    const response = await fetch(`https://api.sandbox.paypal.com/v2/checkout/orders/${orderId}/capture`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error capturing PayPal order:", errorData);
+      throw new Error("Failed to capture PayPal order");
+    }
+
+    const data = await response.json();
+    console.log("PayPal Order Capture Response:", data);
+
+    return data;
+  } catch (error) {
+    console.error("Error during PayPal order capture:", error);
+    throw new Error("Failed to capture PayPal order");
+  }
+};
+
 
 const Checkout = () => {
+
   const t = useTranslations("Checkout");
   const stripe = useStripe();
   const elements = useElements();
-  const { basket } = useBasket();
-  const [message, setMessage] = useState("");
+  const { setActiveTab } = useApp();
+  const { user } = useAuth();
+  const { pricePerService, setBasket, clearBasket } = useBasket();
   const [isLoading, setIsLoading] = useState(false);
-
-  const calculateTotal = () => {
-    return basket
-      .reduce((total, item) => {
-        const itemPrice = parseFloat(
-          item.flower.price.replace(/[^\d,]/g, "").replace(",", ".")
-        );
-        return total + itemPrice * item.quantity;
-      }, 0)
-      .toFixed(2);
-  };
 
   const handleStripePayment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,8 +63,8 @@ const Checkout = () => {
     setIsLoading(true);
 
     try {
-      const amount = parseFloat(calculateTotal());
-      const clientSecret = await PaymentService.createPaymentIntent(amount);
+      const amount = parseFloat(pricePerService);
+      const clientSecret = await PaymentService.createPaymentIntent(String(user?.id), amount);
 
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -51,10 +74,10 @@ const Checkout = () => {
 
       if (result.error) {
         showErrorToast(result.error.message || "Payment failed.");
-        setMessage(result.error.message || "Payment failed.");
       } else if (result.paymentIntent?.status === "succeeded") {
         showInfoToast(t("paymentSuccessful"));
-        setMessage(t("paymentSuccessful"));
+        clearBasket()
+        setActiveTab('basket')
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -69,18 +92,17 @@ const Checkout = () => {
 
   const handlePayPalSuccess = async (orderId: string) => {
     try {
-      await PaymentService.capturePayPalOrder(orderId);
+      capturePayPalOrder(orderId);
       showInfoToast(t("paymentSuccessful"));
-      setMessage(t("paymentSuccessful"));
+      clearBasket()
+      setActiveTab('basket')
     } catch (error) {
       showErrorToast("PayPal payment capture failed. Please try again.");
-      setMessage("PayPal payment failed.");
     }
   };
 
   const handlePayPalError = () => {
     showErrorToast("PayPal payment failed. Please try again.");
-    setMessage("PayPal payment failed.");
   };
   
   return (
@@ -112,7 +134,7 @@ const Checkout = () => {
         </div>
         <div className="text-right mb-4">
           <p className="text-lg font-medium text-gray-700">
-            Total: <span className="font-bold">{calculateTotal()}€</span>
+            {t("total")}: <span className="font-bold">{pricePerService}€</span>
           </p>
         </div>
         <Button
@@ -131,10 +153,29 @@ const Checkout = () => {
         options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!, currency: "EUR" }}
       >
         <div className="mt-6">
+
           <PayPalButtons
             style={{ layout: "vertical" }}
+            // createOrder={async (data, actions) => {
+            //   const amount = parseFloat(pricePerService);
+            //   console.log("PayPal createOrder triggered with amount:", amount);
+            
+            //   try {
+            //     // Call your backend to create the PayPal order
+            //     const orderId = await PaymentService.createPayPalOrder(String(user?.id), amount);
+            
+            //     if (!orderId) {
+            //       throw new Error("Failed to create PayPal order");
+            //     }
+            
+            //     return orderId; // Ensure it's a valid string
+            //   } catch (error) {
+            //     console.error("Error creating PayPal order:", error);
+            //     throw new Error("Error creating PayPal order"); // Ensure an error is thrown if something goes wrong
+            //   }
+            // }}
             createOrder={async (data, actions) => {
-              const amount = parseFloat(calculateTotal());
+              const amount = parseFloat(pricePerService);
               console.log("PayPal createOrder triggered with amount:", amount);
 
               // Use `actions` as a fallback for testing
@@ -168,16 +209,6 @@ const Checkout = () => {
           />
         </div>
       </PayPalScriptProvider>
-
-      {message && (
-        <p
-          className={`mt-6 text-center text-sm ${
-            message.includes("successful") ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          {message}
-        </p>
-      )}
     </div>
   );
 };

@@ -8,21 +8,14 @@ import { MdDeleteForever } from "react-icons/md";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Button from "../Button/Button";
 import { useApp } from "@/app/context/AppContext";
+import { useAuth } from "@/app/context/AuthContext";
 
 const Basket = () => {
 
+  const { user } = useAuth();
   const { setActiveTab } = useApp();
-  const { basket, removeFromBasket, updateItemQuantity } = useBasket();
+  const { pricePerService, basket, removeFromBasket, updateItemQuantity } = useBasket();
   const t = useTranslations('Dashboard');
-
-  const calculateTotal = () => {
-    return basket
-      .reduce((total, item) => {
-        const itemPrice = parseFloat(item.flower.price.replace(/[^\d,]/g, '').replace(',', '.'));
-        return total + itemPrice * item.quantity;
-      }, 0)
-      .toFixed(2);
-  };
 
   const handleIncrement = (item: any) => {
     updateItemQuantity(item.flower.id, 1);
@@ -42,8 +35,12 @@ const Basket = () => {
   };
   
   const handleCheckout = () => {
-    setActiveTab('verificationForm');
-    // setActiveTab('checkout');
+    console.log(user);
+    if (user?.isVerified) {
+      setActiveTab('checkout');
+    } else {
+      setActiveTab('verificationForm');
+    }
   }
 
   return (
@@ -97,7 +94,7 @@ const Basket = () => {
           </div>
 
           <div className="mt-8 pt-4 border-t border-secondary text-right flex flex-col items-end space-y-4">
-            <h3 className="text-xl font-semibold text-secondary">{t("total")}: {calculateTotal()}€</h3>
+            <h3 className="text-xl font-semibold text-secondary">{t("total")}: {pricePerService}€</h3>
             <Button className="px-6 w-full sm:w-auto" label={t("proceedToCheckout")} variant="secondary" onClick={handleCheckout}/>
           </div>
         </>

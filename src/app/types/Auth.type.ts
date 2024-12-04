@@ -14,9 +14,8 @@ export interface User {
     zip?: string;
     isAdmin?: boolean;
     questionnaires?: Questionnaire[]
-    verificationStatus?: string;
-    verificationDocumentUrl?: string;
-    verificationDate?: string;
+    isVerified?: boolean;
+    verifiedAt?: string;
     stripeCustomerId?: string;
 }
 
@@ -24,10 +23,10 @@ export interface AuthContextType {
     user: User | null;
     loading: boolean;
     setUser: (user: User | null) => void;
+    updateUser: () => Promise<User | null>;
 }
   
 export interface LoginData {
     email: string;
     password: string;
 }
-  

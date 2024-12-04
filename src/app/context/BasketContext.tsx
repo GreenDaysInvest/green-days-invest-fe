@@ -11,6 +11,8 @@ import BasketService from "../services/basketServices";
 const BasketContext = createContext<BasketContextType | null>(null);
 
 export const BasketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+
+  const pricePerService = '20.02';
   const [basket, setBasket] = useState<Basket[]>([]);
   const t = useTranslations("Dashboard");
   const { user } = useAuth();
@@ -91,8 +93,27 @@ export const BasketProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
+  const clearBasket = async () => {
+    if (!user || !user.id) {
+      console.error("User not logged in");
+      return;
+    }
+  
+    try {
+      await BasketService.clearBasket(user.id);
+      setBasket([]);
+    } catch (error: any) {
+      if (error?.response?.data?.message) {
+        showErrorToast(error.response.data.message);
+      } else {
+        showErrorToast(error.message || "An unexpected error occurred.");
+      }
+      console.error("Failed to clear basket:", error);
+    }
+  };
+
   return (
-    <BasketContext.Provider value={{ basket, addToBasket, removeFromBasket, updateItemQuantity }}>
+    <BasketContext.Provider value={{ pricePerService, basket, setBasket, addToBasket, removeFromBasket, updateItemQuantity, clearBasket }}>
       {children}
     </BasketContext.Provider>
   );

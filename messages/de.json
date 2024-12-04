@@ -180,7 +180,8 @@
   },
   "Checkout": {
     "stipeIsNotLoaded": "Stripe ist noch nicht geladen.",
-    "paymentSuccessful": "Zahlung erfolgreich!"
+    "paymentSuccessful": "Zahlung erfolgreich!",
+    "total": "Gesamt"
   },
   "Validation": {
     "addBirthdateBeforeVerify": "Bitte fügen Sie Ihr Geburtsdatum in Ihrem Profil hinzu, bevor Sie sich verifizieren!",

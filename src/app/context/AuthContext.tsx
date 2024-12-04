@@ -9,25 +9,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchSessionUser = async () => {
-            try {
-                // Check if user data exists in backend or local session
-                const sessionUser = await AuthService.getUserFromSession();
-                setUser(sessionUser || null);
-            } catch (error) {
-                console.error("Error fetching session user:", error);
-                setUser(null);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchSessionUser = async () => {
+        try {
+            const sessionUser = await AuthService.getUserFromSession();
+            setUser(sessionUser || null);
+            return sessionUser;
+        } catch (error) {
+            console.error("Error fetching session user:", error);
+            setUser(null);
+            return null;
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchSessionUser();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, loading, setUser }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            loading, 
+            setUser,
+            updateUser: fetchSessionUser // Expose the refresh function
+        }}>
             {children}
         </AuthContext.Provider>
     );

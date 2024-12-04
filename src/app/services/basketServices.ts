@@ -65,6 +65,23 @@ const BasketService = {
       throw error;
     }
   },
+
+
+  clearBasket: async (userId: string): Promise<Basket[]> => {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error("Token not found");
+    try {
+      const response = await axiosInstance.delete(`/basket/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to clear basket:", error);
+      throw error;
+    }
+  },
 };
 
 export default BasketService;

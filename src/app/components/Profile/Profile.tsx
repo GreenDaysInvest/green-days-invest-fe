@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
       <h2 className="text-3xl font-semibold text-center text-secondary mb-10">{tDashboard('Sidebar.profile')}</h2>
       <div className="flex items-center mb-4">
         <p className='text-secondary text-xl mr-4'>Verification Status:</p>
-        {user?.verificationStatus === 'PENDING'  ? <GoUnverified className='text-secondary text-3xl' /> : <GoVerified className='text-secondary text-3xl' />}
+        {!user?.isVerified ? <GoUnverified className='text-secondary text-3xl' /> : <GoVerified className='text-secondary text-3xl' />}
       </div>
       <Formik
         initialValues={initialValues}
