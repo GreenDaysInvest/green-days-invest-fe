@@ -7,9 +7,6 @@
   --foreground: #171717;
 }
 
-* {
-  font-family: '__Poppins_e16692', '__Poppins_Fallback_e16692';
-}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -17,7 +14,9 @@
     --foreground: #ededed;
   }
 }
-
+body {
+  font-family: 'Popins', sans-serif;
+}
 body {
   color: var(--foreground);
   background: var(--background);
