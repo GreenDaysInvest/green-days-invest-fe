@@ -25,12 +25,13 @@ export const BasketProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         const basketData = await BasketService.fetchBasket(user.id);
         setBasket(basketData);
       } catch (error: any) {
-        if (error?.response?.data?.message) {
-          showErrorToast(error.response.data.message);
-        } else {
-          showErrorToast(error.message || "An unexpected error occurred.");
+        // Only show error toast for unexpected errors, not for "no basket" case
+        if (error?.response?.status !== 404) {  // Assuming 404 is returned when no basket exists
+          showErrorToast(error?.response?.data?.message || "An unexpected error occurred.");
+          console.error("Failed to fetch basket:", error);
         }
-        console.error("Failed to fetch basket:", error);
+        // Initialize with empty basket for new users
+        setBasket([]);
       }
     };
 
