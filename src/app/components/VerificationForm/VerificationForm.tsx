@@ -1,42 +1,62 @@
 "use client";
 
-import { useDropzone } from "react-dropzone";
-import VerificationService from "@/app/services/verificationService";
-import { showErrorToast, showInfoToast } from "@/app/utils/toast";
-import axios from "axios";
 import React, { useState, useEffect, useCallback } from "react";
 import Button from "../Button/Button";
 import { useApp } from "@/app/context/AppContext";
 import { useAuth } from "@/app/context/AuthContext";
 import { useTranslations } from "next-intl";
+import { showErrorToast, showInfoToast } from "@/app/utils/toast";
+import VerificationService from "@/app/services/verificationService";
+import { loadStripe } from "@stripe/stripe-js";
+import { Loader } from "../Loader/Loader";
 
 const VerificationForm = () => {
   const t = useTranslations("Validation");
   const { setActiveTab } = useApp();
   const { user, updateUser } = useAuth();
-  const [document, setDocument] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationError, setVerificationError] = useState<string | null>(null);
+  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkVerificationStatus = useCallback(async () => {
     try {
-      const { isVerified } = await VerificationService.getVerificationStatus();
+      const { isVerified, error } = await VerificationService.getVerificationStatus();
+      
+      if (error && error !== 'Verification is still processing') {
+        showErrorToast(error);
+        setVerificationError(error);
+        setIsVerifying(false);
+        setIsCheckingStatus(false);
+        setIsLoading(false);
+        return;
+      }
+      
       if (isVerified) {
         await updateUser();
         showInfoToast(t('verificationSuccessful'));
         setIsVerifying(false);
+        setIsCheckingStatus(false);
+        setIsLoading(false);
         setActiveTab('checkout');
       }
     } catch (error) {
       console.error('Error checking verification status:', error);
+      showErrorToast(t('verificationError'));
+      setIsVerifying(false);
+      setIsCheckingStatus(false);
+      setIsLoading(false);
     }
   }, [updateUser, setActiveTab, t]);
 
   useEffect(() => {
     let intervalId: number;
     
-    if (isVerifying) {
-      intervalId = window.setInterval(checkVerificationStatus, 5000);
+    if (isCheckingStatus) {
+      // Start checking after a delay to allow the verification process to begin
+      setTimeout(() => {
+        intervalId = window.setInterval(checkVerificationStatus, 5000);
+      }, 5000);
     }
 
     return () => {
@@ -44,85 +64,63 @@ const VerificationForm = () => {
         window.clearInterval(intervalId);
       }
     };
-  }, [isVerifying, checkVerificationStatus]);
+  }, [isCheckingStatus, checkVerificationStatus]);
 
-  const onDrop = (acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      setDocument(acceptedFiles[0]);
-    }
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { "application/pdf": [".pdf"], "image/*": [".png", ".jpg", ".jpeg"] },
-    multiple: false,
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user?.birthdate) {
-      showErrorToast(t('addBirthdateBeforeVerify'));
-      setActiveTab('profile');
-      return;
-    }
-    if (!document) {
-      showErrorToast(t('pleaseSelectOrDragDrop'));
-      return;
-    }
-
+  const startVerification = async () => {
     try {
-      setIsUploading(true);
-      const response = await VerificationService.uploadDocument(document);
+      setIsVerifying(true);
+      setVerificationError(null);
+      setIsLoading(true);
       
-      // Open Stripe verification URL in a new tab
-      if (response.verificationUrl) {
-        window.open(response.verificationUrl, '_blank');
-        setIsVerifying(true);
+      const { clientSecret, url } = await VerificationService.createVerificationSession();
+      
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+      if (!stripe) {
+        throw new Error('Stripe failed to load');
       }
+
+      setIsLoading(false);
+      const { error } = await stripe.verifyIdentity(clientSecret);
       
-      showInfoToast(t('documentUploadedPleaseWait'));
-      setDocument(null);
+      if (error) {
+        if (error.type === 'validation_error') {
+          showErrorToast(t('verificationCanceled'));
+        } else {
+          showErrorToast(error.message || t('verificationError'));
+        }
+        setIsVerifying(false);
+      } else {
+        // Only start checking status after the verification modal is shown
+        setIsCheckingStatus(true);
+      }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error?.response?.data?.message || "An unexpected error occurred.";
-        showErrorToast(errorMessage);
-      }
-    } finally {
-      setIsUploading(false);
+      console.error('Error starting verification:', error);
+      showErrorToast(t('verificationError'));
+      setIsVerifying(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
-      <h2 className="text-3xl font-semibold text-center text-secondary mb-10">
-        Upload Verification Document
-      </h2>
-      <form onSubmit={handleSubmit}>
-        <div
-          {...getRootProps()}
-          className={`border-2 border-dashed rounded-md p-6 mb-4 ${
-            isDragActive ? "border-green-500 bg-green-50" : "border-gray-300 bg-gray-100"
-          } cursor-pointer text-center`}
-        >
-          <input {...getInputProps()} />
-          {document ? (
-            <p className="text-secondary">Selected file: {document.name}</p>
-          ) : isDragActive ? (
-            <p className="text-secondary">Drop the file here...</p>
-          ) : (
-            <p className="text-secondary">Drag and drop a file here, or click to select one.</p>
-          )}
-        </div>
-        <Button 
-          type="submit" 
-          label={isUploading ? "Uploading..." : "Upload"} 
-          disabled={isUploading || !document}
+    <div className="flex flex-col items-center justify-center p-6 bg">
+      <h2 className="text-2xl text-secondary font-bold mb-6">{t('verifyIdentity')}</h2>
+      
+      <div className="text-center mb-6">
+        <p className="text-gray-600 mb-4">{t('verificationDescription')}</p>
+        {verificationError && (
+          <p className="text-red-500 mb-4">{verificationError}</p>
+        )}
+      </div>
+
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Button
+          onClick={startVerification}
+          disabled={isVerifying}
+          className="w-full max-w-md"
+          label={isVerifying ? t('verifying') : t('startVerification')}
         />
-      </form>
-      {isVerifying && (
-        <div className="mt-4 text-center">
-          <p className="text-secondary mb-2">Please complete the verification process in the new tab. Once completed, you will be automatically redirected.</p>
-        </div>
       )}
     </div>
   );
