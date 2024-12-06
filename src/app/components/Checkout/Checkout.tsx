@@ -97,18 +97,18 @@ const Checkout = () => {
       clearBasket()
       setActiveTab('basket')
     } catch (error) {
-      showErrorToast("PayPal payment capture failed. Please try again.");
+      showErrorToast(t("paypalCaptureFailed"));
     }
   };
 
   const handlePayPalError = () => {
-    showErrorToast("PayPal payment failed. Please try again.");
+    showErrorToast(t("paypalPaymentFailed"));
   };
   
   return (
     <div className="max-w-xl mx-auto mt-8 p-8 bg-white shadow-lg rounded-lg">
       <h2 className="text-3xl font-bold text-center text-secondary mb-6">
-        Checkout
+        {t("title")}
       </h2>
 
       {/* Stripe Payment Form */}
@@ -145,7 +145,7 @@ const Checkout = () => {
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-green-600 hover:bg-green-700"
           }`}
-          label={isLoading ? "Processing..." : "Pay with Stripe"}
+          label={isLoading ? t("processing") : t("payWithStripe")}
         />
       </form>
 

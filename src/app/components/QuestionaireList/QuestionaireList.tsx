@@ -6,6 +6,7 @@ import { Questionnaire } from "@/app/types/Questionnaire.type";
 import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
 import { showErrorToast, showInfoToast } from "@/app/utils/toast";
+import { Loader } from "../Loader/Loader";
 
 const QuestionnaireList: React.FC = () => {
   const t = useTranslations('Dashboard');
@@ -16,6 +17,7 @@ const QuestionnaireList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const pageSize = 10;
   
@@ -65,23 +67,31 @@ const QuestionnaireList: React.FC = () => {
 
   const handleAccept = async (id: string) => {
     try {
+      setIsLoading(true);
       await QuestionnaireService.acceptQuestionnaire(id);
       showInfoToast(tNotifications('questionnaireAccepted'));
       setSelectedQuestionnaire(null);
-      fetchQuestionnaires();
+      await fetchQuestionnaires();
     } catch (error) {
       console.error('Error accepting questionnaire:', error);
+      showErrorToast(tNotifications('error'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDecline = async (id: string) => {
     try {
+      setIsLoading(true);
       await QuestionnaireService.declineQuestionnaire(id);
       showErrorToast(tNotifications('questionnaireDeclined'));
       setSelectedQuestionnaire(null);
-      fetchQuestionnaires();
+      await fetchQuestionnaires();
     } catch (error) {
       console.error('Error declining questionnaire:', error);
+      showErrorToast(tNotifications('error'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -157,21 +167,37 @@ const QuestionnaireList: React.FC = () => {
       {/* Modal */}
       <Modal isOpen={!!selectedQuestionnaire} onClose={closeQuestionnaire}>
         {selectedQuestionnaire && (
-          <>
-            <h3 className="text-2xl font-semibold text-secondary mb-4">{t('questionnaireResponses')}</h3>
-            <ul className="space-y-4">
-              {selectedQuestionnaire.questions.map((q, index) => (
-                <li key={index} className="border-b pb-2">
-                  <p className="font-medium text-gray-700">{q.question}</p>
-                  <p className="text-gray-600">{q.answer}</p>
-                </li>
-              ))}
-            </ul>
-            <div className="flex justify-between mt-6">
-              <Button variant="danger" label="Decline" onClick={() => handleDecline(selectedQuestionnaire.id)} />
-              <Button label="Accept" onClick={() => handleAccept(selectedQuestionnaire.id)} />
+          <div className="relative">
+            {isLoading && (
+              <div className="absolute inset-0 bg-white/80 z-10 flex items-center justify-center">
+                <Loader />
+              </div>
+            )}
+            <div className={isLoading ? 'opacity-50' : ''}>
+              <h3 className="text-2xl font-semibold text-secondary mb-4">{t('questionnaireResponses')}</h3>
+              <ul className="space-y-4">
+                {selectedQuestionnaire.questions.map((q, index) => (
+                  <li key={index} className="border-b pb-2">
+                    <p className="font-medium text-gray-700">{q.question}</p>
+                    <p className="text-gray-600">{q.answer}</p>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex justify-between mt-6">
+                <Button 
+                  variant="danger" 
+                  label="Decline" 
+                  onClick={() => handleDecline(selectedQuestionnaire.id)} 
+                  disabled={isLoading}
+                />
+                <Button 
+                  label="Accept" 
+                  onClick={() => handleAccept(selectedQuestionnaire.id)} 
+                  disabled={isLoading}
+                />
+              </div>
             </div>
-          </>
+          </div>
         )}
       </Modal>
     </div>

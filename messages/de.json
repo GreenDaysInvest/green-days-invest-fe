@@ -181,18 +181,23 @@
   "Checkout": {
     "stipeIsNotLoaded": "Stripe ist noch nicht geladen.",
     "paymentSuccessful": "Zahlung erfolgreich!",
-    "total": "Gesamt"
+    "total": "Gesamt",
+    "title": "Kasse",
+    "processing": "Verarbeitung...",
+    "payWithStripe": "Mit Stripe bezahlen",
+    "paypalCaptureFailed": "PayPal-Zahlungserfassung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "paypalPaymentFailed": "PayPal-Zahlung fehlgeschlagen. Bitte versuchen Sie es erneut."
   },
   "Validation": {
     "addBirthdateBeforeVerify": "Bitte fügen Sie Ihr Geburtsdatum in Ihrem Profil hinzu, bevor Sie sich verifizieren!",
     "pleaseSelectOrDragDrop": "Bitte wählen Sie ein Dokument zum Hochladen aus oder ziehen Sie es per Drag & Drop.",
     "uploadedSucessfulWaitForReview": "Dokument erfolgreich hochgeladen. Wartet auf Überprüfung.",
-    "verifyIdentity": "Verify Your Identity",
-    "verificationDescription": "Please verify your identity with a government-issued ID",
-    "verificationSuccessful": "Identity verification successful",
-    "verificationError": "An error occurred during verification",
-    "verificationCanceled": "Verification was canceled",
-    "verifying": "Verifying...",
-    "startVerification": "Start Verification"
+    "verifyIdentity": "Identität überprüfen",
+    "verificationDescription": "Bitte verifizieren Sie Ihre Identität mit einem amtlichen Ausweisdokument",
+    "verificationSuccessful": "Identitätsüberprüfung erfolgreich",
+    "verificationError": "Bei der Überprüfung ist ein Fehler aufgetreten",
+    "verificationCanceled": "Überprüfung wurde abgebrochen",
+    "verifying": "Überprüfung läuft...",
+    "startVerification": "Überprüfung starten"
   }
 }
