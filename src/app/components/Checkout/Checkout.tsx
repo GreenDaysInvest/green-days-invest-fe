@@ -5,6 +5,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useBasket } from "@/app/context/BasketContext";
 import PaymentService from "@/app/services/paymentService";
+import EmailService from "@/app/services/emailService";
 import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import axios from "axios";
 import Button from "../Button/Button";
@@ -17,6 +18,24 @@ const capturePayPalOrder = async (orderId: string) => {
     // Fetch the token from the backend
     const accessToken = await PaymentService.generatePayPalToken();
 
+    // First, check the order status
+    const checkResponse = await fetch(`https://api.sandbox.paypal.com/v2/checkout/orders/${orderId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const orderData = await checkResponse.json();
+    console.log("PayPal Order Status:", orderData.status);
+
+    // If order is already captured, return the order data
+    if (orderData.status === 'COMPLETED') {
+      return orderData;
+    }
+
+    // If not captured, proceed with capture
     const response = await fetch(`https://api.sandbox.paypal.com/v2/checkout/orders/${orderId}/capture`, {
       method: 'POST',
       headers: {
@@ -28,16 +47,22 @@ const capturePayPalOrder = async (orderId: string) => {
     if (!response.ok) {
       const errorData = await response.json();
       console.error("Error capturing PayPal order:", errorData);
+      
+      // If the order was already captured, this is not an error
+      if (errorData.details?.[0]?.issue === 'ORDER_ALREADY_CAPTURED') {
+        console.log("Order was already captured, proceeding with success flow");
+        return orderData;
+      }
+      
       throw new Error("Failed to capture PayPal order");
     }
 
     const data = await response.json();
     console.log("PayPal Order Capture Response:", data);
-
     return data;
   } catch (error) {
     console.error("Error during PayPal order capture:", error);
-    throw new Error("Failed to capture PayPal order");
+    throw error;
   }
 };
 
@@ -75,6 +100,7 @@ const Checkout = () => {
       if (result.error) {
         showErrorToast(result.error.message || "Payment failed.");
       } else if (result.paymentIntent?.status === "succeeded") {
+        await EmailService.sendPaymentConfirmation(user?.email || '', 'stripe', amount);
         showInfoToast(t("paymentSuccessful"));
         clearBasket()
         setActiveTab('basket')
@@ -92,7 +118,9 @@ const Checkout = () => {
 
   const handlePayPalSuccess = async (orderId: string) => {
     try {
-      capturePayPalOrder(orderId);
+      await capturePayPalOrder(orderId);
+      const amount = parseFloat(pricePerService);
+      await EmailService.sendPaymentConfirmation(user?.email || '', 'paypal', amount);
       showInfoToast(t("paymentSuccessful"));
       clearBasket()
       setActiveTab('basket')
@@ -156,29 +184,10 @@ const Checkout = () => {
 
           <PayPalButtons
             style={{ layout: "vertical" }}
-            // createOrder={async (data, actions) => {
-            //   const amount = parseFloat(pricePerService);
-            //   console.log("PayPal createOrder triggered with amount:", amount);
-            
-            //   try {
-            //     // Call your backend to create the PayPal order
-            //     const orderId = await PaymentService.createPayPalOrder(String(user?.id), amount);
-            
-            //     if (!orderId) {
-            //       throw new Error("Failed to create PayPal order");
-            //     }
-            
-            //     return orderId; // Ensure it's a valid string
-            //   } catch (error) {
-            //     console.error("Error creating PayPal order:", error);
-            //     throw new Error("Error creating PayPal order"); // Ensure an error is thrown if something goes wrong
-            //   }
-            // }}
             createOrder={async (data, actions) => {
               const amount = parseFloat(pricePerService);
               console.log("PayPal createOrder triggered with amount:", amount);
 
-              // Use `actions` as a fallback for testing
               return await actions.order.create({
                 purchase_units: [
                   {
@@ -193,11 +202,18 @@ const Checkout = () => {
             }}
             onApprove={async (data, actions) => {
               console.log("PayPal onApprove triggered:", data);
-
-              if (actions.order) {
-                const details = await actions.order.capture();
+              try {
+                // Let PayPal SDK handle the capture
+                const details = await actions?.order?.capture();
                 console.log("PayPal Order Captured Details:", details);
-                handlePayPalSuccess(data.orderID!);
+                
+                // Process our backend success flow without additional capture
+                await handlePayPalSuccess(data.orderID!);
+                
+                showInfoToast(t("paymentSuccessful"));
+              } catch (error) {
+                console.error("Error in PayPal approval flow:", error);
+                handlePayPalError();
               }
             }}
             onError={(err) => {
