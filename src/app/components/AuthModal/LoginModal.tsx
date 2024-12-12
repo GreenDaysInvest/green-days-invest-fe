@@ -4,8 +4,7 @@ import * as Yup from 'yup';
 import Modal from "../Modal/Modal";
 import Input from "../Input/Input";
 import Button from '../Button/Button';
-import { auth, googleProvider, facebookProvider, appleProvider } from '../../../../firebase';
-import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider, facebookProvider, appleProvider, getAuth, browserLocalPersistence, setPersistence, signInWithPopup } from '../../../../firebase';
 import { useApp } from '@/app/context/AppContext';
 import { useRouter } from '@/i18n/routing';
 import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
@@ -42,8 +41,19 @@ const LoginModal: React.FC<Props> = () => {
 
     const handleOAuthLogin = async (provider: any) => {
         try {
+            // Configure auth persistence and redirect
+            const auth = getAuth();
+            await setPersistence(auth, browserLocalPersistence);
+            
+            // Set custom parameters for the provider
+            provider.setCustomParameters({
+                prompt: 'select_account',
+                redirect_uri: `${window.location.origin}/__/auth/handler`
+            });
+            
             const result = await signInWithPopup(auth, provider);
-            const token = await result.user?.getIdToken(); // Get the Firebase ID token
+            const token = await result.user?.getIdToken();
+            
             if (token) {
                 await AuthService.loginWithFirebase(token);
                 const userProfile = await AuthService.getProfile();
@@ -54,6 +64,7 @@ const LoginModal: React.FC<Props> = () => {
                 setIsLoginModalOpen(false);
             }
         } catch (error) {
+            console.error('OAuth login error:', error);
             const errorMessage = (error as Error).message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    
         }

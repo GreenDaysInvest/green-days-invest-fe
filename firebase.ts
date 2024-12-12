@@ -1,5 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider } from 'firebase/auth';
+import { 
+    getAuth, 
+    GoogleAuthProvider, 
+    FacebookAuthProvider, 
+    OAuthProvider,
+    browserLocalPersistence,
+    setPersistence,
+    signInWithPopup
+} from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,15 +22,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Configure custom auth domain
-auth.config.authDomain = 'www.cannabisrezepte24.de';
-
+// Configure Google Provider
 const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({
-    prompt: 'select_account'
-});
+googleProvider.addScope('profile');
+googleProvider.addScope('email');
 
 const facebookProvider = new FacebookAuthProvider();
 const appleProvider = new OAuthProvider('apple.com');
 
-export { auth, googleProvider, facebookProvider, appleProvider };
+export { 
+    auth, 
+    getAuth,
+    googleProvider, 
+    facebookProvider, 
+    appleProvider,
+    browserLocalPersistence,
+    setPersistence,
+    signInWithPopup
+};
