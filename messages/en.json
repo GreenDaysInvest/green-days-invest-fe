@@ -176,7 +176,8 @@
     "questionnaireDeclined": "Fragebogen abgelehnt!",
     "questionnaireSubmitedSuccesfully": "Fragebogen erfolgreich übermittelt!",
     "errorQuestionnaireStatus": "Fehler beim Prüfen des Fragebogen Übermittlungsstatus",
-    "errorSubmitingQuestionnaire": "Fehler beim Senden des Fragebogens"
+    "errorSubmitingQuestionnaire": "Fehler beim Senden des Fragebogens",
+    "verificationStatus": "Verifizierungsstatus"
   },
   "Checkout": {
     "stipeIsNotLoaded": "Stripe ist noch nicht geladen.",

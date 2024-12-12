@@ -26,7 +26,7 @@ const ProfileSchema = Yup.object().shape({
 const Profile: React.FC = () => {
   const t = useTranslations('Notifications');
   const tDashboard = useTranslations('Dashboard');
-  const { user } = useAuth(); 
+  const { user, setUser } = useAuth(); 
 
   const initialValues: User = {
     name: user?.name || "",
@@ -58,6 +58,9 @@ const Profile: React.FC = () => {
     }
     try {
       await AuthService.updateProfile(payload);
+      // Get updated user data
+      const updatedUser = await AuthService.getProfile();
+      setUser(updatedUser);
       showInfoToast(t('profileUpdate'));
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -69,7 +72,7 @@ const Profile: React.FC = () => {
     <div className="max-w-md mx-auto p-6">
       <h2 className="text-3xl font-semibold text-center text-secondary mb-10">{tDashboard('Sidebar.profile')}</h2>
       <div className="flex items-center mb-4">
-        <p className='text-secondary text-xl mr-4'>Verification Status:</p>
+        <p className='text-secondary text-xl mr-4'>{tDashboard('verificationStatus')}</p>
         {!user?.isVerified ? <GoUnverified className='text-secondary text-3xl' /> : <GoVerified className='text-secondary text-3xl' />}
       </div>
       <Formik

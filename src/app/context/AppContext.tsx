@@ -20,12 +20,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('questionaries');
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   
   useEffect(() => {
-    if (user !== undefined) {
+    if (user !== undefined && isInitialLoad) {
       setActiveTab(user?.isAdmin ? 'questionariesList' : 'questionaries');
+      setIsInitialLoad(false);
     }
-  }, [user]);
+  }, [user, isInitialLoad]);
 
   return (
     <AppContext.Provider value={{ 

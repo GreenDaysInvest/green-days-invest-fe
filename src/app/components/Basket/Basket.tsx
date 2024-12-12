@@ -35,7 +35,6 @@ const Basket = () => {
   };
   
   const handleCheckout = () => {
-    console.log(user);
     if (user?.isVerified) {
       setActiveTab('checkout');
     } else {

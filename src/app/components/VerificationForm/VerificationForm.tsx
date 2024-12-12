@@ -9,6 +9,7 @@ import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import VerificationService from "@/app/services/verificationService";
 import { loadStripe } from "@stripe/stripe-js";
 import { Loader } from "../Loader/Loader";
+import AuthService from "@/app/services/authServices";
 
 const VerificationForm = () => {
   const t = useTranslations("Validation");
@@ -33,12 +34,21 @@ const VerificationForm = () => {
       }
       
       if (isVerified) {
+        // First update the user
         await updateUser();
-        showInfoToast(t('verificationSuccessful'));
+        
+        // Then update UI state
         setIsVerifying(false);
         setIsCheckingStatus(false);
         setIsLoading(false);
-        setActiveTab('checkout');
+        
+        // Show success message
+        showInfoToast(t('verificationSuccessful'));
+        
+        // Finally change the tab
+        setTimeout(() => {
+          setActiveTab('checkout');
+        }, 0);
       }
     } catch (error) {
       console.error('Error checking verification status:', error);
@@ -68,6 +78,15 @@ const VerificationForm = () => {
 
   const startVerification = async () => {
     try {
+      // Refresh user data before checking
+      const currentUser = await AuthService.getProfile();
+      
+      if(!currentUser?.birthdate) {
+        showErrorToast(t('addBirthdateBeforeVerify'));
+        setActiveTab('profile');
+        return;
+      }
+      
       setIsVerifying(true);
       setVerificationError(null);
       setIsLoading(true);

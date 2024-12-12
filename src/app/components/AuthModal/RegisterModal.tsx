@@ -14,6 +14,7 @@ import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
 import AuthService from '@/app/services/authServices';
 import { User } from '@/app/types/Auth.type';
 import { v4 as uuidv4 } from 'uuid';
+import { showErrorToast } from '@/app/utils/toast';
 
 interface Props {}
 
@@ -61,7 +62,8 @@ const RegisterModal: React.FC<Props> = () => {
             setIsLoginModalOpen(true)
         } catch (error) {
             console.error('Registration error:', error);
-            // Handle error (e.g., show a notification)
+            const errorMessage = (error as Error).message || 'An unexpected error occurred.';
+            showErrorToast(errorMessage);    
         }
     };
 
@@ -84,7 +86,8 @@ const RegisterModal: React.FC<Props> = () => {
             setIsLoginModalOpen(true)
         } catch (error) {
             console.error('Error registering with provider:', error);
-            // Handle error (e.g., show a notification)
+            const errorMessage = (error as Error).message || 'An unexpected error occurred.';
+            showErrorToast(errorMessage);    
         }
     };
 
