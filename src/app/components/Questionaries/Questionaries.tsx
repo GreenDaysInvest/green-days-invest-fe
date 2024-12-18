@@ -3,245 +3,26 @@ import { useAuth } from "@/app/context/AuthContext";
 import QuestionnaireService from "@/app/services/questionnaireService";
 import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import { useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
-
-interface Question {
-  id: number;
-  text: string;
-  subtext?: string;
-  options: Array<{
-    text: string;
-    subtext?: string;
-    followUpQuestions?: {
-      title: string;
-      options: Array<{
-        text: string;
-        subtext?: string;
-      }>;
-    };
-    hasInput?: boolean;
-  }>;
-  type: 'radio' | 'checkbox';
-  followUpQuestions?: {
-    yes: {
-      title: string;
-      type: 'checkbox';
-      options: Array<{
-        text: string;
-        subtext?: string;
-      }>;
-    };
-    no: {
-      title: string;
-      type: 'checkbox';
-      options: Array<{
-        text: string;
-        subtext?: string;
-      }>;
-    };
-  };
-}
-
-interface Response {
-  answer?: string;
-  subAnswer?: string | string[];
-  customInput?: string;
-}
-
-const questions: Question[] = [
-  {
-    id: 1,
-    text: "Wurdest du bereits mit med. Cannabis durch eine Verschreibung von einem Arzt behandelt?",
-    subtext: "Bitte aktuelles Rezept oder sonstigen Nachweis bereit halten.",
-    options: [{ text: "Ja" }, { text: "Nein" }],
-    type: 'radio'
-  },
-  {
-    id: 2,
-    text: "In welche Kategorie gehört deine Haupterkrankung oder falls deine Erkrankung nicht aufgeführt ist dein Hauptsymptom?",
-    subtext: "Wenn du nicht sicher bist oder falsch gewählt hast, kannst du im Folgenden jederzeit zurückkehren und die Kategorie korrigieren.",
-    options: [
-      {
-        text: "Chronische Schmerzen",
-        followUpQuestions: {
-          title: "Chronische Schmerzen",
-          options: [
-            { text: "Rückenschmerzen", subtext: "(z. B. Bandscheibenvorfall, Skoliose, Bechterewsche Krankheit)" },
-            { text: "Gelenkschmerzen", subtext: "(z. B. Arthrose, Arthritis, Rheuma, Gicht)" },
-            { text: "Nervenschmerzen", subtext: "(z. B. Neuropathie)" },
-            { text: "Bauchschmerzen", subtext: "(z. B. Endometriose)" }
-          ]
-        }
-      },
-      {
-        text: "Migräne/Kopfschmerzsyndrom",
-        followUpQuestions: {
-          title: "Migräne/Kopfschmerzsyndrom",
-          options: [
-            { text: "Migräne" },
-            { text: "Chronischer Kopfschmerz", subtext: "(z. B. Spannungskopfschmerz)" },
-            { text: "Clusterkopfschmerz" }
-          ]
-        }
-      },
-      {
-        text: "AD(H)S",
-        followUpQuestions: {
-          title: "AD(H)S",
-          options: [
-            { text: "Aktivitäts- und Aufmerksamkeitsstörung (ADHS)" },
-            { text: "Aufmerksamkeitsstörung ohne Hyperaktivität (ADS)" },
-            { text: "Hyperkinetische Störung des Sozialverhaltens" }
-          ]
-        }
-      },
-      {
-        text: "Schlafstörung",
-        followUpQuestions: {
-          title: "Schlafstörung",
-          options: [
-            { text: "Ein- und/oder Durchschlafstörungen" },
-            { text: "Störung des Tag-Nacht-Rhythmus" },
-            { text: "Nachtangst/Nachtträume" }
-          ]
-        }
-      },
-      {
-        text: "Depression",
-        followUpQuestions: {
-          title: "Depression",
-          options: [
-            { text: "Depressive Episode" },
-            { text: "Anhaltende Depression" },
-            { text: "Wiederkehrende Depression" }
-          ]
-        }
-      },
-      {
-        text: "Angststörung/PTBS",
-        followUpQuestions: {
-          title: "Angststörung/PTBS",
-          options: [
-            { text: "Angststörung" },
-            { text: "Posttraumatische Belastungsstörung (PTBS)" },
-            { text: "Anpassungsstörung" }
-          ]
-        }
-      },
-      {
-        text: "Nervensystem-Erkrankung",
-        followUpQuestions: {
-          title: "Nervensystem-Erkrankung",
-          options: [
-            { text: "Multiple Sklerose/Spastik" },
-            { text: "Paraplegie/Lähmungserscheinungen" },
-            { text: "Epilepsie/Morbus Parkinson" },
-            { text: "Restless-Legs-Syndrom" }
-          ]
-        }
-      },
-      {
-        text: "Chronisch-entzündliche Darmerkrankungen",
-        followUpQuestions: {
-          title: "Chronisch-entzündliche Darmerkrankungen",
-          options: [
-            { text: "Morbus Crohn/Colitis ulcerosa" },
-            { text: "Reizdarmsyndrom" },
-            { text: "Chronische Magenschleimhautentzündung", subtext: "(chronische Gastritis)" }
-          ]
-        }
-      },
-      {
-        text: "Hauterkrankungen",
-        followUpQuestions: {
-          title: "Hauterkrankungen",
-          options: [
-            { text: "Neurodermititis" },
-            { text: "Psoriasis", subtext: "(Schuppenflechte)" },
-            { text: "Akne Inversa" }
-          ]
-        }
-      },
-      {
-        text: "Krebserkrankung",
-        followUpQuestions: {
-          title: "Krebserkrankung",
-          options: [
-            { text: "Brustkrebs" },
-            { text: "Prostatakrebs" },
-            { text: "Darmkrebs" },
-            { text: "Lungenkrebs" },
-            { text: "Hautkrebs" },
-            { text: "Anderer Krebs" }
-          ]
-        }
-      },
-      { 
-        text: "Andere nicht aufgeführte Haupterkrankung", 
-        hasInput: true 
-      }
-    ],
-    type: 'radio'
-  },
-  {
-    id: 3,
-    text: "Leidest du neben deiner Haupterkrankung an weiteren Krankheiten oder Allergien?",
-    options: [{ text: "Ja" }, { text: "Nein" }],
-    type: 'radio',
-    followUpQuestions: {
-      yes: {
-        title: "Wähle die Art deiner Erkrankung(en)",
-        type: 'checkbox',
-        options: [
-          { text: "Allergien" },
-          { text: "Chronische Schmerzen" },
-          { text: "Migräne/Kopfschmerzsyndrome" },
-          { text: "Psychiatrische Erkrankungen" },
-          { text: "Nervensystem-Erkrankungen" },
-          { text: "Herz-Kreislauf-/Lungenerkrankungen" },
-          { text: "Verdauungstrakterkrankungen/Stoffwechselstörungen" },
-          { text: "Infektionskrankheiten" },
-          { text: "Krebserkrankung" }
-        ]
-      },
-      no: {
-        title: "Bitte bestätige an keiner der folgenden Erkrankungen zu leiden ODER wähle die Erkrankung aus, sofern Sie auf dich zutrifft.",
-        type: 'checkbox',
-        options: [
-          { text: "Hiermit bestätige ich an keiner der genannten Erkrankungen zu leiden" },
-          { 
-            text: "Psychose",
-            subtext: "(Schizophrenie, Wahnvorstellungen, Halluzinationen)"
-          },
-          {
-            text: "Persönlichkeitsstörung",
-            subtext: "(z. B. Borderline)"
-          },
-          { text: "Bipolare Störung" },
-          { text: "Suchterkrankung" },
-          { text: "Koronare Herzkrankheit, Herzinsuffizienz, Herzrhythmusstörung" },
-          { text: "Herzinfarkt, Schlaganfall, Thrombose/Embolie" },
-          { text: "Schwere Leber- oder Nierenerkrankung" },
-          { text: "Allergie gegen THC/CBD-haltige Produkte" }
-        ]
-      }
-    }
-  }
-];
+import React, { useState, useEffect } from "react";
+import { Question, Response, QuestionnaireState } from "@/app/types/Questionnaire.type";
+import { questions } from "./data/questions";
+import ProgressBar from "./components/ProgressBar";
 
 const StepQuestionnaire: React.FC = () => {
-  const t = useTranslations("Dashboard");
+  const t = useTranslations("Questionnaire");
   const tNotifications = useTranslations('Notifications');
   const { user } = useAuth();
-  const [currentStep, setCurrentStep] = useState(-1);
-  const [responses, setResponses] = useState<{ [key: number]: Response }>({});
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [questionnaireStatus, setQuestionnaireStatus] = useState<string>("");
-  const [consent, setConsent] = useState({ accepted: false });
-  const [showFollowUp, setShowFollowUp] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [customInput, setCustomInput] = useState('');
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [state, setState] = useState<QuestionnaireState>({
+    currentStep: -1,
+    responses: {},
+    hasSubmitted: false,
+    questionnaireStatus: "",
+    consent: { accepted: false },
+    showFollowUp: false,
+    selectedOption: null,
+    customInput: '',
+    selectedOptions: []
+  });
 
   const totalSteps = questions.length;
 
@@ -250,9 +31,9 @@ const StepQuestionnaire: React.FC = () => {
       try {
         const userQuestionnaires = await QuestionnaireService.getUserQuestionnaires(String(user?.id));
         const latestStatus = userQuestionnaires.slice(-1)[0]?.status || "";
-        setQuestionnaireStatus(latestStatus);
+        setState(prev => ({ ...prev, questionnaireStatus: latestStatus }));
         if (userQuestionnaires.length > 0) {
-          setHasSubmitted(true);
+          setState(prev => ({ ...prev, hasSubmitted: true }));
         }
       } catch (error) {
         showErrorToast(tNotifications('errorQuestionnaireStatus'));
@@ -264,76 +45,87 @@ const StepQuestionnaire: React.FC = () => {
   }, [user?.id]);
 
   const handleOptionSelect = (optionText: string) => {
-    if (currentStep === 2 && showFollowUp) {
-      const currentResponse = responses[currentStep] || {};
+    if (state.currentStep === 2 && state.showFollowUp) {
+      const currentResponse = state.responses[state.currentStep] || {};
       const currentSelections = currentResponse.subAnswer as string[] || [];
       
       if (currentSelections.includes(optionText)) {
         const newSelections = currentSelections.filter(item => item !== optionText);
-        setResponses({
-          ...responses,
-          [currentStep]: {
-            ...currentResponse,
-            answer: responses[currentStep]?.answer,
-            subAnswer: newSelections
-          }
-        });
-        setSelectedOptions(newSelections);
+        setState(prev => ({
+          ...prev,
+          responses: {
+            ...prev.responses,
+            [prev.currentStep]: {
+              ...currentResponse,
+              answer: prev.responses[prev.currentStep]?.answer,
+              subAnswer: newSelections
+            }
+          },
+          selectedOptions: newSelections
+        }));
       } else {
         const newSelections = [...currentSelections, optionText];
-        setResponses({
-          ...responses,
-          [currentStep]: {
-            ...currentResponse,
-            answer: responses[currentStep]?.answer,
-            subAnswer: newSelections
-          }
-        });
-        setSelectedOptions(newSelections);
+        setState(prev => ({
+          ...prev,
+          responses: {
+            ...prev.responses,
+            [prev.currentStep]: {
+              ...currentResponse,
+              answer: prev.responses[prev.currentStep]?.answer,
+              subAnswer: newSelections
+            }
+          },
+          selectedOptions: newSelections
+        }));
       }
     } else {
-      setResponses({
-        ...responses,
-        [currentStep]: {
-          answer: optionText,
-          subAnswer: []  
-        }
-      });
-      setSelectedOption(optionText);
-      setSelectedOptions([]);  
+      setState(prev => ({
+        ...prev,
+        responses: {
+          ...prev.responses,
+          [prev.currentStep]: {
+            answer: optionText,
+            subAnswer: []  
+          }
+        },
+        selectedOption: optionText,
+        selectedOptions: []
+      }));
     }
   };
 
   const handleCustomInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCustomInput(value);
+    setState(prev => ({ ...prev, customInput: value }));
     
-    const updatedResponses = { ...responses };
-    updatedResponses[currentStep] = {
-      ...updatedResponses[currentStep],
+    const updatedResponses = { ...state.responses };
+    updatedResponses[state.currentStep] = {
+      ...updatedResponses[state.currentStep],
       customInput: value
     };
-    setResponses(updatedResponses);
+    setState(prev => ({ ...prev, responses: updatedResponses }));
   };
 
   const handleNext = () => {
-    if (responses[currentStep]?.answer === "Andere nicht aufgeführte Haupterkrankung" && !customInput) {
+    if (state.responses[state.currentStep]?.answer === "Andere nicht aufgeführte Haupterkrankung" && !state.customInput) {
       return;
     }
 
-    if (currentStep === 2) {
-      const answer = responses[currentStep].answer;
+    if (state.currentStep === 2) {
+      const answer = state.responses[state.currentStep].answer;
       if (answer === "Ja" || answer === "Nein") {
-        setShowFollowUp(true);
-        setSelectedOption(answer);
+        setState(prev => ({ ...prev, showFollowUp: true, selectedOption: answer }));
       }
-    } else if (showFollowUp) {
-      setShowFollowUp(false);
-      setSelectedOption(null);
-      setCurrentStep(currentStep + 1);
+    } else if (state.showFollowUp) {
+      setState(prev => ({ ...prev, showFollowUp: false, selectedOption: null }));
+      if (state.currentStep < questions.length - 1) {
+        setState(prev => ({ ...prev, currentStep: prev.currentStep + 1 }));
+      } else {
+        handleSubmit();
+      }
     } else {
-      if (currentStep < questions.length - 1) {
-        setCurrentStep(currentStep + 1);
+      if (state.currentStep < questions.length - 1) {
+        setState(prev => ({ ...prev, currentStep: prev.currentStep + 1 }));
       } else {
         handleSubmit();
       }
@@ -341,23 +133,39 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handlePrev = () => {
-    if (showFollowUp) {
-      setShowFollowUp(false);
-      setSelectedOption(null);
-    } else if (currentStep >= 0) {
-      setCurrentStep(currentStep - 1);
+    if (state.showFollowUp) {
+      setState(prev => ({ ...prev, showFollowUp: false, selectedOption: null }));
+    } else if (state.currentStep >= 0) {
+      setState(prev => ({ ...prev, currentStep: prev.currentStep - 1 }));
     }
   };
 
   const handleSubmit = async () => {
-    const questionnaireData = { questions: Object.values(responses) };
+    const questionnaireData = { questions: Object.values(state.responses) };
     try {
       await QuestionnaireService.createQuestionnaire(questionnaireData);
       showInfoToast(tNotifications('questionnaireSubmitedSuccesfully'));
-      setHasSubmitted(true);
+      setState(prev => ({ ...prev, hasSubmitted: true }));
     } catch (error) {
       showErrorToast(tNotifications('errorSubmitingQuestionnaire'));
       console.error("Error submitting questionnaire:", error);
+    }
+  };
+
+  const handleClose = () => {
+    if (window.confirm(t('confirmClose'))) {
+      // Reset the questionnaire state
+      setState({
+        currentStep: -1,
+        responses: {},
+        hasSubmitted: false,
+        questionnaireStatus: "",
+        consent: { accepted: false },
+        showFollowUp: false,
+        selectedOption: null,
+        customInput: '',
+        selectedOptions: []
+      });
     }
   };
 
@@ -385,8 +193,8 @@ const StepQuestionnaire: React.FC = () => {
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
-              checked={consent.accepted}
-              onChange={() => setConsent({ accepted: !consent.accepted })}
+              checked={state.consent.accepted}
+              onChange={() => setState(prev => ({ ...prev, consent: { accepted: !prev.consent.accepted } }))}
               className="sr-only peer"
             />
             <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
@@ -394,8 +202,8 @@ const StepQuestionnaire: React.FC = () => {
         </div>
         <button
           onClick={() => {
-            if (consent.accepted) {
-              setCurrentStep(0);
+            if (state.consent.accepted) {
+              setState(prev => ({ ...prev, currentStep: 0 }));
             } else {
               showInfoToast(t('pleaseAcceptConsent'));
             }
@@ -409,16 +217,16 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderQuestion = () => {
-    const currentQuestion = questions[currentStep];
-    const isMainConditionQuestion = currentStep === 1;
+    const currentQuestion = questions[state.currentStep];
+    const isMainConditionQuestion = state.currentStep === 1;
 
-    if (showFollowUp) {
-      if (currentStep === 2) {
-        const followUpQuestions = responses[currentStep]?.answer === "Ja" 
+    if (state.showFollowUp) {
+      if (state.currentStep === 2) {
+        const followUpQuestions = state.responses[state.currentStep]?.answer === "Ja" 
           ? currentQuestion.followUpQuestions?.yes
           : currentQuestion.followUpQuestions?.no;
 
-        const selectedAnswers = (responses[currentStep]?.subAnswer as string[]) || [];
+        const selectedAnswers = (state.responses[state.currentStep]?.subAnswer as string[]) || [];
 
         return (
           <>
@@ -458,7 +266,7 @@ const StepQuestionnaire: React.FC = () => {
           </>
         );
       } else {
-        const selectedMainOption = questions[1].options.find(opt => opt.text === selectedOption);
+        const selectedMainOption = questions[1].options.find(opt => opt.text === state.selectedOption);
         return (
           <>
             <h2 className="text-2xl font-semibold text-secondary mb-2">
@@ -470,15 +278,15 @@ const StepQuestionnaire: React.FC = () => {
                   key={index}
                   onClick={() => handleOptionSelect(option.text)}
                   className={`w-full p-4 rounded-lg border ${
-                    responses[currentStep]?.subAnswer === option.text
+                    state.responses[state.currentStep]?.subAnswer === option.text
                       ? 'border-secondary bg-secondary/5'
                       : 'border-gray-200 hover:border-secondary'
                   } text-left flex items-center`}
                 >
                   <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center
-                    ${responses[currentStep]?.subAnswer === option.text ? 'border-secondary' : 'border-gray-300'}`}
+                    ${state.responses[state.currentStep]?.subAnswer === option.text ? 'border-secondary' : 'border-gray-300'}`}
                   >
-                    {responses[currentStep]?.subAnswer === option.text && (
+                    {state.responses[state.currentStep]?.subAnswer === option.text && (
                       <div className="w-2.5 h-2.5 rounded-full bg-secondary" />
                     )}
                   </div>
@@ -499,7 +307,7 @@ const StepQuestionnaire: React.FC = () => {
     return (
       <>
         <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-          {isMainConditionQuestion ? 'Erkrankung(en)' : currentStep === 0 ? 'Patientenstatus' : 'Erkrankung(en)'}
+          {isMainConditionQuestion ? 'Erkrankung(en)' : state.currentStep === 0 ? 'Patientenstatus' : 'Erkrankung(en)'}
         </h2>
         <div className="w-full text-gray-900">
           <p className="text-xl font-medium mb-2">{currentQuestion.text}</p>
@@ -512,33 +320,33 @@ const StepQuestionnaire: React.FC = () => {
                 <button
                   onClick={() => handleOptionSelect(option.text)}
                   className={`w-full p-4 rounded-lg border ${
-                    responses[currentStep]?.answer === option.text
+                    state.responses[state.currentStep]?.answer === option.text
                       ? 'border-secondary bg-secondary/5'
                       : 'border-gray-200 hover:border-secondary'
                   } text-left flex items-center`}
                 >
                   <div className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center
-                    ${responses[currentStep]?.answer === option.text ? 'border-secondary' : 'border-gray-300'}`}
+                    ${state.responses[state.currentStep]?.answer === option.text ? 'border-secondary' : 'border-gray-300'}`}
                   >
-                    {responses[currentStep]?.answer === option.text && (
+                    {state.responses[state.currentStep]?.answer === option.text && (
                       <div className="w-2.5 h-2.5 rounded-full bg-secondary" />
                     )}
                   </div>
                   {option.text}
                 </button>
                 {option.text === "Andere nicht aufgeführte Haupterkrankung" && 
-                 responses[currentStep]?.answer === option.text && (
+                 state.responses[state.currentStep]?.answer === option.text && (
                   <div className="mt-2">
                     <input
                       type="text"
-                      value={customInput}
+                      value={state.customInput}
                       onChange={handleCustomInputChange}
                       placeholder="Bitte geben Sie Ihre Erkrankung ein"
                       maxLength={255}
                       className="w-full p-4 rounded-lg border border-gray-200 focus:border-secondary focus:ring-1 focus:ring-secondary"
                     />
                     <div className="text-right text-sm text-gray-500 mt-1">
-                      {customInput.length}/255
+                      {state.customInput.length}/255
                     </div>
                   </div>
                 )}
@@ -552,44 +360,21 @@ const StepQuestionnaire: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center py-10 px-4 mx-auto">
-      <div className="flex items-center justify-between w-full max-w-2xl mb-8">
-        <button onClick={handlePrev} className="text-secondary">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 19L8 12L15 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-        <div className="flex items-center space-x-4">
-          <div className={`flex items-center ${currentStep === -1 ? 'text-secondary' : 'text-gray-400'}`}>
-            <div className="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center">1</div>
-            <span className="ml-2">Datenschutz</span>
-          </div>
-          <div className="w-8 h-1 bg-gray-300"></div>
-          <div className={`flex items-center ${currentStep === 0 ? 'text-secondary' : 'text-gray-400'}`}>
-            <div className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center">2</div>
-            <span className="ml-2">Patientenstatus</span>
-          </div>
-          <div className="w-8 h-1 bg-gray-300"></div>
-          <div className={`flex items-center ${currentStep >= 1 ? 'text-secondary' : 'text-gray-400'}`}>
-            <div className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center">3</div>
-            <span className="ml-2">Erkrankung(en)</span>
-          </div>
-        </div>
-        <button onClick={() => {}} className="text-secondary">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-      </div>
+      <ProgressBar 
+        currentStep={state.currentStep + 2} 
+        onClose={handleClose}
+        onPrev={handlePrev}
+      />
 
-      {currentStep === -1 ? renderConsentStep() : (
-        <div className="w-full max-w-2xl">
+      {state.currentStep === -1 ? renderConsentStep() : (
+        <div className="w-full max-w-2xl mt-8">
           {renderQuestion()}
           <div className="flex justify-end w-full mt-8">
             <button
               onClick={handleNext}
               className="px-6 py-3 bg-secondary text-white rounded-lg flex items-center"
             >
-              {currentStep === questions.length - 1 && !showFollowUp ? t("finish") : (
+              {state.currentStep === questions.length - 1 && !state.showFollowUp ? t("finish") : (
                 <>
                   {t("next")}
                   <svg className="ml-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

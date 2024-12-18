@@ -200,5 +200,60 @@
     "verificationCanceled": "Überprüfung wurde abgebrochen",
     "verifying": "Überprüfung läuft...",
     "startVerification": "Überprüfung starten"
+  },
+  "Questionnaire": {
+    "steps": {
+      "dataPrivacy": "Datenschutz",
+      "patientStatus": "Patientenstatus",
+      "diseases": "Erkrankung(en)",
+      "details": "Detailfragen"
+    },
+    "mainQuestions": {
+      "previousTreatment": {
+        "question": "Wurdest du bereits mit med. Cannabis durch eine Verschreibung von einem Arzt behandelt?",
+        "subtext": "Bitte aktuelles Rezept oder sonstigen Nachweis bereit halten."
+      },
+      "mainDisease": {
+        "question": "In welche Kategorie gehört deine Haupterkrankung oder falls deine Erkrankung nicht aufgeführt ist dein Hauptsymptom?",
+        "subtext": "Wenn du nicht sicher bist oder falsch gewählt hast, kannst du im Folgenden jederzeit zurückkehren und die Kategorie korrigieren."
+      },
+      "additionalDiseases": {
+        "question": "Leidest du neben deiner Haupterkrankung an weiteren Krankheiten oder Allergien?",
+        "yesFollowUp": {
+          "title": "Wähle die Art deiner Erkrankung(en)"
+        },
+        "noFollowUp": {
+          "title": "Bitte bestätige an keiner der folgenden Erkrankungen zu leiden ODER wähle die Erkrankung aus, sofern Sie auf dich zutrifft."
+        }
+      }
+    },
+    "diseases": {
+      "chronicPain": {
+        "title": "Chronische Schmerzen",
+        "options": {
+          "backPain": {
+            "text": "Rückenschmerzen",
+            "subtext": "(z. B. Bandscheibenvorfall, Skoliose, Bechterewsche Krankheit)"
+          },
+          "jointPain": {
+            "text": "Gelenkschmerzen",
+            "subtext": "(z. B. Arthrose, Arthritis, Rheuma, Gicht)"
+          },
+          "nervePain": {
+            "text": "Nervenschmerzen",
+            "subtext": "(z. B. Polyneuropathie)"
+          }
+        }
+      }
+    },
+    "buttons": {
+      "next": "Weiter",
+      "back": "Zurück",
+      "finish": "Abschließen"
+    },
+    "customInput": {
+      "placeholder": "Bitte geben Sie Ihre Erkrankung ein",
+      "characterCount": "{{current}}/{{max}} Zeichen"
+    }
   }
 }
