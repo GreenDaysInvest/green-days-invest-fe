@@ -1,5 +1,23 @@
 import { Question } from "@/app/types/Questionnaire.type";
 
+export const CONFIRMATION_NO_DISEASES = "Hiermit bestätige ich an keiner der genannten Erkrankungen zu leiden";
+
+export const DISEASE_CONFIRMATION_QUESTIONS = {
+  title: "Bitte bestätige an keiner der folgenden Erkrankungen zu leiden ODER wähle die Erkrankung aus, sofern Sie auf dich zutrifft.",
+  type: 'checkbox',
+  options: [
+    { text: CONFIRMATION_NO_DISEASES },
+    { text: "Psychose", subtext: "(Schizophrenie, Wahnvorstellungen, Halluzinationen)" },
+    { text: "Persönlichkeitsstörung", subtext: "(z. B. Borderline)" },
+    { text: "Bipolare Störung" },
+    { text: "Suchterkrankung" },
+    { text: "Koronare Herzkrankheit, Herzinsuffizienz, Herzrhythmusstörung" },
+    { text: "Herzinfarkt, Schlaganfall, Thrombose/Embolie" },
+    { text: "Schwere Leber- oder Nierenerkrankung" },
+    { text: "Allergie gegen THC/CBD-haltige Produkte" }
+  ]
+};
+
 export const questions: Question[] = [
   {
     id: 1,
@@ -145,38 +163,303 @@ export const questions: Question[] = [
         title: "Wähle die Art deiner Erkrankung(en)",
         type: 'checkbox',
         options: [
-          { text: "Allergien" },
-          { text: "Chronische Schmerzen" },
-          { text: "Migräne/Kopfschmerzsyndrome" },
-          { text: "Psychiatrische Erkrankungen" },
-          { text: "Nervensystem-Erkrankungen" },
-          { text: "Herz-Kreislauf-/Lungenerkrankungen" },
-          { text: "Verdauungstrakterkrankungen/Stoffwechselstörungen" },
-          { text: "Infektionskrankheiten" },
-          { text: "Krebserkrankung" }
+          { 
+            text: "Allergien",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Allergien",
+              type: 'checkbox',
+              options: [
+                { 
+                  text: "Allergie gegen THC/CBD/Cannabis",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS
+                },
+                { 
+                  text: "Medikamentenallergie",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS
+                },
+                { 
+                  text: "Sonstige Allergie (Pollen, Tiere, Materialien)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS
+                }
+              ]
+            }
+          },
+          { 
+            text: "Chronische Schmerzen",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Chronische Schmerzen",
+              type: 'checkbox',
+              options: [
+                { 
+                  text: "Rückenschmerzen", 
+                  subtext: "(z. B. Bandscheibenvorfall, Skoliose, Morbus Bechterew)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { 
+                  text: "Gelenkschmerzen", 
+                  subtext: "(z. B. Arthrose, Arthritis, Rheuma, Gicht)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { 
+                  text: "Nervenschmerzen", 
+                  subtext: "(z. B. Neuropathie)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { 
+                  text: "Bauchschmerzen", 
+                  subtext: "(z. B. Endometriose)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Fibromyalgie",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                }
+              ]
+            }
+          },
+          { 
+            text: "Herz-Kreislauf-/Lungenerkrankungen",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Herz-Kreislauf-/Lungenerkrankungen",
+              type: 'checkbox',
+              options: [
+                { text: "Bluthochdruck",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Koronare Herzkrankheit, Herzinsuffizienz, Herzrhythmusstörungen",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Herzinfarkt, Schlaganfall, Thrombose/Embolie",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Gerinnungsstörung",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Asthma bronchiale/COPD", subtext: "(chronisch-obstruktive Lungenerkrankung)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                }
+              ]
+            }
+          },
+          { 
+            text: "Verdauungstrakterkrankungen/Stoffwechselstörungen",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Verdauungstrakterkrankungen/Stoffwechselstörungen",
+              type: 'checkbox',
+              options: [
+                { text: "Diabetes mellitus",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Morbus Crohn/Colitis ulcerosa",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Reizdarmsyndrom",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Chronische Magenschleimhautentzündung", subtext: "(chronische Gastritis)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Leber- oder Nierenerkrankung", subtext: "(Organfunktionsstörung)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                }
+              ]
+            }
+          },
+          { 
+            text: "Infektionskrankheiten",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Infektionskrankheiten",
+              type: 'checkbox',
+              options: [
+                { text: "HIV/AIDS",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Tuberkulose",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Hepatitis",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                 }
+              ]
+            }
+          },
+          { 
+            text: "Migräne/Kopfschmerzsyndrome",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Migräne/Kopfschmerzsyndrome",
+              type: 'checkbox',
+              options: [
+                { text: "Migräne",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                 },
+                { text: "Chronischer Kopfschmerz", subtext: "(z. B. Spannungskopfschmerz)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Clusterkopfschmerz",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                 }
+              ]
+            }
+          },
+          { 
+            text: "Nervensystem-Erkrankungen",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Nervensystem-Erkrankungen",
+              type: 'checkbox',
+              options: [
+                { text: "Multiple Sklerose/Spastik",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS  
+                },
+                { text: "Paraplegie/Lähmungserscheinungen",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Epilepsie/Morbus Parkinson",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Restless-Legs-Syndrom",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                }
+              ]
+            }
+          },
+          { 
+            text: "Psychiatrische Erkrankungen",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Psychiatrische Erkrankungen",
+              type: 'checkbox',
+              options: [
+                { text: "Bipolare Störung",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Persönlichkeitsstörung", subtext: "(z. B. Borderline)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Psychose", subtext: "(z. B. Schizophrenie, Wahnvorstellungen)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Psychose innerhalb der Verwandtschaft",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Suchterkrankung",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "(Hyper-)Aktivitäts- und Aufmerksamkeitsstörung (ADHS/ADS)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Schlafstörung",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Anpassungsstörung",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Depression",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Angststörung/Posttraumatische Belastungsstörung (PTBS)",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Tic-/Tourette-Syndrom",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS
+                }
+              ]
+            }
+          },
+          { 
+            text: "Krebserkrankung",
+            hasFollowUp: true,
+            followUpQuestions: {
+              title: "Krebserkrankung",
+              type: 'checkbox',
+              options: [
+                { text: "Brustkrebs",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS
+                },
+                { text: "Prostatakrebs",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS
+                },
+                { text: "Darmkrebs",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS
+                },
+                { text: "Lungenkrebs",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS
+                },
+                { text: "Hautkrebs",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                },
+                { text: "Anderer Krebs",
+                  hasFollowUp: true,
+                  followUpQuestions: DISEASE_CONFIRMATION_QUESTIONS 
+                }
+              ]
+            }
+          }
         ]
       },
-      no: {
-        title: "Bitte bestätige an keiner der folgenden Erkrankungen zu leiden ODER wähle die Erkrankung aus, sofern Sie auf dich zutrifft.",
-        type: 'checkbox',
-        options: [
-          { text: "Hiermit bestätige ich an keiner der genannten Erkrankungen zu leiden" },
-          { 
-            text: "Psychose",
-            subtext: "(Schizophrenie, Wahnvorstellungen, Halluzinationen)"
-          },
-          {
-            text: "Persönlichkeitsstörung",
-            subtext: "(z. B. Borderline)"
-          },
-          { text: "Bipolare Störung" },
-          { text: "Suchterkrankung" },
-          { text: "Koronare Herzkrankheit, Herzinsuffizienz, Herzrhythmusstörung" },
-          { text: "Herzinfarkt, Schlaganfall, Thrombose/Embolie" },
-          { text: "Schwere Leber- oder Nierenerkrankung" },
-          { text: "Allergie gegen THC/CBD-haltige Produkte" }
-        ]
-      }
+      no: DISEASE_CONFIRMATION_QUESTIONS
+    }
+  },
+  {
+    id: 4,
+    text: "Möchtest du uns noch etwas mitteilen?",
+    type: 'textarea',
+    placeholder: "Bitte beschreibe uns deine bisherigen Erfahrungen",
+    maxLength: 1000,
+    subtext: "Bitte verwende weniger als 1000 Zeichen",
+    confirmation: {
+      title: "Bestätigung der Richtigkeit der Angaben",
+      text: "Hiermit bestätige ich, dass ich den Fragebogen wahrheitsgetreu und nach bestem Wissen und Gewissen bezüglich meines gesundheitlichen Zustandes und meiner Beschwerden ausgefüllt habe.",
+      buttonText: "Bestätigen und abschließen"
     }
   }
 ];

@@ -38,14 +38,14 @@ const Dashboard: React.FC = () => {
   return (
     <ProtectedRoute>
       <StripeProvider>
-      <div className="flex">
+      <div className="flex h-screen">
         {/* Sidebar */}
-        <div className={`fixed md:static z-10 ${showSidebar ? 'block' : 'hidden md:block'}`}>
+        <div className={`fixed md:static z-10 h-full ${showSidebar ? 'block' : 'hidden md:block'}`}>
           <Sidebar onClose={() => setShowSidebar(false)} />
         </div>
 
         {/* Main Content */}
-        <div className="flex-grow p-6">
+        <div className="flex-1 min-h-screen overflow-y-auto">
           {/* Mobile toggle button */}
           <button
             className="md:hidden mb-4 text-secondary"
@@ -53,7 +53,9 @@ const Dashboard: React.FC = () => {
           >
             {showSidebar ? "Close Sidebar" : "Open Sidebar"}
           </button>
-          {renderContent()}
+          <div className="p-6">
+            {renderContent()}
+          </div>
         </div>
       </div>
       </StripeProvider>

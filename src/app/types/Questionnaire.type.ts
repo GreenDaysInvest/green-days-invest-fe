@@ -3,39 +3,39 @@ import { User } from "./Auth.type";
 export interface QuestionOption {
   text: string;
   subtext?: string;
+  hasFollowUp?: boolean;
+  hasInput?: boolean;
   followUpQuestions?: {
     title: string;
-    options: Array<{
-      text: string;
-      subtext?: string;
-    }>;
+    type?: string;
+    options: QuestionOption[];
   };
-  hasInput?: boolean;
 }
 
 export interface Question {
   id: number;
   text: string;
+  type: 'radio' | 'checkbox' | 'textarea';
+  options?: QuestionOption[];
+  placeholder?: string;
+  maxLength?: number;
   subtext?: string;
-  options: QuestionOption[];
-  type: 'radio' | 'checkbox';
   followUpQuestions?: {
-    yes: {
+    yes?: {
       title: string;
-      type: 'checkbox';
-      options: Array<{
-        text: string;
-        subtext?: string;
-      }>;
+      type: string;
+      options: QuestionOption[];
     };
-    no: {
+    no?: {
       title: string;
-      type: 'checkbox';
-      options: Array<{
-        text: string;
-        subtext?: string;
-      }>;
+      type: string;
+      options: QuestionOption[];
     };
+  };
+  confirmation?: {
+    title: string;
+    text: string;
+    buttonText: string;
   };
 }
 
@@ -43,6 +43,7 @@ export interface Response {
   answer?: string;
   subAnswer?: string | string[];
   customInput?: string;
+  [key: string]: any; // Allow dynamic keys for follow-up answers
 }
 
 export interface QuestionnaireState {
@@ -52,6 +53,7 @@ export interface QuestionnaireState {
   questionnaireStatus: string;
   consent: { accepted: boolean };
   showFollowUp: boolean;
+  showFollowUpQuestions: boolean;
   selectedOption: string | null;
   customInput: string;
   selectedOptions: string[];

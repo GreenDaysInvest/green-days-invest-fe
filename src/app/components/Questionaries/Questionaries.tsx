@@ -5,7 +5,7 @@ import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 import { Question, Response, QuestionnaireState } from "@/app/types/Questionnaire.type";
-import { questions } from "./data/questions";
+import { questions, CONFIRMATION_NO_DISEASES, DISEASE_CONFIRMATION_QUESTIONS } from "./data/questions";
 import ProgressBar from "./components/ProgressBar";
 
 const StepQuestionnaire: React.FC = () => {
@@ -21,8 +21,12 @@ const StepQuestionnaire: React.FC = () => {
     showFollowUp: false,
     selectedOption: null,
     customInput: '',
-    selectedOptions: []
+    selectedOptions: [],
+    showFollowUpQuestions: false
   });
+
+  const [showDiseaseConfirmation, setShowDiseaseConfirmation] = useState(false);
+  const [selectedMainOption, setSelectedMainOption] = useState<string | null>(null);
 
   const totalSteps = questions.length;
 
@@ -37,14 +41,21 @@ const StepQuestionnaire: React.FC = () => {
         }
       } catch (error) {
         showErrorToast(tNotifications('errorQuestionnaireStatus'));
-        console.error("Error checking questionnaire submission status:", error);
       }
     };
 
     if (user?.id) checkQuestionnaireSubmission();
   }, [user?.id]);
 
-  const handleOptionSelect = (optionText: string) => {
+  const handleOptionSelect = (optionText: string, category?: string) => {
+    console.log('handleOptionSelect called with:', { optionText, category });
+    console.log('Current state:', {
+      currentStep: state.currentStep,
+      showFollowUp: state.showFollowUp,
+      showFollowUpQuestions: state.showFollowUpQuestions,
+      showDiseaseConfirmation
+    });
+
     if (state.currentStep === 2 && state.showFollowUp) {
       const currentResponse = state.responses[state.currentStep] || {};
       const currentSelections = currentResponse.subAnswer as string[] || [];
@@ -64,19 +75,119 @@ const StepQuestionnaire: React.FC = () => {
           selectedOptions: newSelections
         }));
       } else {
-        const newSelections = [...currentSelections, optionText];
+        // If user selects the confirmation of no diseases, clear other selections
+        if (optionText === CONFIRMATION_NO_DISEASES) {
+          setState(prev => ({
+            ...prev,
+            responses: {
+              ...prev.responses,
+              [prev.currentStep]: {
+                ...currentResponse,
+                answer: prev.responses[prev.currentStep]?.answer,
+                subAnswer: [optionText]
+              }
+            },
+            selectedOptions: [optionText],
+            currentStep: questions.length - 1 // Skip to the last step (textarea)
+          }));
+        } else {
+          const newSelections = [...currentSelections.filter(item => item !== CONFIRMATION_NO_DISEASES), optionText];
+          setState(prev => ({
+            ...prev,
+            responses: {
+              ...prev.responses,
+              [prev.currentStep]: {
+                ...currentResponse,
+                answer: prev.responses[prev.currentStep]?.answer,
+                subAnswer: newSelections
+              }
+            },
+            selectedOptions: newSelections
+          }));
+        }
+      }
+    } else if (state.showFollowUpQuestions && category) {
+      console.log('Handling follow-up question selection:', {
+        category,
+        optionText,
+        currentAnswers: state.responses[state.currentStep]
+      });
+      
+      const currentResponse = state.responses[state.currentStep] || {};
+      const responseKey = `${category}Answers`;
+      const currentAnswers = (currentResponse[responseKey] as string[]) || [];
+
+      if (currentAnswers.includes(optionText)) {
+        const newAnswers = currentAnswers.filter(item => item !== optionText);
         setState(prev => ({
           ...prev,
           responses: {
             ...prev.responses,
             [prev.currentStep]: {
               ...currentResponse,
-              answer: prev.responses[prev.currentStep]?.answer,
-              subAnswer: newSelections
+              [responseKey]: newAnswers
             }
-          },
-          selectedOptions: newSelections
+          }
         }));
+      } else {
+        const newAnswers = [...currentAnswers, optionText];
+        setState(prev => ({
+          ...prev,
+          responses: {
+            ...prev.responses,
+            [prev.currentStep]: {
+              ...currentResponse,
+              [responseKey]: newAnswers
+            }
+          }
+        }));
+      }
+    } else if (showDiseaseConfirmation) {
+      console.log('Handling disease confirmation selection:', {
+        optionText,
+        currentResponse: state.responses[state.currentStep]
+      });
+      
+      const currentResponse = state.responses[state.currentStep] || {};
+      const currentSelections = currentResponse.confirmationAnswers as string[] || [];
+      
+      if (currentSelections.includes(optionText)) {
+        const newSelections = currentSelections.filter(item => item !== optionText);
+        setState(prev => ({
+          ...prev,
+          responses: {
+            ...prev.responses,
+            [prev.currentStep]: {
+              ...currentResponse,
+              confirmationAnswers: newSelections
+            }
+          }
+        }));
+      } else {
+        if (optionText === CONFIRMATION_NO_DISEASES) {
+          setState(prev => ({
+            ...prev,
+            responses: {
+              ...prev.responses,
+              [prev.currentStep]: {
+                ...currentResponse,
+                confirmationAnswers: [optionText]
+              }
+            }
+          }));
+        } else {
+          const newSelections = [...currentSelections.filter(item => item !== CONFIRMATION_NO_DISEASES), optionText];
+          setState(prev => ({
+            ...prev,
+            responses: {
+              ...prev.responses,
+              [prev.currentStep]: {
+                ...currentResponse,
+                confirmationAnswers: newSelections
+              }
+            }
+          }));
+        }
       }
     } else {
       setState(prev => ({
@@ -85,7 +196,7 @@ const StepQuestionnaire: React.FC = () => {
           ...prev.responses,
           [prev.currentStep]: {
             answer: optionText,
-            subAnswer: []  
+            subAnswer: []
           }
         },
         selectedOption: optionText,
@@ -107,20 +218,152 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handleNext = () => {
+    console.log('handleNext called');
+    console.log('Current state before next:', {
+      currentStep: state.currentStep,
+      showFollowUp: state.showFollowUp,
+      showFollowUpQuestions: state.showFollowUpQuestions,
+      showDiseaseConfirmation,
+      responses: state.responses[state.currentStep]
+    });
+
     if (state.responses[state.currentStep]?.answer === "Andere nicht aufgeführte Haupterkrankung" && !state.customInput) {
       return;
     }
 
     if (state.currentStep === 2) {
-      const answer = state.responses[state.currentStep].answer;
-      if (answer === "Ja" || answer === "Nein") {
-        setState(prev => ({ ...prev, showFollowUp: true, selectedOption: answer }));
+      if (!state.responses[state.currentStep]?.answer && state.selectedOptions.length > 0) {
+        setState(prev => ({
+          ...prev,
+          responses: {
+            ...prev.responses,
+            [prev.currentStep]: {
+              ...prev.responses[prev.currentStep],
+              answer: prev.responses[prev.currentStep]?.answer,
+              subAnswer: state.selectedOptions
+            }
+          }
+        }));
+        return;
       }
-    } else if (state.showFollowUp) {
-      setState(prev => ({ ...prev, showFollowUp: false, selectedOption: null }));
-      if (state.currentStep < questions.length - 1) {
-        setState(prev => ({ ...prev, currentStep: prev.currentStep + 1 }));
+
+      const answer = state.responses[state.currentStep]?.answer;
+      
+      if (answer === "Ja" || answer === "Nein") {
+        if (!state.showFollowUp) {
+          setState(prev => ({ ...prev, showFollowUp: true, selectedOption: answer }));
+        } else {
+          const selectedOptionsWithFollowUp = questions[2].followUpQuestions?.yes.options.filter(
+            opt => opt.hasFollowUp && state.selectedOptions.includes(opt.text)
+          ) || [];
+
+          if (selectedOptionsWithFollowUp.length > 0) {
+            setState(prev => ({
+              ...prev,
+              showFollowUpQuestions: true,
+              showFollowUp: false
+            }));
+          } else {
+            setState(prev => ({ 
+              ...prev, 
+              showFollowUp: false, 
+              selectedOption: null,
+              currentStep: prev.currentStep < questions.length - 1 ? prev.currentStep + 1 : prev.currentStep
+            }));
+            if (state.currentStep === questions.length - 1) {
+              handleSubmit();
+            }
+          }
+        }
+      }
+    } else if (state.showFollowUpQuestions) {
+      console.log('Checking for disease confirmation questions');
+      console.log('Full questions data:', questions[2].followUpQuestions?.yes.options);
+      console.log('Full current state:', state);
+      console.log('Current step responses:', state.responses[state.currentStep]);
+      
+      // Get all selected options for the current category
+      const selectedCategories = Object.keys(state.responses[state.currentStep] || {})
+        .filter(key => key.endsWith('Answers'))
+        .map(key => key.replace('Answers', ''));
+
+      console.log('Selected categories:', selectedCategories);
+
+      let hasConfirmationQuestions = false;
+      let selectedOptionWithConfirmation = null;
+
+      // Check each category's selected options for confirmation questions
+      for (const category of selectedCategories) {
+        const mainOption = questions[2].followUpQuestions?.yes.options
+          .find(opt => opt.text === category);
+        
+        console.log('Checking category:', category);
+        console.log('Found main option:', mainOption);
+        console.log('Main option followUpQuestions:', mainOption?.followUpQuestions);
+
+        if (mainOption?.followUpQuestions?.options) {
+          const categoryAnswers = state.responses[state.currentStep][`${category}Answers`] || [];
+          console.log('Category answers:', categoryAnswers);
+
+          // Log all options that have followUp questions
+          console.log('Options with followUp:', mainOption.followUpQuestions.options
+            .filter(opt => opt.hasFollowUp)
+            .map(opt => opt.text));
+
+          for (const answer of categoryAnswers) {
+            console.log('Checking answer:', answer);
+            const option = mainOption.followUpQuestions.options
+              .find(opt => opt.text === answer);
+            
+            console.log('Found option:', option);
+            console.log('Option has followUp:', option?.hasFollowUp);
+            console.log('Option followUpQuestions:', option?.followUpQuestions);
+            
+            if (option?.hasFollowUp) {
+              hasConfirmationQuestions = true;
+              selectedOptionWithConfirmation = answer;
+              break;
+            }
+          }
+        }
+
+        if (hasConfirmationQuestions) break;
+      }
+
+      console.log('Final check results:', {
+        hasConfirmationQuestions,
+        selectedOptionWithConfirmation,
+        showFollowUpQuestions: state.showFollowUpQuestions,
+        showDiseaseConfirmation
+      });
+      
+      if (hasConfirmationQuestions) {
+        console.log('Setting disease confirmation to true');
+        setSelectedMainOption(selectedOptionWithConfirmation);
+        setShowDiseaseConfirmation(true);
+        setState(prev => ({
+          ...prev,
+          showFollowUpQuestions: false
+        }));
       } else {
+        console.log('Moving to next step - no confirmation needed');
+        setState(prev => ({ 
+          ...prev, 
+          showFollowUpQuestions: false,
+          currentStep: prev.currentStep < questions.length - 1 ? prev.currentStep + 1 : prev.currentStep
+        }));
+        if (state.currentStep === questions.length - 1) {
+          handleSubmit();
+        }
+      }
+    } else if (showDiseaseConfirmation) {
+      console.log('Handling next after disease confirmation');
+      setShowDiseaseConfirmation(false);
+      setState(prev => ({ 
+        ...prev, 
+        currentStep: prev.currentStep < questions.length - 1 ? prev.currentStep + 1 : prev.currentStep
+      }));
+      if (state.currentStep === questions.length - 1) {
         handleSubmit();
       }
     } else {
@@ -133,8 +376,17 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handlePrev = () => {
-    if (state.showFollowUp) {
+    if (state.showFollowUpQuestions) {
+      setState(prev => ({
+        ...prev,
+        showFollowUpQuestions: false,
+        showFollowUp: true
+      }));
+    } else if (state.showFollowUp) {
       setState(prev => ({ ...prev, showFollowUp: false, selectedOption: null }));
+    } else if (showDiseaseConfirmation) {
+      setShowDiseaseConfirmation(false);
+      setState(prev => ({ ...prev, showFollowUpQuestions: true }));
     } else if (state.currentStep >= 0) {
       setState(prev => ({ ...prev, currentStep: prev.currentStep - 1 }));
     }
@@ -148,13 +400,11 @@ const StepQuestionnaire: React.FC = () => {
       setState(prev => ({ ...prev, hasSubmitted: true }));
     } catch (error) {
       showErrorToast(tNotifications('errorSubmitingQuestionnaire'));
-      console.error("Error submitting questionnaire:", error);
     }
   };
 
   const handleClose = () => {
     if (window.confirm(t('confirmClose'))) {
-      // Reset the questionnaire state
       setState({
         currentStep: -1,
         responses: {},
@@ -164,7 +414,8 @@ const StepQuestionnaire: React.FC = () => {
         showFollowUp: false,
         selectedOption: null,
         customInput: '',
-        selectedOptions: []
+        selectedOptions: [],
+        showFollowUpQuestions: false
       });
     }
   };
@@ -217,8 +468,144 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderQuestion = () => {
+    console.log('renderQuestion called');
+    console.log('Render state:', {
+      currentStep: state.currentStep,
+      showFollowUp: state.showFollowUp,
+      showFollowUpQuestions: state.showFollowUpQuestions,
+      showDiseaseConfirmation,
+      selectedMainOption
+    });
+
     const currentQuestion = questions[state.currentStep];
     const isMainConditionQuestion = state.currentStep === 1;
+
+    if (!currentQuestion) return null;
+
+    if (showDiseaseConfirmation) {
+      console.log('Rendering disease confirmation questions');
+      return (
+        <div className="space-y-8">
+          <h3 className="text-secondary font-semibold text-lg">{DISEASE_CONFIRMATION_QUESTIONS.title}</h3>
+          <div className="space-y-3">
+            {DISEASE_CONFIRMATION_QUESTIONS.options.map((option, idx) => (
+              <div key={idx}>
+                <button
+                  onClick={() => handleOptionSelect(option.text)}
+                  className={`w-full text-left p-4 rounded-lg border ${
+                    state.responses[state.currentStep]?.confirmationAnswers?.includes(option.text)
+                      ? 'border-secondary bg-secondary/5'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-start">
+                    <div className={`w-5 h-5 mt-0.5 border rounded ${
+                      state.responses[state.currentStep]?.confirmationAnswers?.includes(option.text)
+                        ? 'border-secondary bg-secondary'
+                        : 'border-gray-300'
+                    }`}>
+                      {state.responses[state.currentStep]?.confirmationAnswers?.includes(option.text) && (
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-secondary text-lg font-semibold ml-3">{option.text}</span>
+                  </div>
+                  {option.subtext && (
+                    <span className="block ml-8 mt-1 text-sm text-gray-500">{option.subtext}</span>
+                  )}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (state.showFollowUpQuestions) {
+      const selectedOptionsWithFollowUp = questions[2].followUpQuestions?.yes.options.filter(
+        opt => opt.hasFollowUp && state.selectedOptions.includes(opt.text)
+      ) || [];
+
+      return (
+        <div className="space-y-8">
+          {selectedOptionsWithFollowUp.map((option, index) => (
+            <div key={index} className="space-y-4">
+              <h3 className="text-secondary font-semibold text-lg">{option.followUpQuestions?.title}</h3>
+              <div className="space-y-3">
+                {option.followUpQuestions?.options.map((followUpOption, idx) => (
+                  <div key={idx}>
+                    <button
+                      onClick={() => handleOptionSelect(followUpOption.text, option.text)}
+                      className={`w-full text-left p-4 rounded-lg border ${
+                        state.responses[state.currentStep]?.[`${option.text}Answers`]?.includes(followUpOption.text)
+                          ? 'border-secondary bg-secondary/5'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-start">
+                        <div className={`w-5 h-5 mt-0.5 border rounded ${
+                          state.responses[state.currentStep]?.[`${option.text}Answers`]?.includes(followUpOption.text)
+                            ? 'border-secondary bg-secondary'
+                            : 'border-gray-300'
+                        }`}>
+                          {state.responses[state.currentStep]?.[`${option.text}Answers`]?.includes(followUpOption.text) && (
+                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className="text-secondary text-lg font-semibold ml-3">{followUpOption.text}</span>
+                      </div>
+                      {followUpOption.subtext && (
+                        <span className="block ml-8 mt-1 text-sm text-gray-500">{followUpOption.subtext}</span>
+                      )}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    if (currentQuestion.type === 'textarea') {
+      return (
+        <div className="space-y-6">
+        
+          {currentQuestion.confirmation && (
+            <div className="mt-8 space-y-4">
+              <h3 className="font-semibold text-lg">{currentQuestion.confirmation.title}</h3>
+              <p className="text-gray-600">{currentQuestion.confirmation.text}</p>
+              <textarea
+                value={state.responses[state.currentStep]?.answer || ''}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length <= currentQuestion.maxLength!) {
+                    setState(prev => ({
+                      ...prev,
+                      responses: {
+                        ...prev.responses,
+                        [prev.currentStep]: {
+                          answer: value
+                        }
+                      }
+                    }));
+                  }
+                }}
+                placeholder={currentQuestion.placeholder}
+                className="w-full h-40 p-4 border border-gray-200 rounded-lg focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              />
+              <div className="flex justify-end text-sm text-gray-500">
+                {(state.responses[state.currentStep]?.answer || '').length}/{currentQuestion.maxLength}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
 
     if (state.showFollowUp) {
       if (state.currentStep === 2) {
@@ -315,7 +702,7 @@ const StepQuestionnaire: React.FC = () => {
             <p className="text-sm text-gray-600 mb-6">{currentQuestion.subtext}</p>
           )}
           <div className="space-y-3">
-            {currentQuestion.options.map((option, index) => (
+            {currentQuestion?.options?.map((option, index) => (
               <div key={index}>
                 <button
                   onClick={() => handleOptionSelect(option.text)}
@@ -359,33 +746,39 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-10 px-4 mx-auto">
-      <ProgressBar 
-        currentStep={state.currentStep + 2} 
-        onClose={handleClose}
-        onPrev={handlePrev}
-      />
+    <div className="flex flex-col h-full">
+      <div className="sticky top-0 z-10 bg-white">
+        <ProgressBar 
+          currentStep={state.currentStep + 2} 
+          onClose={handleClose}
+          onPrev={handlePrev}
+        />
+      </div>
 
-      {state.currentStep === -1 ? renderConsentStep() : (
-        <div className="w-full max-w-2xl mt-8">
-          {renderQuestion()}
-          <div className="flex justify-end w-full mt-8">
-            <button
-              onClick={handleNext}
-              className="px-6 py-3 bg-secondary text-white rounded-lg flex items-center"
-            >
-              {state.currentStep === questions.length - 1 && !state.showFollowUp ? t("finish") : (
-                <>
-                  {t("next")}
-                  <svg className="ml-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </>
-              )}
-            </button>
-          </div>
+      <div className="flex-1 overflow-y-auto py-10 px-4">
+        <div className="max-w-2xl mx-auto">
+          {state.currentStep === -1 ? renderConsentStep() : (
+            <div className="w-full">
+              {renderQuestion()}
+              <div className="flex justify-end w-full mt-8">
+                <button
+                  onClick={handleNext}
+                  className="px-6 py-3 bg-secondary text-white rounded-lg flex items-center"
+                >
+                  {state.currentStep === questions.length - 1 && !state.showFollowUp && !state.showFollowUpQuestions && !showDiseaseConfirmation ? t("buttons.finish") : (
+                    <>
+                      {t("buttons.next")}
+                      <svg className="ml-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
