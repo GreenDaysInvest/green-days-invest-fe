@@ -17,6 +17,7 @@ export interface Question {
   type: 'radio' | 'checkbox' | 'textarea' | 'confirmation';
   options?: QuestionOption[];
   isAlternativeFlow?: boolean;
+  isOptional?: boolean;
 }
 
 export interface SubQuestion {

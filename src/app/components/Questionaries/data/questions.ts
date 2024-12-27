@@ -306,5 +306,12 @@ export const questions: Question[] = [
       { text: "Ja" },
       { text: "Nein" }
     ]
+  },
+  {
+    id: 16,
+    text: "Hast Du weitere Relevante Informationen?",
+    type: "textarea",
+    isOptional: true,
+    options: []
   }
 ];

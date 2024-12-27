@@ -8,6 +8,7 @@ import { questions, subQuestions } from "./data/questions";
 import ProgressBar from "./components/ProgressBar";
 import { showInfoToast } from "@/app/utils/toast";
 import { useAuth } from "@/app/context/AuthContext";
+import QuestionnaireService from '@/app/services/questionnaireService';
 
 const STORAGE_KEY = 'questionnaire_state';
 
@@ -180,15 +181,6 @@ const StepQuestionnaire: React.FC = () => {
         return;
       }
 
-      // Check if percentage input is required but missing
-      // const selectedOption = currentQuestion.options?.find(opt => 
-      //   opt.hasInput && opt.inputType === 'number' && state.selectedOptions.includes(opt.text)
-      // );
-      // if (selectedOption && !state.responses[state.currentStep]?.inputValue) {
-      //   showInfoToast('Bitte geben Sie den Prozentsatz ein');
-      //   return;
-      // }
-
       // Move to next step
       setState(prev => ({ 
         ...prev,
@@ -200,15 +192,15 @@ const StepQuestionnaire: React.FC = () => {
     // For radio type questions, check for required percentage input
   // For radio type questions with percentage input
     if (currentQuestion.type === 'radio' && currentQuestion.options) {
-      const selectedOption = currentQuestion.options.find(opt => 
-        opt.text === "Ja"
+      const selectedOption = currentQuestion.options?.find(opt => 
+        opt.hasInput && opt.inputType === 'number' && state.selectedOptions.includes(opt.text)
       );
-      
-      console.log('Selected option:', selectedOption);
+      console.log('test Selected option:', selectedOption);
+      console.log('test state:', state);
       
       if (selectedOption?.hasInput && selectedOption?.inputType === 'number') {
         const inputValue = state.responses[state.currentStep]?.inputValue;
-        console.log('Input value:', inputValue);
+        console.log('test Input value:', inputValue);
         
         if (!inputValue && inputValue !== 0) {
           showInfoToast('Bitte geben Sie den Prozentsatz ein');
@@ -247,10 +239,52 @@ const StepQuestionnaire: React.FC = () => {
       return;
     }
 
-    // Move to next question if it exists
-    const nextQuestionIndex = state.currentStep + 1;
-    if (questions[nextQuestionIndex - 1]) {
-      setState(prev => ({ ...prev, currentStep: nextQuestionIndex }));
+    // Skip validation for optional questions
+    if (!currentQuestion.isOptional) {
+      if (state.selectedOptions.length === 0 && currentQuestion.type !== 'textarea') {
+        showInfoToast('Bitte wählen Sie mindestens eine Option aus');
+        return;
+      }
+    }
+
+    // If this is the last question, submit the questionnaire
+    if (state.currentStep === questions.length) {
+      submitQuestionnaire();
+      return;
+    }
+
+    // Move to next step
+    setState(prev => ({ 
+      ...prev,
+      currentStep: prev.currentStep + 1,
+      showingSubQuestions: false
+    }));
+  };
+
+  const submitQuestionnaire = async () => {
+    try {
+      const formattedQuestions = {
+        questions: Object.entries(state.responses).map(([step, response]) => ({
+          id: questions[Number(step) - 1].id,
+          text: questions[Number(step) - 1].text,
+          answer: response.answer,
+          inputValue: response.inputValue,
+          subResponses: response.subResponses
+        }))
+      };
+
+      // await QuestionnaireService.createQuestionnaire(formattedQuestions);
+
+      // Show success message and redirect
+      showInfoToast('Fragebogen erfolgreich eingereicht');
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Error submitting questionnaire:', error);
+      if (error instanceof Error) {
+        showInfoToast(error.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+      } else {
+        showInfoToast('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+      }
     }
   };
 
@@ -343,16 +377,23 @@ const StepQuestionnaire: React.FC = () => {
   const handleOptionSelect = (optionText: string) => {
     console.log('handleOptionSelect called with:', optionText);
     
+    const currentQuestion = questions[state.currentStep - 1];
+    const selectedOption = currentQuestion.options?.find(opt => opt.text === optionText);
+    
     setState(prev => ({
       ...prev,
       responses: {
         ...prev.responses,
         [prev.currentStep]: {
+          ...prev.responses[prev.currentStep],
           answer: optionText,
-          customInput: prev.customInput
+          customInput: prev.customInput,
+          // Clear input value if selecting an option without input
+          inputValue: selectedOption?.hasInput ? prev.responses[prev.currentStep]?.inputValue : undefined
         }
       },
       selectedOption: optionText,
+      selectedOptions: [optionText],
       customInput: ""
     }));
   };
@@ -373,7 +414,6 @@ const StepQuestionnaire: React.FC = () => {
         ...prev.responses,
         [prev.currentStep]: {
           ...prev.responses[prev.currentStep],
-          answer: prev.selectedOptions,
           inputValue: value
         }
       }
@@ -450,7 +490,7 @@ const StepQuestionnaire: React.FC = () => {
                           type="text"
                           value={
                             state.responses[state.currentStep]?.subResponses?.[optionText]
-                              ?.customInput || ''
+                              ?.answers?.[0] || ''
                           }
                           onChange={(e) =>
                             setState((prev) => ({
@@ -465,7 +505,7 @@ const StepQuestionnaire: React.FC = () => {
                                       ...prev.responses[prev.currentStep]?.subResponses?.[
                                         optionText
                                       ],
-                                      customInput: e.target.value,
+                                      answers: [e.target.value],
                                     },
                                   },
                                 },
@@ -571,6 +611,28 @@ const StepQuestionnaire: React.FC = () => {
 
     if (currentQuestion.type === 'checkbox') {
       return renderCheckboxQuestion(currentQuestion);
+    }
+
+    if (currentQuestion.type === 'textarea') {
+      return (
+        <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-semibold">{currentQuestion.text}</h2>
+          <textarea
+            value={state.responses[state.currentStep]?.answer || ''}
+            onChange={(e) => setState(prev => ({
+              ...prev,
+              responses: {
+                ...prev.responses,
+                [prev.currentStep]: {
+                  answer: e.target.value
+                }
+              }
+            }))}
+            placeholder="Optional: Geben Sie hier weitere Informationen ein"
+            className="w-full h-32 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-secondary resize-none"
+          />
+        </div>
+      );
     }
 
     return (
