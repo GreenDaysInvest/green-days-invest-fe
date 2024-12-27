@@ -18,7 +18,8 @@ const initialState: QuestionnaireState = {
   customInput: "",
   isAlternativeFlow: false,
   selectedOptions: [],
-  currentSubQuestion: undefined
+  currentSubQuestion: undefined,
+  showingSubQuestions: false
 };
 
 const StepQuestionnaire: React.FC = () => {
@@ -111,15 +112,11 @@ const StepQuestionnaire: React.FC = () => {
     });
 
     if (state.currentStep === 0) {
-      if (isAccepted) {
-        setState(prev => ({ ...prev, currentStep: prev.currentStep + 1 }));
-      } else {
-        setState(prev => ({ 
-          ...prev, 
-          currentStep: questions.findIndex(q => q.isAlternativeFlow) + 1,
-          isAlternativeFlow: true 
-        }));
+      if (!isAccepted) {
+        showInfoToast('Bitte akzeptieren Sie die Einwilligung zur Datenverarbeitung');
+        return;
       }
+      setState(prev => ({ ...prev, currentStep: prev.currentStep + 1 }));
       return;
     }
 
@@ -134,10 +131,36 @@ const StepQuestionnaire: React.FC = () => {
         return;
       }
 
-      // Move to next step to show all sub-questions
+      // For question 5, check if we're showing subquestions
+      if (state.currentStep === 5) {
+        if (!state.showingSubQuestions) {
+          // First click: Show subquestions
+          setState(prev => ({ 
+            ...prev,
+            showingSubQuestions: true
+          }));
+          return;
+        } else {
+          // Second click: Check if all subquestions are answered
+          const hasAllSubResponses = state.selectedOptions.every(option => {
+            const subQuestion = subQuestions[option as keyof typeof subQuestions];
+            if (!subQuestion) return true; // Skip if no subquestions defined
+            const responses = state.responses[state.currentStep]?.subResponses?.[option]?.answers;
+            return responses && responses.length > 0;
+          });
+
+          if (!hasAllSubResponses) {
+            showInfoToast('Bitte beantworten Sie alle Unterfragen');
+            return;
+          }
+        }
+      }
+
+      // Move to next step
       setState(prev => ({ 
         ...prev,
-        currentStep: prev.currentStep + 1
+        currentStep: prev.currentStep + 1,
+        showingSubQuestions: false
       }));
       return;
     }
@@ -152,20 +175,18 @@ const StepQuestionnaire: React.FC = () => {
       return;
     }
 
-    // Check for redirections
-    if (state.currentStep === 3) {
-      const selectedOption = questions[2].options?.find(
-        opt => opt.text === state.responses[3]?.answer
-      );
-      
-      if (selectedOption?.redirectToConfirmation) {
-        setState(prev => ({ 
-          ...prev, 
-          currentStep: questions.findIndex(q => q.isAlternativeFlow) + 1,
-          isAlternativeFlow: true 
-        }));
-        return;
-      }
+    // Check for redirections to other diseases question
+    const selectedOption = questions[state.currentStep - 1].options?.find(
+      opt => opt.text === state.responses[state.currentStep]?.answer
+    );
+    
+    if (selectedOption?.redirectToOtherDiseases) {
+      setState(prev => ({ 
+        ...prev, 
+        currentStep: 6, // Question 6 is the other diseases question
+        isAlternativeFlow: true 
+      }));
+      return;
     }
 
     // Move to next question if it exists
@@ -216,9 +237,34 @@ const StepQuestionnaire: React.FC = () => {
     console.log('handleCheckboxChange called with:', optionText);
     
     setState(prev => {
-      const newSelectedOptions = prev.selectedOptions.includes(optionText)
-        ? prev.selectedOptions.filter(opt => opt !== optionText)
-        : [...prev.selectedOptions, optionText];
+      let newSelectedOptions;
+
+      // Special handling for question 6
+      if (state.currentStep === 6) {
+        const isFirstOption = optionText === "Hiermit bestätige ich an keiner der genannten Erkrankungen zu leiden";
+        
+        if (isFirstOption) {
+          // If clicking first option, clear all other selections
+          newSelectedOptions = [optionText];
+        } else {
+          // If clicking other options
+          const hasFirstOption = prev.selectedOptions.includes("Hiermit bestätige ich an keiner der genannten Erkrankungen zu leiden");
+          if (hasFirstOption) {
+            // If first option was selected, remove it and add the new option
+            newSelectedOptions = [optionText];
+          } else {
+            // Normal toggle behavior for other options
+            newSelectedOptions = prev.selectedOptions.includes(optionText)
+              ? prev.selectedOptions.filter(opt => opt !== optionText)
+              : [...prev.selectedOptions, optionText];
+          }
+        }
+      } else {
+        // Normal behavior for other questions
+        newSelectedOptions = prev.selectedOptions.includes(optionText)
+          ? prev.selectedOptions.filter(opt => opt !== optionText)
+          : [...prev.selectedOptions, optionText];
+      }
       
       console.log('New selected options:', newSelectedOptions);
       
@@ -228,7 +274,8 @@ const StepQuestionnaire: React.FC = () => {
         responses: {
           ...prev.responses,
           [prev.currentStep]: {
-            answer: newSelectedOptions
+            answer: newSelectedOptions,
+            subResponses: prev.responses[prev.currentStep]?.subResponses || {}
           }
         }
       };
@@ -419,7 +466,6 @@ const StepQuestionnaire: React.FC = () => {
       </div>
     );
   };
-  
 
   const renderQuestion = () => {
     console.log('renderQuestion called. State:', {
@@ -435,12 +481,10 @@ const StepQuestionnaire: React.FC = () => {
     const currentQuestion = questions[state.currentStep - 1];
     if (!currentQuestion) return null;
 
-    if (currentQuestion.type === 'confirmation' && state.isAlternativeFlow) {
-      return renderConfirmation();
-    }
-
-    // If we're in the step after checkbox selections, show all sub-questions
-    if (state.currentStep === 5 && state.selectedOptions.length > 0) {
+    console.log(state,"state")
+    
+    // If we're in question 5 and showing subquestions
+    if (state.currentStep === 5 && state.showingSubQuestions && state.selectedOptions.length > 0) {
       return renderSubQuestions();
     }
 
@@ -523,7 +567,7 @@ const StepQuestionnaire: React.FC = () => {
       <div className="flex flex-col items-center py-10 px-4 max-w-2xl mx-auto">
         <div className="space-y-8">
           <h2 className="text-2xl font-semibold text-secondary mb-8">
-            Wurdest du bereits mit med. Cannabis durch eine Verschreibung von einem Arzt behandelt?
+            Einwilligung zur Datenverarbeitung
           </h2>
           <div className="w-full text-secondary border border-1 border-secondary p-4 rounded-lg flex items-center justify-between mb-8">
             <span>Hiermit willige ich der Verarbeitung meiner besonderen personenbezogenen Daten ein</span>
@@ -539,30 +583,11 @@ const StepQuestionnaire: React.FC = () => {
           </div>
           <button
             onClick={handleNext}
-            className="px-4 py-2 bg-secondary text-white rounded-lg w-full"
+            className={`px-4 py-2 text-white rounded-lg w-full ${
+              isAccepted ? 'bg-secondary hover:bg-secondary/90' : 'bg-gray-300 cursor-not-allowed'
+            }`}
           >
             Weiter
-          </button>
-        </div>
-      </div>
-    );
-  };
-
-  const renderConfirmation = () => {
-    return (
-      <div className="flex flex-col items-center py-10 px-4 max-w-2xl mx-auto">
-        <div className="space-y-8">
-          <h2 className="text-2xl font-semibold text-secondary mb-8">
-            {questions.find(q => q.isAlternativeFlow)?.text}
-          </h2>
-          <div className="w-full text-secondary border border-1 border-secondary p-4 rounded-lg">
-            <p>List of conditions to confirm...</p>
-          </div>
-          <button
-            onClick={handleNext}
-            className="px-4 py-2 bg-secondary text-white rounded-lg w-full"
-          >
-            Bestätigen
           </button>
         </div>
       </div>

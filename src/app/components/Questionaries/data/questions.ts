@@ -92,6 +92,15 @@ export const subQuestions = {
 export const questions: Question[] = [
   {
     id: 1,
+    text: "Wurdest du bereits mit med. Cannabis durch eine Verschreibung von einem Arzt behandelt?",
+    type: "radio",
+    options: [
+      { text: "Ja" },
+      { text: "Nein", hasFollowUp: true, redirectToOtherDiseases: true }
+    ]
+  },
+  {
+    id: 2,
     text: "In Welche Kategorie gehört deine Erkrankung? Falls diese nicht aufgeführt ist, was ist deine Haupterkrankung?",
     type: "radio",
     options: [
@@ -109,7 +118,7 @@ export const questions: Question[] = [
     ]
   },
   {
-    id: 2,
+    id: 3,
     text: "",
     type: "radio",
     options: [
@@ -132,16 +141,16 @@ export const questions: Question[] = [
     ]
   },
   {
-    id: 3,
+    id: 4,
     text: "Leidest du neben deiner Haupterkrankung an weiteren Krankheiten oder Allergien?",
     type: "radio",
     options: [
       { text: "Ja", hasFollowUp: true },
-      { text: "Nein", redirectToConfirmation: true }
+      { text: "Nein", redirectToOtherDiseases: true }
     ]
   },
   {
-    id: 4,
+    id: 5,
     text: "Welche weiteren Erkrankungen hast du?",
     type: "checkbox",
     options: [
@@ -157,9 +166,28 @@ export const questions: Question[] = [
     ]
   },
   {
-    id: 5,
-    text: "Bitte bestätige an keiner der folgenden Erkrankungen zu leiden",
-    type: "confirmation",
-    isAlternativeFlow: true
+    id: 6,
+    text: "Bitte bestätige an keiner der folgenden Erkrankungen zu leiden ODER wähle die Erkrankung aus, sofern Sie auf dich zutrit.",
+    type: "checkbox",
+    isAlternativeFlow: true,
+    options: [
+      { 
+        text: "Hiermit bestätige ich an keiner der genannten Erkrankungen zu leiden",
+        hasFollowUp: false
+      },
+      { 
+        text: "Psychose",
+        subtext: "(Schizophrenie, Wahnvorstellungen, Halluzinationen)"
+      },
+      { text: "Persönlichkeitsstörung" },
+      { text: "Bipolare Störung" },
+      { text: "Suchterkrankung" },
+      { text: "Schwere Leber- oder Nierenerkrankung" },
+      { text: "Allergie gegen THC/CBD-haltige Produkte" },
+      { 
+        text: "Herzkrankheit",
+        subtext: "Herzinsuzienz, Herzrhythmusstörung"
+      }
+    ]
   }
 ];

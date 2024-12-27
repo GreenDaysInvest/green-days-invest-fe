@@ -10,7 +10,7 @@ export interface Question {
     hasInput?: boolean;
     hasFollowUp?: boolean;
     hasSubQuestions?: boolean;
-    redirectToConfirmation?: boolean;
+    redirectToOtherDiseases?: boolean;
   }>;
   isAlternativeFlow?: boolean;
 }
@@ -48,6 +48,7 @@ export interface QuestionnaireState {
   isAlternativeFlow: boolean;
   selectedOptions: any[];
   currentSubQuestion?: string;
+  showingSubQuestions: boolean;
 }
 
 export interface CreateQuestionnaireRequest {
