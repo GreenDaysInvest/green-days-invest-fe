@@ -1,62 +1,53 @@
 import { User } from "./Auth.type";
 
-export interface QuestionOption {
-  text: string;
-  subtext?: string;
-  hasFollowUp?: boolean;
-  hasInput?: boolean;
-  followUpQuestions?: {
-    title: string;
-    type?: string;
-    options: QuestionOption[];
-  };
-}
-
 export interface Question {
   id: number;
   text: string;
-  type: 'radio' | 'checkbox' | 'textarea';
-  options?: QuestionOption[];
-  placeholder?: string;
-  maxLength?: number;
-  subtext?: string;
-  followUpQuestions?: {
-    yes?: {
-      title: string;
-      type: string;
-      options: QuestionOption[];
-    };
-    no?: {
-      title: string;
-      type: string;
-      options: QuestionOption[];
-    };
-  };
-  confirmation?: {
-    title: string;
+  type: 'radio' | 'checkbox' | 'textarea' | 'confirmation';
+  options?: Array<{
     text: string;
-    buttonText: string;
-  };
+    subtext?: string;
+    hasInput?: boolean;
+    hasFollowUp?: boolean;
+    hasSubQuestions?: boolean;
+    redirectToConfirmation?: boolean;
+  }>;
+  isAlternativeFlow?: boolean;
+}
+
+export interface SubQuestion {
+  text: string;
+  options: Array<{
+    text: string;
+    subtext?: string;
+    hasInput?: boolean;
+  }>;
 }
 
 export interface Response {
-  answer?: string;
-  subAnswer?: string | string[];
+  answer: string | string[];
   customInput?: string;
-  [key: string]: any; // Allow dynamic keys for follow-up answers
 }
 
 export interface QuestionnaireState {
   currentStep: number;
-  responses: { [key: number]: Response };
-  hasSubmitted: boolean;
-  questionnaireStatus: string;
-  consent: { accepted: boolean };
-  showFollowUp: boolean;
-  showFollowUpQuestions: boolean;
+  responses: {
+    [key: number]: {
+      answer: string | string[];
+      customInput?: string;
+      subResponses?: {
+        [key: string]: {
+          answers: string[];
+          customInput?: string;
+        };
+      };
+    };
+  };
   selectedOption: string | null;
   customInput: string;
-  selectedOptions: string[];
+  isAlternativeFlow: boolean;
+  selectedOptions: any[];
+  currentSubQuestion?: string;
 }
 
 export interface CreateQuestionnaireRequest {
