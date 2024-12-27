@@ -421,8 +421,25 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderSubQuestions = () => {
-    console.log('Rendering all sub-questions for selected options:', state.selectedOptions);
-  
+    console.log('Current Step:', state.currentStep);
+    console.log('Selected Options:', state.selectedOptions);
+    console.log('Current Step Responses:', state.responses[state.currentStep]);
+    console.log('SubResponses:', state.responses[state.currentStep]?.subResponses);
+    
+    // Check each selected option's answers
+    state.selectedOptions.forEach(opt => {
+      console.log(`Checking answers for option "${opt}":`, {
+        answers: state.responses[state.currentStep]?.subResponses?.[opt]?.answers,
+        length: state.responses[state.currentStep]?.subResponses?.[opt]?.answers?.length || 0
+      });
+    });
+
+    // Log the final condition result
+    const isEnabled = state.selectedOptions.every(
+      (opt) => (state.responses[state.currentStep]?.subResponses?.[opt]?.answers?.length || 0) > 0
+    );
+    console.log('Is Next Button Enabled:', isEnabled);
+
     return (
       <div className="space-y-12">
         {state.selectedOptions.map((optionText, index) => {
@@ -492,26 +509,43 @@ const StepQuestionnaire: React.FC = () => {
                             state.responses[state.currentStep]?.subResponses?.[optionText]
                               ?.answers?.[0] || ''
                           }
-                          onChange={(e) =>
-                            setState((prev) => ({
-                              ...prev,
-                              responses: {
-                                ...prev.responses,
-                                [prev.currentStep]: {
-                                  ...prev.responses[prev.currentStep],
-                                  subResponses: {
-                                    ...prev.responses[prev.currentStep]?.subResponses,
-                                    [optionText]: {
-                                      ...prev.responses[prev.currentStep]?.subResponses?.[
-                                        optionText
-                                      ],
-                                      answers: [e.target.value],
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            console.log('Input Change:', {
+                              optionText,
+                              newValue,
+                              currentStep: state.currentStep
+                            });
+                            
+                            setState((prev) => {
+                              const newState = {
+                                ...prev,
+                                responses: {
+                                  ...prev.responses,
+                                  [prev.currentStep]: {
+                                    ...prev.responses[prev.currentStep],
+                                    subResponses: {
+                                      ...prev.responses[prev.currentStep]?.subResponses,
+                                      [optionText]: {
+                                        ...prev.responses[prev.currentStep]?.subResponses?.[
+                                          optionText
+                                        ],
+                                        answers: [newValue],
+                                      },
                                     },
                                   },
                                 },
-                              },
-                            }))
-                          }
+                              };
+                              
+                              console.log('New State:', {
+                                responses: newState.responses[prev.currentStep],
+                                subResponses: newState.responses[prev.currentStep]?.subResponses,
+                                answers: newState.responses[prev.currentStep]?.subResponses?.[optionText]?.answers
+                              });
+                              
+                              return newState;
+                            });
+                          }}
                           placeholder="Bitte spezifizieren Sie"
                           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-secondary"
                         />
@@ -528,59 +562,33 @@ const StepQuestionnaire: React.FC = () => {
             onClick={handlePrev}
             className="px-6 py-3 border border-secondary text-secondary rounded-lg flex items-center"
           >
-            <svg
-              className="mr-2"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15 19L8 12L15 5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg className="mr-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 19L8 12L15 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             {t('buttons.back')}
           </button>
           <button
             onClick={handleNext}
             disabled={
-              !state.selectedOptions.every(
-                (opt) =>
-                  (state.responses[state.currentStep]?.subResponses?.[opt]?.answers?.length || 0) >
-                  0
-              )
+              state.selectedOptions
+                .filter(opt => questions[4].options?.find(o => o.text === opt)?.hasSubQuestions)
+                .some(opt => 
+                  (state.responses[state.currentStep]?.subResponses?.[opt]?.answers?.length || 0) === 0
+                )
             }
             className={`px-6 py-3 rounded-lg flex items-center ${
-              state.selectedOptions.every(
-                (opt) =>
-                  (state.responses[state.currentStep]?.subResponses?.[opt]?.answers?.length || 0) >
-                  0
-              )
+              !state.selectedOptions
+                .filter(opt => questions[4].options?.find(o => o.text === opt)?.hasSubQuestions)
+                .some(opt => 
+                  (state.responses[state.currentStep]?.subResponses?.[opt]?.answers?.length || 0) === 0
+                )
                 ? 'bg-secondary text-white'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
-            {t('buttons.next')}
-            <svg
-              className="ml-2"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9 5L16 12L9 19"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            {t("buttons.next")}
+            <svg className="ml-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
         </div>
