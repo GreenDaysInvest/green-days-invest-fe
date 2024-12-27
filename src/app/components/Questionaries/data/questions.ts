@@ -189,5 +189,122 @@ export const questions: Question[] = [
         subtext: "Herzinsuzienz, Herzrhythmusstörung"
       }
     ]
+  },
+  {
+    id: 7,
+    text: "Seit wann leidest du an deiner Haupterkrankung?",
+    type: "radio",
+    options: [
+      { text: "Weniger als 3 Monate" },
+      { text: "3 - 6 Monate" }
+    ]
+  },
+  {
+    id: 8,
+    text: "Wie stark beeinträchtigen Ihre Symptome Ihren Alltag?",
+    type: "radio",
+    options: [
+      { text: "Gar nicht." },
+      { text: "Mittlere Beeinträchtigungl. Ich merke es aber." },
+      { text: "Starke Beeinträchtigung. Mein Alltag wird dadurch schwer." }
+    ]
+  },
+  {
+    id: 9,
+    text: "Wurden Dir bereits Medikamente/Tabletten verschreiben?",
+    type: "radio",
+    options: [
+      { text: "Ja", hasFollowUp: true },
+      { text: "Nein" }
+    ]
+  },
+  {
+    id: 10,
+    text: "Welche Medikamente wurden dir verschrieben?",
+    type: "radio",
+    options: [
+      { 
+        text: "Migräne-Akuttherapie",
+        subtext: "z. B. 'Triptane' wie Sumatriptan (Imigran®), Zolmitriptan (AscoTop®), Naratriptan (Formigran®), Almotriptan (Almogran®)"
+      },
+      {
+        text: "Prophylaxe bei Migräne",
+        subtext: "z. B. Metoprolol (Beloc®, Metohexal®), Flunarizin (Flunarium®), Topiramat (Topamax®), Valproat (Convulex®, Ergenyl®)"
+      },
+      {
+        text: "Mittel gegen Übelkeit und Erbrechen",
+        subtext: "z. B. Metoclopramid (MCP®), Dimenhydrinat (z. B. Vomex®)"
+      },
+      {
+        text: "Freiverkäuiche Schmerzmittel",
+        subtext: "z. B. Ibuprofen 400, Aspirin®, Paracetamol, Voltaren®"
+      },
+      {
+        text: "Verschreibungspichtige Schmerzmittel",
+        subtext: "z. B. Ibuprofen 600, Novalgin®, Arcoxia®, Paracetamol+Codein"
+      },
+      {
+        text: "Opioide Schmerzmittel",
+        subtext: "z. B. Tilidin (Valoron®), Tramadol (Tramal®), Morphin, Oxycodon (Oxygesic®), Fentanyl"
+      },
+      {
+        text: "Schmerzbegleitende Medikation",
+        subtext: "z. B. Amitriptylin (Amineurin®), Pregabalin (Lyrica®), Doxepin (Aponal®), Carbamazepin"
+      },
+      {
+        text: "Muskelentspanner",
+        subtext: "z. B. Baclofen, Ortoton®"
+      },
+      {
+        text: "Entzündungshemmende Medikamente",
+        subtext: "z. B. Kortison"
+      }
+    ]
+  },
+  {
+    id: 11,
+    text: "Wird bei dir regelmäßig eine Arbeitsunfähigkeit festgestellt?",
+    type: "radio",
+    options: [
+      { text: "Ja, aber nicht länger als 6 Wochen." },
+      { text: "Ja, für mehr als 6 Wochen." },
+      { text: "Nein" }
+    ]
+  },
+  {
+    id: 12,
+    text: "Wurde bereits eine Minderung der Erwerbstätigkeit oder ein Grad der Behinderung festgestellt?",
+    type: "radio",
+    options: [
+      { text: "Ja", hasInput: true, inputType: "number", inputPlaceholder: "Prozent (%)" },
+      { text: "Nein" }
+    ]
+  },
+  {
+    id: 13,
+    text: "Hast du innerhalb der letzten 5 Jahre regelmäßig Drogen genommen? (Ecstasy, Kokain, LSD, Heroin)",
+    type: "radio",
+    options: [
+      { text: "Ja" },
+      { text: "Nein" }
+    ]
+  },
+  {
+    id: 14,
+    text: "Gab es gegen Dich bereits ein Strafverfahren wegen unerlaubten Besitzes/Konsums von Cannabis?",
+    type: "radio",
+    options: [
+      { text: "Ja" },
+      { text: "Nein" }
+    ]
+  },
+  {
+    id: 15,
+    text: "Bist du aktuell schwanger oder in Stillzeit?",
+    type: "radio",
+    options: [
+      { text: "Ja" },
+      { text: "Nein" }
+    ]
   }
 ];

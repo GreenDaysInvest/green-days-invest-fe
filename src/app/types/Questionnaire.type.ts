@@ -1,17 +1,21 @@
 import { User } from "./Auth.type";
 
+export interface QuestionOption {
+  text: string;
+  subtext?: string;
+  hasFollowUp?: boolean;
+  hasInput?: boolean;
+  inputType?: 'text' | 'number' | 'percentage';
+  inputPlaceholder?: string;
+  hasSubQuestions?: boolean;
+  redirectToOtherDiseases?: boolean;
+}
+
 export interface Question {
   id: number;
   text: string;
   type: 'radio' | 'checkbox' | 'textarea' | 'confirmation';
-  options?: Array<{
-    text: string;
-    subtext?: string;
-    hasInput?: boolean;
-    hasFollowUp?: boolean;
-    hasSubQuestions?: boolean;
-    redirectToOtherDiseases?: boolean;
-  }>;
+  options?: QuestionOption[];
   isAlternativeFlow?: boolean;
 }
 
@@ -24,24 +28,22 @@ export interface SubQuestion {
   }>;
 }
 
-export interface Response {
+export interface QuestionnaireResponse {
   answer: string | string[];
   customInput?: string;
+  subResponses?: {
+    [key: string]: {
+      answers: string[];
+      inputValue?: string | number;
+    };
+  };
+  inputValue?: string | number;
 }
 
 export interface QuestionnaireState {
   currentStep: number;
   responses: {
-    [key: number]: {
-      answer: string | string[];
-      customInput?: string;
-      subResponses?: {
-        [key: string]: {
-          answers: string[];
-          customInput?: string;
-        };
-      };
-    };
+    [key: number]: QuestionnaireResponse;
   };
   selectedOption: string | null;
   customInput: string;

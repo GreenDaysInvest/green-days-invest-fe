@@ -121,10 +121,10 @@ const StepQuestionnaire: React.FC = () => {
     }
 
     const currentQuestion = questions[state.currentStep - 1];
-    console.log('Current question:', currentQuestion);
+    console.log('Current question:', currentQuestion, state.selectedOptions);
     
     if (currentQuestion.type === 'checkbox') {
-      console.log('Handling checkbox question. Selected options:', state.selectedOptions);
+      console.log('Handling checkbox/radio question. Selected options:', state.selectedOptions);
       
       if (state.selectedOptions.length === 0) {
         showInfoToast('Bitte wählen Sie mindestens eine Option aus');
@@ -134,17 +134,15 @@ const StepQuestionnaire: React.FC = () => {
       // For question 5, check if we're showing subquestions
       if (state.currentStep === 5) {
         if (!state.showingSubQuestions) {
-          // First click: Show subquestions
           setState(prev => ({ 
             ...prev,
             showingSubQuestions: true
           }));
           return;
         } else {
-          // Second click: Check if all subquestions are answered
           const hasAllSubResponses = state.selectedOptions.every(option => {
             const subQuestion = subQuestions[option as keyof typeof subQuestions];
-            if (!subQuestion) return true; // Skip if no subquestions defined
+            if (!subQuestion) return true;
             const responses = state.responses[state.currentStep]?.subResponses?.[option]?.answers;
             return responses && responses.length > 0;
           });
@@ -156,6 +154,41 @@ const StepQuestionnaire: React.FC = () => {
         }
       }
 
+      // Special handling for question 6
+      if (state.currentStep === 6) {
+        const hasFirstOption = state.selectedOptions.includes("Hiermit bestätige ich an keiner der genannten Erkrankungen zu leiden");
+        
+        if (hasFirstOption) {
+          setState(prev => ({ 
+            ...prev,
+            currentStep: hasFirstOption ? 11 : 7,
+            showingSubQuestions: false
+          }));
+          return;
+        }
+      }
+
+      // Special handling for question 9 (medication question)
+      console.log(state.currentStep === 9,"currentstepi")
+      if (state.currentStep === 9) {
+        const selectedYes = state.selectedOptions.includes("Ja");
+        setState(prev => ({ 
+          ...prev,
+          currentStep: selectedYes ? 10 : 11,
+          showingSubQuestions: false
+        }));
+        return;
+      }
+
+      // Check if percentage input is required but missing
+      // const selectedOption = currentQuestion.options?.find(opt => 
+      //   opt.hasInput && opt.inputType === 'number' && state.selectedOptions.includes(opt.text)
+      // );
+      // if (selectedOption && !state.responses[state.currentStep]?.inputValue) {
+      //   showInfoToast('Bitte geben Sie den Prozentsatz ein');
+      //   return;
+      // }
+
       // Move to next step
       setState(prev => ({ 
         ...prev,
@@ -163,6 +196,31 @@ const StepQuestionnaire: React.FC = () => {
         showingSubQuestions: false
       }));
       return;
+    }
+    // For radio type questions, check for required percentage input
+  // For radio type questions with percentage input
+    if (currentQuestion.type === 'radio' && currentQuestion.options) {
+      const selectedOption = currentQuestion.options.find(opt => 
+        opt.text === "Ja"
+      );
+      
+      console.log('Selected option:', selectedOption);
+      
+      if (selectedOption?.hasInput && selectedOption?.inputType === 'number') {
+        const inputValue = state.responses[state.currentStep]?.inputValue;
+        console.log('Input value:', inputValue);
+        
+        if (!inputValue && inputValue !== 0) {
+          showInfoToast('Bitte geben Sie den Prozentsatz ein');
+          return;
+        }
+        
+        const numValue = Number(inputValue);
+        if (isNaN(numValue) || numValue < 0 || numValue > 100) {
+          showInfoToast('Bitte geben Sie einen gültigen Prozentsatz zwischen 0 und 100 ein');
+          return;
+        }
+      }
     }
 
     if (!state.responses[state.currentStep]?.answer) {
@@ -296,6 +354,29 @@ const StepQuestionnaire: React.FC = () => {
       },
       selectedOption: optionText,
       customInput: ""
+    }));
+  };
+
+  const handleInputChange = (value: string, option: any) => {
+    if (option.inputType === 'number') {
+      // Only allow numbers and validate percentage range
+      const numValue = parseInt(value);
+      if (isNaN(numValue) || numValue < 0 || numValue > 100) {
+        showInfoToast('Bitte geben Sie einen gültigen Prozentsatz zwischen 0 und 100 ein');
+        return;
+      }
+    }
+
+    setState(prev => ({
+      ...prev,
+      responses: {
+        ...prev.responses,
+        [prev.currentStep]: {
+          ...prev.responses[prev.currentStep],
+          answer: prev.selectedOptions,
+          inputValue: value
+        }
+      }
     }));
   };
 
@@ -527,12 +608,15 @@ const StepQuestionnaire: React.FC = () => {
               {option.hasInput && state.responses[state.currentStep]?.answer === option.text && (
                 <div className="mt-3 ml-8">
                   <input
-                    type="text"
-                    value={state.customInput}
-                    onChange={(e) => setState(prev => ({ ...prev, customInput: e.target.value }))}
-                    placeholder="Bitte spezifizieren Sie"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-secondary"
+                    type={'number'}
+                    placeholder={option.inputPlaceholder || 'Bitte eingeben'}
+                    value={state.responses[state.currentStep]?.inputValue || ''}
+                    onChange={(e) => handleInputChange(e.target.value, option)}
+                    className="border rounded p-2 w-32"
+                    min={0}
+                    max={100}
                   />
+                  {option.inputType === 'number' && <span className="ml-2">%</span>}
                 </div>
               )}
             </div>
