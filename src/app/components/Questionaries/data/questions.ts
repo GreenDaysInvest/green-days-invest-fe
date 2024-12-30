@@ -173,7 +173,8 @@ export const questions: Question[] = [
     options: [
       { 
         text: "Hiermit bestätige ich an keiner der genannten Erkrankungen zu leiden",
-        hasFollowUp: false
+        hasFollowUp: false,
+        hasDifferentUi: true,
       },
       { 
         text: "Psychose",

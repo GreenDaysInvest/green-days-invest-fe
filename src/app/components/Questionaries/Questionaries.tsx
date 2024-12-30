@@ -20,7 +20,8 @@ const initialState: QuestionnaireState = {
   isAlternativeFlow: false,
   selectedOptions: [],
   currentSubQuestion: undefined,
-  showingSubQuestions: false
+  showingSubQuestions: false,
+  stepHistory: [0]
 };
 
 const StepQuestionnaire: React.FC = () => {
@@ -28,7 +29,12 @@ const StepQuestionnaire: React.FC = () => {
   const router = useRouter();
   const { user } = useAuth();
   const [isAccepted, setIsAccepted] = useState(false);
-  const [state, setState] = useState<QuestionnaireState>(initialState);
+  const [state, setState] = useState<QuestionnaireState>(() => {
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    return savedState
+      ? JSON.parse(savedState)
+      : initialState;
+  });
 
   // Load saved state on mount
   useEffect(() => {
@@ -72,61 +78,52 @@ const StepQuestionnaire: React.FC = () => {
 
   const handlePrev = () => {
     setState(prev => {
-      // If we're in a sub-question, go back to the main question
-      if (prev.currentSubQuestion) {
-        return {
-          ...prev,
-          currentSubQuestion: undefined
-        };
-      }
+      // Get the previous step from history
+      const newHistory = [...prev.stepHistory];
+      newHistory.pop(); // Remove current step
+      const previousStep = newHistory[newHistory.length - 1] || 0;
 
-      // If we're in alternative flow, go back to the question that led us here
-      if (prev.isAlternativeFlow) {
-        return {
-          ...prev,
-          currentStep: prev.responses[3] ? 3 : 0,
-          isAlternativeFlow: false
-        };
-      }
+      // Get the previous step's responses to restore selection state
+      const previousResponse = prev.responses[previousStep];
+      const previousSelectedOptions = previousResponse?.answer 
+        ? Array.isArray(previousResponse.answer)
+          ? previousResponse.answer
+          : [previousResponse.answer]
+        : [];
 
-      // If we're at step 3 and came from chronic pain path
-      if (prev.currentStep === 3 && prev.responses[1]?.answer === "Chronische Schmerzen") {
-        return { ...prev, currentStep: 2 };
-      }
+      // Create new responses object without current step
+      const newResponses = { ...prev.responses };
+      delete newResponses[prev.currentStep];
 
-      // If we're at step 2 (pain types), go back to step 1
-      if (prev.currentStep === 2) {
-        return { ...prev, currentStep: 1 };
-      }
-
-      // Default case: just go back one step
-      return { ...prev, currentStep: Math.max(0, prev.currentStep - 1) };
+      return {
+        ...prev,
+        currentStep: previousStep,
+        stepHistory: newHistory,
+        showingSubQuestions: false,
+        selectedOptions: previousSelectedOptions,
+        selectedOption: Array.isArray(previousResponse?.answer) ? null : previousResponse?.answer as string || null,
+        responses: newResponses
+      };
     });
   };
 
   const handleNext = () => {
-    console.log('handleNext called. Current state:', {
-      currentStep: state.currentStep,
-      currentSubQuestion: state.currentSubQuestion,
-      selectedOptions: state.selectedOptions,
-      responses: state.responses
-    });
-
     if (state.currentStep === 0) {
       if (!isAccepted) {
         showInfoToast('Bitte akzeptieren Sie die Einwilligung zur Datenverarbeitung');
         return;
       }
-      setState(prev => ({ ...prev, currentStep: prev.currentStep + 1 }));
+      setState(prev => ({ 
+        ...prev, 
+        currentStep: prev.currentStep + 1,
+        stepHistory: [...prev.stepHistory, prev.currentStep + 1]
+      }));
       return;
     }
 
     const currentQuestion = questions[state.currentStep - 1];
-    console.log('Current question:', currentQuestion, state.selectedOptions);
     
     if (currentQuestion.type === 'checkbox') {
-      console.log('Handling checkbox/radio question. Selected options:', state.selectedOptions);
-      
       if (state.selectedOptions.length === 0) {
         showInfoToast('Bitte wählen Sie mindestens eine Option aus');
         return;
@@ -163,44 +160,45 @@ const StepQuestionnaire: React.FC = () => {
           setState(prev => ({ 
             ...prev,
             currentStep: hasFirstOption ? 11 : 7,
-            showingSubQuestions: false
+            showingSubQuestions: false,
+            stepHistory: [...prev.stepHistory, hasFirstOption ? 11 : 7]
           }));
           return;
         }
-      }
-
-      // Special handling for question 9 (medication question)
-      console.log(state.currentStep === 9,"currentstepi")
-      if (state.currentStep === 9) {
-        const selectedYes = state.selectedOptions.includes("Ja");
-        setState(prev => ({ 
-          ...prev,
-          currentStep: selectedYes ? 10 : 11,
-          showingSubQuestions: false
-        }));
-        return;
       }
 
       // Move to next step
       setState(prev => ({ 
         ...prev,
         currentStep: prev.currentStep + 1,
-        showingSubQuestions: false
+        showingSubQuestions: false,
+        selectedOptions: [], // Reset selectedOptions
+        selectedOption: null, // Reset selectedOption as well for consistency
+        stepHistory: [...prev.stepHistory, prev.currentStep + 1]
       }));
       return;
     }
     // For radio type questions, check for required percentage input
-  // For radio type questions with percentage input
     if (currentQuestion.type === 'radio' && currentQuestion.options) {
+      // Special handling for question 9 (medication question)
+      if (state.currentStep === 9) {
+        const selectedYes = state.selectedOptions.includes("Ja");
+        const nextStep = selectedYes ? 10 : 11;
+        setState(prev => ({ 
+          ...prev,
+          currentStep: nextStep,
+          showingSubQuestions: false,
+          stepHistory: [...prev.stepHistory, nextStep]
+        }));
+        return;
+      }
+
       const selectedOption = currentQuestion.options?.find(opt => 
         opt.hasInput && opt.inputType === 'number' && state.selectedOptions.includes(opt.text)
       );
-      console.log('test Selected option:', selectedOption);
-      console.log('test state:', state);
       
       if (selectedOption?.hasInput && selectedOption?.inputType === 'number') {
         const inputValue = state.responses[state.currentStep]?.inputValue;
-        console.log('test Input value:', inputValue);
         
         if (!inputValue && inputValue !== 0) {
           showInfoToast('Bitte geben Sie den Prozentsatz ein');
@@ -234,7 +232,8 @@ const StepQuestionnaire: React.FC = () => {
       setState(prev => ({ 
         ...prev, 
         currentStep: 6, // Question 6 is the other diseases question
-        isAlternativeFlow: true 
+        isAlternativeFlow: true,
+        stepHistory: [...prev.stepHistory, 6]
       }));
       return;
     }
@@ -257,7 +256,10 @@ const StepQuestionnaire: React.FC = () => {
     setState(prev => ({ 
       ...prev,
       currentStep: prev.currentStep + 1,
-      showingSubQuestions: false
+      showingSubQuestions: false,
+      selectedOptions: [], // Reset selectedOptions
+      selectedOption: null, // Reset selectedOption as well for consistency
+      stepHistory: [...prev.stepHistory, prev.currentStep + 1]
     }));
   };
 
@@ -289,22 +291,11 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handleSubQuestionResponse = (parentOption: string, optionText: string) => {
-    console.log('handleSubQuestionResponse called with:', {
-      parentOption,
-      optionText,
-      currentStep: state.currentStep
-    });
-
     setState(prev => {
       const currentAnswers = prev.responses[prev.currentStep]?.subResponses?.[parentOption]?.answers || [];
       const newAnswers = currentAnswers.includes(optionText)
         ? currentAnswers.filter(ans => ans !== optionText)
         : [...currentAnswers, optionText];
-
-      console.log('Updating answers:', {
-        currentAnswers,
-        newAnswers
-      });
 
       return {
         ...prev,
@@ -315,7 +306,9 @@ const StepQuestionnaire: React.FC = () => {
             subResponses: {
               ...prev.responses[prev.currentStep]?.subResponses,
               [parentOption]: {
-                ...prev.responses[prev.currentStep]?.subResponses?.[parentOption],
+                ...prev.responses[prev.currentStep]?.subResponses?.[
+                  parentOption
+                ],
                 answers: newAnswers
               }
             }
@@ -326,8 +319,6 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handleCheckboxChange = (optionText: string) => {
-    console.log('handleCheckboxChange called with:', optionText);
-    
     setState(prev => {
       let newSelectedOptions;
 
@@ -358,8 +349,6 @@ const StepQuestionnaire: React.FC = () => {
           : [...prev.selectedOptions, optionText];
       }
       
-      console.log('New selected options:', newSelectedOptions);
-      
       return {
         ...prev,
         selectedOptions: newSelectedOptions,
@@ -375,11 +364,6 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handleOptionSelect = (optionText: string) => {
-    console.log('handleOptionSelect called with:', optionText);
-    
-    const currentQuestion = questions[state.currentStep - 1];
-    const selectedOption = currentQuestion.options?.find(opt => opt.text === optionText);
-    
     setState(prev => ({
       ...prev,
       responses: {
@@ -389,7 +373,7 @@ const StepQuestionnaire: React.FC = () => {
           answer: optionText,
           customInput: prev.customInput,
           // Clear input value if selecting an option without input
-          inputValue: selectedOption?.hasInput ? prev.responses[prev.currentStep]?.inputValue : undefined
+          inputValue: prev.responses[prev.currentStep]?.inputValue
         }
       },
       selectedOption: optionText,
@@ -421,61 +405,37 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderSubQuestions = () => {
-    console.log('Current Step:', state.currentStep);
-    console.log('Selected Options:', state.selectedOptions);
-    console.log('Current Step Responses:', state.responses[state.currentStep]);
-    console.log('SubResponses:', state.responses[state.currentStep]?.subResponses);
-    
-    // Check each selected option's answers
-    state.selectedOptions.forEach(opt => {
-      console.log(`Checking answers for option "${opt}":`, {
-        answers: state.responses[state.currentStep]?.subResponses?.[opt]?.answers,
-        length: state.responses[state.currentStep]?.subResponses?.[opt]?.answers?.length || 0
-      });
-    });
 
-    // Log the final condition result
-    const isEnabled = state.selectedOptions.every(
-      (opt) => (state.responses[state.currentStep]?.subResponses?.[opt]?.answers?.length || 0) > 0
-    );
-    console.log('Is Next Button Enabled:', isEnabled);
 
     return (
       <div className="space-y-12">
-        {state.selectedOptions.map((optionText, index) => {
-          const subQuestion = subQuestions[optionText as keyof typeof subQuestions];
-          if (!subQuestion) return null;
-  
-          const selectedAnswers =
-            state.responses[state.currentStep]?.subResponses?.[optionText]?.answers || [];
-  
+        {state.selectedOptions.map((optionText, optionIdx) => {
+          const selectedAnswers = state.responses[state.currentStep]?.subResponses?.[optionText]?.answers || [];
+       
           return (
-            <div
-              key={index}
-              className="space-y-8 pb-8 border-b border-gray-200 last:border-b-0"
-            >
+            <div key={optionIdx} className="space-y-4">
               <h3 className="text-secondary font-semibold text-xl">{optionText}</h3>
-              <h4 className="text-secondary font-medium text-lg">{subQuestion.text}</h4>
+              <h4 className="text-secondary font-medium text-lg">{subQuestions[optionText as keyof typeof subQuestions].text}</h4>
               <div className="space-y-3">
-                {subQuestion.options.map((option, idx) => (
+                {subQuestions[optionText as keyof typeof subQuestions].options.map((option, idx) => (
                   <div key={idx}>
                     <button
                       onClick={() => handleSubQuestionResponse(optionText, option.text)}
                       className={`w-full text-left p-4 rounded-lg border ${
-                        selectedAnswers.includes(option.text)
+                        (selectedAnswers.includes(option.text) || state.responses[state.currentStep]?.subResponses?.[optionText]?.answers?.includes(option.text))
                           ? 'border-secondary bg-secondary/5'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
-                      <div className="flex items-start">
+                      <div className="flex items-center">
                         <div
-                          className={`w-6 h-6 mt-0.5 border-2 rounded flex items-center justify-center ${
-                            selectedAnswers.includes(option.text)
+                          className={`w-6 h-6 border-2 rounded flex-shrink-0 flex items-center justify-center ${
+                            (selectedAnswers.includes(option.text) || state.responses[state.currentStep]?.subResponses?.[optionText]?.answers?.includes(option.text))
                               ? 'border-secondary'
                               : 'border-gray-300'
                           }`}
                         >
-                          {selectedAnswers.includes(option.text) && (
+                          {(selectedAnswers.includes(option.text) || state.responses[state.currentStep]?.subResponses?.[optionText]?.answers?.includes(option.text)) && (
                             <svg
                               className="w-4 h-4 text-secondary"
                               viewBox="0 0 20 20"
@@ -501,7 +461,7 @@ const StepQuestionnaire: React.FC = () => {
                         </div>
                       </div>
                     </button>
-                    {('hasInput' in option) && option.hasInput && selectedAnswers.includes(option.text) && (
+                    {('hasInput' in option) && option.hasInput && (selectedAnswers.includes(option.text) || state.responses[state.currentStep]?.subResponses?.[optionText]?.answers?.includes(option.text)) && (
                       <div className="mt-3 ml-8">
                         <input
                           type="text"
@@ -511,12 +471,6 @@ const StepQuestionnaire: React.FC = () => {
                           }
                           onChange={(e) => {
                             const newValue = e.target.value;
-                            console.log('Input Change:', {
-                              optionText,
-                              newValue,
-                              currentStep: state.currentStep
-                            });
-                            
                             setState((prev) => {
                               const newState = {
                                 ...prev,
@@ -536,13 +490,6 @@ const StepQuestionnaire: React.FC = () => {
                                   },
                                 },
                               };
-                              
-                              console.log('New State:', {
-                                responses: newState.responses[prev.currentStep],
-                                subResponses: newState.responses[prev.currentStep]?.subResponses,
-                                answers: newState.responses[prev.currentStep]?.subResponses?.[optionText]?.answers
-                              });
-                              
                               return newState;
                             });
                           }}
@@ -597,12 +544,7 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderQuestion = () => {
-    console.log('renderQuestion called. State:', {
-      currentStep: state.currentStep,
-      currentSubQuestion: state.currentSubQuestion,
-      isAlternativeFlow: state.isAlternativeFlow
-    });
-
+  
     if (state.currentStep === 0) {
       return renderConsent();
     }
@@ -610,87 +552,77 @@ const StepQuestionnaire: React.FC = () => {
     const currentQuestion = questions[state.currentStep - 1];
     if (!currentQuestion) return null;
 
-    console.log(state,"state")
-    
     // If we're in question 5 and showing subquestions
     if (state.currentStep === 5 && state.showingSubQuestions && state.selectedOptions.length > 0) {
       return renderSubQuestions();
     }
 
-    if (currentQuestion.type === 'checkbox') {
-      return renderCheckboxQuestion(currentQuestion);
+    switch (currentQuestion.type) {
+      case 'radio':
+        return renderRadioQuestion(currentQuestion);
+      case 'checkbox':
+        return renderCheckboxQuestion(currentQuestion);
+      case 'textarea':
+        return renderTextareaQuestion(currentQuestion);
+      default:
+        return null;
     }
+  };
 
-    if (currentQuestion.type === 'textarea') {
-      return (
-        <div className="flex flex-col gap-4">
-          <h2 className="text-xl font-semibold">{currentQuestion.text}</h2>
-          <textarea
-            value={state.responses[state.currentStep]?.answer || ''}
-            onChange={(e) => setState(prev => ({
-              ...prev,
-              responses: {
-                ...prev.responses,
-                [prev.currentStep]: {
-                  answer: e.target.value
-                }
-              }
-            }))}
-            placeholder="Optional: Geben Sie hier weitere Informationen ein"
-            className="w-full h-32 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-secondary resize-none"
-          />
-        </div>
-      );
-    }
+  const renderRadioQuestion = (question: Question) => {
+
 
     return (
       <div className="space-y-8">
-        <h3 className="text-secondary font-semibold text-lg">{currentQuestion.text}</h3>
-        <div className="space-y-3">
-          {currentQuestion.options?.map((option, idx) => (
-            <div key={idx}>
-              <button
-                onClick={() => handleOptionSelect(option.text)}
-                className={`w-full text-left p-4 rounded-lg border ${
-                  state.responses[state.currentStep]?.answer === option.text
-                    ? 'border-secondary bg-secondary/5'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-start">
-                  <div className={`w-6 h-6 mt-0.5 border-2 rounded-full flex items-center justify-center ${
-                    state.responses[state.currentStep]?.answer === option.text
-                      ? 'border-secondary'
-                      : 'border-gray-300'
-                  }`}>
-                    {state.responses[state.currentStep]?.answer === option.text && (
-                      <div className="w-3 h-3 rounded-full bg-secondary" />
-                    )}
+        <h3 className="text-secondary font-semibold text-lg">{question.text}</h3>
+        <div className="space-y-4">
+          {question.options?.map((option, idx) => {
+            const isSelected = state.responses[state.currentStep]?.answer === option.text || state.selectedOption === option.text;
+            return (
+              <div key={idx}>
+                <button
+                  onClick={() => handleOptionSelect(option.text)}
+                  className={`w-full text-left p-4 rounded-lg border ${
+                    isSelected
+                      ? 'border-secondary bg-secondary/5'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <div className={`w-6 h-6 border-2 rounded-full flex-shrink-0 flex items-center justify-center ${
+                      isSelected
+                        ? 'border-secondary'
+                        : 'border-gray-300'
+                    }`}>
+                      {isSelected && (
+                        <div className="w-3 h-3 rounded-full bg-secondary" />
+                      )}
+                    </div>
+                    <div className="ml-3 flex-1">
+                      <span className="text-secondary text-lg font-semibold">{option.text}</span>
+                      {option.subtext && (
+                        <span className="block text-gray-500 text-sm mt-1">{option.subtext}</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="ml-3">
-                    <span className="text-secondary text-lg font-semibold">{option.text}</span>
-                    {option.subtext && (
-                      <span className="block text-gray-500 text-sm mt-1">{option.subtext}</span>
-                    )}
+                </button>
+                {option.hasInput && (state.responses[state.currentStep]?.answer === option.text || state.selectedOption === option.text) && (
+                  <div className="mt-3 ml-8">
+                    <input
+                      type={'number'}
+                      placeholder={option.inputPlaceholder || 'Bitte eingeben'}
+                      value={state.responses[state.currentStep]?.inputValue || ''}
+                      onChange={(e) => handleInputChange(e.target.value, option)}
+                      className="border rounded p-2 w-32"
+                      min={0}
+                      max={100}
+                    />
+                    {option.inputType === 'number' && <span className="ml-2">%</span>}
                   </div>
-                </div>
-              </button>
-              {option.hasInput && state.responses[state.currentStep]?.answer === option.text && (
-                <div className="mt-3 ml-8">
-                  <input
-                    type={'number'}
-                    placeholder={option.inputPlaceholder || 'Bitte eingeben'}
-                    value={state.responses[state.currentStep]?.inputValue || ''}
-                    onChange={(e) => handleInputChange(e.target.value, option)}
-                    className="border rounded p-2 w-32"
-                    min={0}
-                    max={100}
-                  />
-                  {option.inputType === 'number' && <span className="ml-2">%</span>}
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            );
+          })}
         </div>
         <div className="flex justify-between mt-8">
           <button
@@ -749,42 +681,68 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderCheckboxQuestion = (question: Question) => {
+ 
+
     return (
       <div className="space-y-8">
         <h3 className="text-secondary font-semibold text-lg">{question.text}</h3>
         <div className="space-y-3">
-          {question.options?.map((option, idx) => (
-            <div key={idx}>
-              <button
-                onClick={() => handleCheckboxChange(option.text)}
-                className={`w-full text-left p-4 rounded-lg border ${
-                  state.selectedOptions.includes(option.text)
-                    ? 'border-secondary bg-secondary/5'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-start">
-                  <div className={`w-6 h-6 mt-0.5 border-2 rounded flex items-center justify-center ${
-                    state.selectedOptions.includes(option.text)
-                      ? 'border-secondary'
-                      : 'border-gray-300'
-                  }`}>
-                    {state.selectedOptions.includes(option.text) && (
-                      <svg className="w-4 h-4 text-secondary" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    )}
+          {question.options?.map((option, idx) => {
+            const isSelected = state.selectedOptions.includes(option.text) || 
+              (Array.isArray(state.responses[state.currentStep]?.answer) && 
+               state.responses[state.currentStep]?.answer?.includes(option.text));
+            
+        
+
+            return (
+              <div key={idx}>
+                <button
+                  onClick={() => handleCheckboxChange(option.text)}
+                  className={`w-full text-left p-4 rounded-lg border ${
+                    isSelected
+                      ? 'border-secondary bg-secondary/5'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }
+                  ${option.hasDifferentUi ? 'mb-10': ''}
+                  `}
+                >
+                  <div className="flex items-center">
+                    <div className={`w-6 h-6 border-2 rounded flex items-center justify-center ${
+                      isSelected
+                        ? 'border-secondary'
+                        : 'border-gray-300'
+                    }`}>
+                      {isSelected && (
+                        <svg className="w-4 h-4 text-secondary" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-secondary text-lg font-semibold ml-3">{option.text}</span>
                   </div>
-                  <span className="text-secondary text-lg font-semibold ml-3">{option.text}</span>
-                </div>
-              </button>
-            </div>
-          ))}
+                </button>
+              </div>
+            );
+          })}
         </div>
-        <div className="flex justify-end mt-8">
+        <div className="flex justify-between mt-8">
+          <button
+            onClick={handlePrev}
+            className="px-6 py-3 border border-secondary text-secondary rounded-lg flex items-center"
+          >
+            <svg className="mr-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 19L8 12L15 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {t('buttons.back')}
+          </button>
           <button
             onClick={handleNext}
-            className="px-6 py-3 bg-secondary text-white rounded-lg flex items-center"
+            disabled={state.selectedOptions.length === 0}
+            className={`px-6 py-3 rounded-lg flex items-center ${
+              state.selectedOptions.length > 0
+                ? 'bg-secondary text-white'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
           >
             {t("buttons.next")}
             <svg className="ml-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -792,6 +750,28 @@ const StepQuestionnaire: React.FC = () => {
             </svg>
           </button>
         </div>
+      </div>
+    );
+  };
+
+  const renderTextareaQuestion = (question: Question) => {
+    return (
+      <div className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold">{question.text}</h2>
+        <textarea
+          value={state.responses[state.currentStep]?.answer || ''}
+          onChange={(e) => setState(prev => ({
+            ...prev,
+            responses: {
+              ...prev.responses,
+              [prev.currentStep]: {
+                answer: e.target.value
+              }
+            }
+          }))}
+          placeholder="Optional: Geben Sie hier weitere Informationen ein"
+          className="w-full h-32 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-secondary resize-none"
+        />
       </div>
     );
   };

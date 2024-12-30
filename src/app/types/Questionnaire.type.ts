@@ -4,6 +4,7 @@ export interface QuestionOption {
   text: string;
   subtext?: string;
   hasFollowUp?: boolean;
+  hasDifferentUi?: boolean;
   hasInput?: boolean;
   inputType?: 'text' | 'number' | 'percentage';
   inputPlaceholder?: string;
@@ -52,6 +53,7 @@ export interface QuestionnaireState {
   selectedOptions: any[];
   currentSubQuestion?: string;
   showingSubQuestions: boolean;
+  stepHistory: number[]
 }
 
 export interface CreateQuestionnaireRequest {
