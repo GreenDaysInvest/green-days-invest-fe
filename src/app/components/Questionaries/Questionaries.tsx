@@ -110,7 +110,7 @@ const StepQuestionnaire: React.FC = () => {
   const handleNext = () => {
     if (state.currentStep === 0) {
       if (!isAccepted) {
-        showInfoToast('Bitte akzeptieren Sie die Einwilligung zur Datenverarbeitung');
+        showInfoToast(t('buttons.toast.pleaseAcceptConsentUpdated'));
         return;
       }
       setState(prev => ({ 
@@ -125,7 +125,7 @@ const StepQuestionnaire: React.FC = () => {
     
     if (currentQuestion.type === 'checkbox') {
       if (state.selectedOptions.length === 0) {
-        showInfoToast('Bitte wählen Sie mindestens eine Option aus');
+        showInfoToast(t('buttons.toast.pleaseSelectOption'));
         return;
       }
 
@@ -146,7 +146,7 @@ const StepQuestionnaire: React.FC = () => {
           });
 
           if (!hasAllSubResponses) {
-            showInfoToast('Bitte beantworten Sie alle Unterfragen');
+            showInfoToast(t('buttons.toast.pleaseAnswerSubQuestions'));
             return;
           }
         }
@@ -201,25 +201,25 @@ const StepQuestionnaire: React.FC = () => {
         const inputValue = state.responses[state.currentStep]?.inputValue;
         
         if (!inputValue && inputValue !== 0) {
-          showInfoToast('Bitte geben Sie den Prozentsatz ein');
+          showInfoToast(t('buttons.toast.pleaseEnterPercentage'));
           return;
         }
         
         const numValue = Number(inputValue);
         if (isNaN(numValue) || numValue < 0 || numValue > 100) {
-          showInfoToast('Bitte geben Sie einen gültigen Prozentsatz zwischen 0 und 100 ein');
+          showInfoToast(t('buttons.toast.pleaseEnterValidPercentage'));
           return;
         }
       }
     }
 
     if (!state.responses[state.currentStep]?.answer) {
-      showInfoToast(t('pleaseSelectOption'));
+      showInfoToast(t('buttons.toast.pleaseSelectOption'));
       return;
     }
     
     if (state.responses[state.currentStep]?.answer === "Sonstige" && !state.customInput) {
-      showInfoToast(t('pleaseSpecifyOther'));
+      showInfoToast(t('buttons.toast.pleaseSpecifyOther'));
       return;
     }
 
@@ -241,7 +241,7 @@ const StepQuestionnaire: React.FC = () => {
     // Skip validation for optional questions
     if (!currentQuestion.isOptional) {
       if (state.selectedOptions.length === 0 && currentQuestion.type !== 'textarea') {
-        showInfoToast('Bitte wählen Sie mindestens eine Option aus');
+        showInfoToast(t('buttons.toast.pleaseSelectOption'));
         return;
       }
     }
@@ -268,24 +268,24 @@ const StepQuestionnaire: React.FC = () => {
       const formattedQuestions = {
         questions: Object.entries(state.responses).map(([step, response]) => ({
           id: questions[Number(step) - 1].id,
-          text: questions[Number(step) - 1].text,
+          question: questions[Number(step) - 1].text,
           answer: response.answer,
-          inputValue: response.inputValue,
-          subResponses: response.subResponses
         }))
       };
+
+      console.log(formattedQuestions,"formatedQuestions");
 
       // await QuestionnaireService.createQuestionnaire(formattedQuestions);
 
       // Show success message and redirect
-      showInfoToast('Fragebogen erfolgreich eingereicht');
+      showInfoToast(t('buttons.toast.successfulSubmission'));
       router.push('/dashboard');
     } catch (error) {
       console.error('Error submitting questionnaire:', error);
       if (error instanceof Error) {
-        showInfoToast(error.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+        showInfoToast(t('buttons.toast.errorOccurred') + ' ' + (error.message || ''));
       } else {
-        showInfoToast('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+        showInfoToast(t('buttons.toast.errorOccurred'));
       }
     }
   };
@@ -387,7 +387,7 @@ const StepQuestionnaire: React.FC = () => {
       // Only allow numbers and validate percentage range
       const numValue = parseInt(value);
       if (isNaN(numValue) || numValue < 0 || numValue > 100) {
-        showInfoToast('Bitte geben Sie einen gültigen Prozentsatz zwischen 0 und 100 ein');
+        showInfoToast(t('buttons.toast.pleaseEnterValidPercentage'));
         return;
       }
     }
@@ -613,7 +613,7 @@ const StepQuestionnaire: React.FC = () => {
                       placeholder={option.inputPlaceholder || 'Bitte eingeben'}
                       value={state.responses[state.currentStep]?.inputValue || ''}
                       onChange={(e) => handleInputChange(e.target.value, option)}
-                      className="border rounded p-2 w-32"
+                      className="border rounded p-2 w-32 text-secondary"
                       min={0}
                       max={100}
                     />
@@ -755,9 +755,10 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderTextareaQuestion = (question: Question) => {
+
     return (
       <div className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold">{question.text}</h2>
+        <h2 className="text-xl font-semibold text-secondary">{question.text}</h2>
         <textarea
           value={state.responses[state.currentStep]?.answer || ''}
           onChange={(e) => setState(prev => ({
@@ -769,9 +770,26 @@ const StepQuestionnaire: React.FC = () => {
               }
             }
           }))}
-          placeholder="Optional: Geben Sie hier weitere Informationen ein"
-          className="w-full h-32 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-secondary resize-none"
+          placeholder={t('optionalInfo')}
+          className="w-full h-32 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-secondary resize-none text-secondary"
         />
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={handlePrev}
+            className="px-6 py-2 text-secondary border border-secondary rounded-md hover:bg-secondary/5 transition-colors"
+          >
+            {t('buttons.back')}
+          </button>
+          <button
+            onClick={submitQuestionnaire}
+            className="px-6 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors flex items-center"
+          >
+            {t('buttons.finishQuestionnaire')}
+            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </button>
+        </div>
       </div>
     );
   };

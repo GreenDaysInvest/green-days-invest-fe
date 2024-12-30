@@ -139,7 +139,7 @@
   },
   "Dashboard": {
     "back": "Zurück",
-    "questionnaireSubmited": "Sie haben Ihren Fragebogen bereits abgeschickt.",
+    "optionalInfo": "Optional: Geben Sie hier weitere Informationen ein",
     "finish": "Beenden",
     "previous": "Vorherige",
     "next": "Nächste",
@@ -249,7 +249,19 @@
     "buttons": {
       "next": "Weiter",
       "back": "Zurück",
-      "finish": "Abschließen"
+      "finish": "Abschließen",
+      "finishQuestionnaire": "Fragebogen abschließen",
+      "questionnaireSubmited": "Sie haben Ihren Fragebogen bereits abgeschickt.",
+      "toast": {
+        "pleaseSelectOption": "Please select at least one option",
+        "pleaseSpecifyOther": "Please specify your other condition",
+        "pleaseAcceptConsent": "Please accept the consent for data processing",
+        "pleaseAnswerSubQuestions": "Please answer all sub-questions",
+        "pleaseEnterPercentage": "Please enter the percentage",
+        "pleaseEnterValidPercentage": "Please enter a valid percentage between 0 and 100",
+        "successfulSubmission": "Questionnaire submitted successfully",
+        "errorOccurred": "An error occurred. Please try again later"
+      }
     },
     "customInput": {
       "placeholder": "Bitte geben Sie Ihre Erkrankung ein",
