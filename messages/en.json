@@ -2,88 +2,88 @@
   "Navbar": {
     "home": "Home",
     "about": "About",
-    "howItWorks": "Wie funktioniert’s?",
+    "howItWorks": "How it works",
     "cannabisAvailability": "Cannabis",
-    "diseases": "Erkrankungen",
-    "dataPrivacy": "Datenschutz",
-    "termsConditions": "Geschäftsbedingungen",
+    "diseases": "Diseases",
+    "dataPrivacy": "Data Privacy",
+    "termsConditions": "Terms & Conditions",
     "blog": "Blog",
     "faq": "FAQ",
-    "termsPrivacy": "Bedingungen & Datenschutz",
-    "allRightsReserved": "Alle Rechte vorbehalten"
+    "termsPrivacy": "Terms & Privacy",
+    "allRightsReserved": "All rights reserved"
   },
   "Header": {
-    "title": "Cannabis-Therapie auf Knopfdruck - einfach und bequem",
-    "subtitle": "Einfach, schnell und zuverlässig: Mit unserem Service erhältst du dein Cannabis-Rezept bequem von zu Hause aus",
-    "firstButton": "Behandlung anfragen",
-    "secondButton": "Livebestand prüfen"
+    "title": "Cannabis therapy at the push of a button - simple and convenient",
+    "subtitle": "Simple, fast and reliable: With our service, you get your cannabis prescription conveniently from home",
+    "firstButton": "Request Treatment",
+    "secondButton": "Check Live Stock"
   },
   "HomePage": {
-    "more": "Weitere",
-    "readMore": "Weitere Informationen",
+    "more": "More",
+    "readMore": "Read More",
     "DiscoverSection": {
       "Top": {
-        "title": "Alles Rund ums medizinische Cannabis!",
-        "subtitle": "Dein Rezept, deine Blüte, deine Gesundheit – alles auf einer Plattform. CannabisRezepte24 bietet Dir die Ganzheitliche Lösung.",
+        "title": "Everything about medical cannabis!",
+        "subtitle": "Your prescription, your flower, your health – all on one platform. CannabisRezepte24 offers you the holistic solution.",
         "Card": {
-          "title": "Following please change the design such as Bloomwell the 4th sector (Bist du auf der Suche nach medizinischem Cannabis?)",
+          "title": "Following please change the design such as Bloomwell the 4th sector (Are you looking for medical cannabis?)",
           "list": {
-            "first":"Schnelle Bearbeitung",
-            "second":"Beste Verfügbarkeit auf dem Markt",
-            "third":"Günstigste Preise",
-            "fourth":"Einfache Online-Zahlung",
-            "fifth":"Seriöser Anbieter aus Deutschland"
+            "first": "Fast Processing",
+            "second": "Best Availability on the Market",
+            "third": "Lowest Prices",
+            "fourth": "Simple Online Payment",
+            "fifth": "Reputable Provider from Germany"
           }
         }
       },
       "Bottom": {
-        "title": "Wie fange ich eine Behandlung an?",
-        "subtitle": "Unser Prozess ist speziell darauf ausgerichtet, dir den Weg zum Rezept so stressfrei wie möglich zu machen.",
+        "title": "How do I start a treatment?",
+        "subtitle": "Our process is specifically designed to make your path to prescription as stress-free as possible.",
         "Keys": {
-            "first": {
-              "title": "Fragebogen ausfüllen",
-              "subtitle": "Ein medizinischer Fragebogen erfasst deine Symptome, bisherigen Therapien und Vorerkrankungen. Damit kann eine individuelle Therapieempfehlung erstellt werden."
-            },
-            "second": {
-              "title": "Auswahl der Cannabisblüte",
-              "subtitle": "Wähle aus einer Liste von Sorten, die regelmäßig aktualisiert wird. Unsere Plattform zeigt dir nur verfügbare Sorten an, um Verzögerungen zu vermeiden."
-            },
-            "third": {
-              "title": "Wunschapotheke auswählen:",
-              "subtitle": "Wähle eine Apotheke aus unserer Liste oder entscheide dich für eine freie Apotheke. Partnerapotheken garantieren eine schnelle Lieferung und hohe Verfügbarkeit."
-            },
-            "fourth": {
-              "title": "Ärztliche Prüfung",
-              "subtitle": "Dein Fragebogen wird von einem spezialisierten Arzt geprüft. Falls notwendig, kann der Arzt weitere Fragen stellen oder eine Videokonsultation anfordern."
-            },
-            "fifth": {
-              "title": "Rezeptausstellung",
-              "subtitle": "Bei positiver Prüfung wird ein Privatrezept ausgestellt. Dieses wird dir als e-Rezept oder in Papierform zugestellt."
-            },
-            "sixth": {
-              "title": "Rezeptversand",
-              "subtitle": "Auf Wunsch übermitteln wir dein Rezept direkt an eine Apotheke, sodass du dich nicht um den Versand kümmern musst."
-            }
+          "first": {
+            "title": "Fill out questionnaire",
+            "subtitle": "A medical questionnaire records your symptoms, previous therapies, and pre-existing conditions. This allows for creating an individual therapy recommendation."
+          },
+          "second": {
+            "title": "Selection of cannabis flower",
+            "subtitle": "Choose from a list of strains that is regularly updated. Our platform only shows you available strains to avoid delays."
+          },
+          "third": {
+            "title": "Select preferred pharmacy",
+            "subtitle": "Choose a pharmacy from our list or opt for a free pharmacy. Partner pharmacies guarantee fast delivery and high availability."
+          },
+          "fourth": {
+            "title": "Medical review",
+            "subtitle": "Your questionnaire is reviewed by a specialized doctor. If necessary, the doctor may ask additional questions or request a video consultation."
+          },
+          "fifth": {
+            "title": "Prescription issuance",
+            "subtitle": "Upon positive review, a private prescription will be issued. This will be delivered to you as an e-prescription or in paper form."
+          },
+          "sixth": {
+            "title": "Prescription delivery",
+            "subtitle": "If desired, we will send your prescription directly to a pharmacy so you don't have to worry about shipping."
+          }
         }
       }
     },
     "Disease": {
-      "title": "Welche Krankheiten kann man mit Cannabis bekämpfen?",
+      "title": "What diseases can be treated with cannabis?",
       "list": {
-        "sleepDisorder": "Schlafstörungen",
-        "migraine": "Migräne",
-        "chronicPain": "Chronische Schmerzen",
-        "adhd": "ADHS",
-        "depresion": "Depressionen",
-        "furtherComplaints": "Weitere Krankheiten"
+        "sleepDisorder": "Sleep Disorders",
+        "migraine": "Migraine",
+        "chronicPain": "Chronic Pain",
+        "adhd": "ADHD",
+        "depresion": "Depression",
+        "furtherComplaints": "Other Conditions"
       }
     },
     "Testimonials": {
-      "title": "Meinungen unserer Patienten"
+      "title": "Patient Reviews"
     },
     "Faq": {
-      "title": "Häufig gestellte Fragen",
-      "subtitle": "Hier findest du alle notwendigen Informationen. Hast du noch weitere Fragen? Dann kontaktiere unseren Support."
+      "title": "Frequently Asked Questions",
+      "subtitle": "Here you'll find all necessary information. Do you have more questions? Then contact our support."
     }
   },
   "CannabisPage": {
@@ -91,181 +91,180 @@
     "subtitle": "Lorem ipsum dolor sit amet consectetur adipiscing elidolor mattis sit phasellus mollis sit aliquam sit nullam neques."
   },
   "BlogPage": {
-    "title": "Blog Seite",
-    "subtitle": "Unsere neuesten Blogs",
-    "latestBlogs": "Neueste Blogs",
-    "blogNotFound": "Blog nicht gefunden"
+    "title": "Blog Page",
+    "subtitle": "Our Latest Blogs",
+    "latestBlogs": "Latest Blogs",
+    "blogNotFound": "Blog not found"
   },
   "Validations": {
-    "required": "Erforderlich",
-    "invalidEmail": "Ungültige E-Mail",
-    "passwordSixChars": "Das Passwort muss mindestens 6 Zeichen lang sein",
-    "passwordMustMatch": "Passwörter müssen übereinstimmen"
+    "required": "Required",
+    "invalidEmail": "Invalid Email",
+    "passwordSixChars": "Password must be at least 6 characters",
+    "passwordMustMatch": "Passwords must match"
   },
   "FAQ": {
-    "title": "Haben Sie fragen?",
-    "inThisGuide": "In diesem Handbuch"
+    "title": "Do you have questions?",
+    "inThisGuide": "In this guide"
   },
   "HowItWorksPage": {
-    "title": "Behandlungsablauf",
-    "strongSubTitle": "Registrierung: ",
-    "subtitle": "Melde dich auf unserer Website an und erstelle ein Benutzerkonto. Gib grundlegende Informationen zu deinem Gesundheitszustand an.",
+    "title": "Treatment Process",
+    "strongSubTitle": "Registration: ",
+    "subtitle": "Sign up on our website and create a user account. Provide basic information about your health condition.",
     "list": [
       {
-        "title": "Fragebogen ausfüllen:",
-        "description": "Ein medizinischer Fragebogen erfasst deine Symptome, bisherigen Therapien und Vorerkrankungen. Dieser Schritt ist entscheidend, um eine individuelle Therapieempfehlung zu erstellen."
+        "title": "Fill out questionnaire:",
+        "description": "A medical questionnaire records your symptoms, previous therapies, and pre-existing conditions. This step is crucial for creating an individual therapy recommendation."
       },
       {
-        "title": "Auswahl der Cannabisblüte:",
-        "description": "Wähle aus einer Liste von Sorten, die regelmäßig aktualisiert wird. Unsere Plattform zeigt dir nur verfügbare Sorten an, um Verzögerungen zu vermeiden."
+        "title": "Selection of cannabis flower:",
+        "description": "Choose from a list of strains that is regularly updated. Our platform only shows you available strains to avoid delays."
       },
       {
-        "title": "Wunschapotheke auswählen:",
-        "description": "Wähle eine Apotheke aus unserer Liste oder entscheide dich für eine freie Apotheke. Partnerapotheken garantieren eine schnelle Lieferung und hohe Verfügbarkeit."
+        "title": "Select preferred pharmacy:",
+        "description": "Choose a pharmacy from our list or opt for a free pharmacy. Partner pharmacies guarantee fast delivery and high availability."
       },
       {
-        "title": "Ärztliche Prüfung:",
-        "description": "Dein Fragebogen wird von einem spezialisierten Arzt geprüft. Falls notwendig, kann der Arzt weitere Fragen stellen oder eine Videokonsultation anfordern."
+        "title": "Medical review:",
+        "description": "Your questionnaire is reviewed by a specialized doctor. If necessary, the doctor may ask additional questions or request a video consultation."
       },
       {
-        "title": "Rezeptausstellung:",
-        "description": "Bei positiver Prüfung wird ein Privatrezept ausgestellt. Dieses wird dir als e-Rezept oder in Papierform zugestellt."
+        "title": "Prescription issuance:",
+        "description": "Upon positive review, a private prescription will be issued. This will be delivered to you as an e-prescription or in paper form."
       },
       {
-        "title": "Rezeptversand:",
-        "description": "Auf Wunsch übermitteln wir dein Rezept direkt an eine Apotheke, sodass du dich nicht um den Versand kümmern musst."
+        "title": "Prescription delivery:",
+        "description": "If desired, we will send your prescription directly to a pharmacy so you don't have to worry about shipping."
       }
     ]
   },
   "Dashboard": {
-    "back": "Zurück",
-    "finish": "Beenden",
-    "previous": "Vorherige",
-    "next": "Nächste",
-    "logout": "Ausloggen",
-    "questionnaireResponses": "Fragebogen Antworten",
-    "close": "Schließen",
-    "userName": "Name des Benutzers",
-    "responses": "Antwort",
+    "back": "Back",
+    "finish": "Finish",
+    "previous": "Previous",
+    "next": "Next",
+    "logout": "Logout",
+    "questionnaireResponses": "Questionnaire Responses",
+    "close": "Close",
+    "userName": "User Name",
+    "responses": "Response",
     "status": "Status",
-    "viewResponses": "Antworten anzeigen",
-    "searchQuestionnaire": "Fragebogen durchsuchen",
-    "medicationDeclined": "Ihr Medikament wurde abgelehnt!",
-    "pleaseStartAgain": "Bitte nochmal von vorne beginnen!",
+    "viewResponses": "View Responses",
+    "searchQuestionnaire": "Search Questionnaire",
+    "medicationDeclined": "Your medication was declined!",
+    "pleaseStartAgain": "Please start again!",
     "Sidebar": {
-      "questionnaire": "Fragebogen",
-      "questionnaires": "Fragebögen",
-      "questionnaireList": "Fragebogenliste",
-      "profile": "Profil",
-      "basket": "Korb",
-      "verificationPage": "Bestätigungsseite"
+      "questionnaire": "Questionnaire",
+      "questionnaires": "Questionnaires",
+      "questionnaireList": "Questionnaire List",
+      "profile": "Profile",
+      "basket": "Basket",
+      "verificationPage": "Verification Page"
     },
-    "addedToBasket": "Artikel wurde in den Warenkorb gelegt",
-    "removedFromBasket": "Artikel aus dem Warenkorb entfernt!",
-    "itemExistsInBasket": "Artikel ist im Warenkorb!",
-    "quantityIncreased": "Menge erhöht!",
-    "quantityDecreased": "Menge reduziert!",
-    "emptyBasket": "Ihr Warenkorb ist leer.",
-    "total": "Gesamt",
-    "proceedToCheckout": "Zur Kasse gehen"
+    "addedToBasket": "Item added to basket",
+    "removedFromBasket": "Item removed from basket!",
+    "itemExistsInBasket": "Item exists in basket!",
+    "quantityIncreased": "Quantity increased!",
+    "quantityDecreased": "Quantity decreased!",
+    "emptyBasket": "Your basket is empty.",
+    "total": "Total",
+    "proceedToCheckout": "Proceed to Checkout"
   },
   "Notifications": {
-    "profileUpdate": "Profil erfolgreich aktualisiert!",
-    "questionnaireAccepted": "Fragebogen angenommen!",
-    "questionnaireDeclined": "Fragebogen abgelehnt!",
-    "questionnaireSubmitedSuccesfully": "Fragebogen erfolgreich übermittelt!",
-    "errorQuestionnaireStatus": "Fehler beim Prüfen des Fragebogen Übermittlungsstatus",
-    "errorSubmitingQuestionnaire": "Fehler beim Senden des Fragebogens",
-    "verificationStatus": "Verifizierungsstatus"
+    "profileUpdate": "Profile successfully updated!",
+    "questionnaireAccepted": "Questionnaire accepted!",
+    "questionnaireDeclined": "Questionnaire declined!",
+    "questionnaireSubmitedSuccesfully": "Questionnaire submitted successfully!",
+    "errorQuestionnaireStatus": "Error checking questionnaire submission status",
+    "errorSubmitingQuestionnaire": "Error submitting questionnaire",
+    "verificationStatus": "Verification Status"
   },
   "Checkout": {
-    "stipeIsNotLoaded": "Stripe ist noch nicht geladen.",
-    "paymentSuccessful": "Zahlung erfolgreich!",
-    "total": "Gesamt",
-    "title": "Kasse",
-    "processing": "Verarbeitung...",
-    "payWithStripe": "Mit Stripe bezahlen",
-    "paypalCaptureFailed": "PayPal-Zahlungserfassung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-    "paypalPaymentFailed": "PayPal-Zahlung fehlgeschlagen. Bitte versuchen Sie es erneut."
+    "stipeIsNotLoaded": "Stripe is not loaded yet.",
+    "paymentSuccessful": "Payment successful!",
+    "total": "Total",
+    "title": "Checkout",
+    "processing": "Processing...",
+    "payWithStripe": "Pay with Stripe",
+    "paypalCaptureFailed": "PayPal payment capture failed. Please try again.",
+    "paypalPaymentFailed": "PayPal payment failed. Please try again."
   },
   "Validation": {
-    "addBirthdateBeforeVerify": "Bitte fügen Sie Ihr Geburtsdatum in Ihrem Profil hinzu, bevor Sie sich verifizieren!",
-    "pleaseSelectOrDragDrop": "Bitte wählen Sie ein Dokument zum Hochladen aus oder ziehen Sie es per Drag & Drop.",
-    "uploadedSucessfulWaitForReview": "Dokument erfolgreich hochgeladen. Wartet auf Überprüfung.",
-    "verifyIdentity": "Identität überprüfen",
-    "verificationDescription": "Bitte verifizieren Sie Ihre Identität mit einem amtlichen Ausweisdokument",
-    "verificationSuccessful": "Identitätsüberprüfung erfolgreich",
-    "verificationError": "Bei der Überprüfung ist ein Fehler aufgetreten",
-    "verificationCanceled": "Überprüfung wurde abgebrochen",
-    "verifying": "Überprüfung läuft...",
-    "startVerification": "Überprüfung starten"
+    "addBirthdateBeforeVerify": "Please add your birth date in your profile before verifying!",
+    "pleaseSelectOrDragDrop": "Please select a document to upload or drag & drop.",
+    "uploadedSucessfulWaitForReview": "Document successfully uploaded. Waiting for review.",
+    "verifyIdentity": "Verify Identity",
+    "verificationDescription": "Please verify your identity with an official ID document",
+    "verificationSuccessful": "Identity verification successful",
+    "verificationError": "An error occurred during verification",
+    "verificationCanceled": "Verification was canceled",
+    "verifying": "Verifying..."
   },
   "Questionnaire": {
-    "optionalInfo": "Optional: Geben Sie hier weitere Informationen ein",
+    "optionalInfo": "Optional: Enter additional information here",
     "steps": {
-      "dataPrivacy": "Datenschutz",
-      "patientStatus": "Patientenstatus",
-      "diseases": "Erkrankung(en)",
-      "details": "Detailfragen"
+      "dataPrivacy": "Data Privacy",
+      "patientStatus": "Patient Status",
+      "diseases": "Diseases",
+      "details": "Details"
     },
     "mainQuestions": {
       "previousTreatment": {
-        "question": "Wurdest du bereits mit med. Cannabis durch eine Verschreibung von einem Arzt behandelt?",
-        "subtext": "Bitte aktuelles Rezept oder sonstigen Nachweis bereit halten."
+        "question": "Have you been treated with medical cannabis through a prescription from a doctor before?",
+        "subtext": "Please have your current prescription or other proof ready."
       },
       "mainDisease": {
-        "question": "In welche Kategorie gehört deine Haupterkrankung oder falls deine Erkrankung nicht aufgeführt ist dein Hauptsymptom?",
-        "subtext": "Wenn du nicht sicher bist oder falsch gewählt hast, kannst du im Folgenden jederzeit zurückkehren und die Kategorie korrigieren."
+        "question": "Which category does your main disease or symptom belong to?",
+        "subtext": "If you're unsure or made a mistake, you can go back and correct the category later."
       },
       "additionalDiseases": {
-        "question": "Leidest du neben deiner Haupterkrankung an weiteren Krankheiten oder Allergien?",
+        "question": "Do you suffer from any other diseases or allergies besides your main disease?",
         "yesFollowUp": {
-          "title": "Wähle die Art deiner Erkrankung(en)"
+          "title": "Select the type of your disease(s)"
         },
         "noFollowUp": {
-          "title": "Bitte bestätige an keiner der folgenden Erkrankungen zu leiden ODER wähle die Erkrankung aus, sofern Sie auf dich zutrifft."
+          "title": "Please confirm that you do not suffer from any of the following diseases OR select the disease if it applies to you."
         }
       }
     },
     "diseases": {
       "chronicPain": {
-        "title": "Chronische Schmerzen",
+        "title": "Chronic Pain",
         "options": {
           "backPain": {
-            "text": "Rückenschmerzen",
-            "subtext": "(z. B. Bandscheibenvorfall, Skoliose, Bechterewsche Krankheit)"
+            "text": "Back Pain",
+            "subtext": "(e.g. herniated disc, scoliosis, Bechterew's disease)"
           },
           "jointPain": {
-            "text": "Gelenkschmerzen",
-            "subtext": "(z. B. Arthrose, Arthritis, Rheuma, Gicht)"
+            "text": "Joint Pain",
+            "subtext": "(e.g. arthritis, rheumatism, gout)"
           },
           "nervePain": {
-            "text": "Nervenschmerzen",
-            "subtext": "(z. B. Polyneuropathie)"
+            "text": "Nerve Pain",
+            "subtext": "(e.g. polyneuropathy)"
           }
         }
       }
     },
     "buttons": {
-      "next": "Weiter",
-      "back": "Zurück",
-      "finish": "Abschließen",
-      "finishQuestionnaire": "Fragebogen abschließen",
-      "questionnaireSubmited": "Sie haben Ihren Fragebogen bereits abgeschickt.",
+      "next": "Next",
+      "back": "Back",
+      "finish": "Finish",
+      "finishQuestionnaire": "Finish Questionnaire",
+      "questionnaireSubmited": "You have already submitted your questionnaire.",
       "toast": {
-        "pleaseSelectOption": "Bitte wählen Sie mindestens eine Option aus",
-        "pleaseSpecifyOther": "Bitte geben Sie Ihre andere Erkrankung an",
-        "pleaseAcceptConsent": "Bitte akzeptieren Sie die Einwilligung zur Datenverarbeitung",
-        "pleaseAnswerSubQuestions": "Bitte beantworten Sie alle Unterfragen",
-        "pleaseEnterPercentage": "Bitte geben Sie den Prozentsatz ein",
-        "pleaseEnterValidPercentage": "Bitte geben Sie einen gültigen Prozentsatz zwischen 0 und 100 ein",
-        "successfulSubmission": "Fragebogen erfolgreich eingereicht",
-        "errorOccurred": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut"
+        "pleaseSelectOption": "Please select at least one option",
+        "pleaseSpecifyOther": "Please specify your other disease",
+        "pleaseAcceptConsent": "Please accept the consent for data processing",
+        "pleaseAnswerSubQuestions": "Please answer all sub-questions",
+        "pleaseEnterPercentage": "Please enter a percentage",
+        "pleaseEnterValidPercentage": "Please enter a valid percentage between 0 and 100",
+        "successfulSubmission": "Questionnaire submitted successfully",
+        "errorOccurred": "An error occurred. Please try again later"
       }
     },
     "customInput": {
-      "placeholder": "Bitte geben Sie Ihre Erkrankung ein",
-      "characterCount": "{{current}}/{{max}} Zeichen"
+      "placeholder": "Please enter your disease",
+      "characterCount": "{{current}}/{{max}} characters"
     }
   }
 }
