@@ -60,23 +60,31 @@ const AuthService = {
   },
 
   getProfile: async (): Promise<any> => {
-    const token = localStorage.getItem('token'); // Retrieve token from localStorage
-    if (!token) {
-      console.warn("Token not found, user might be logged out.");
-      return null; // Return null if no token, or handle accordingly
-    }
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.warn("No token found in localStorage");
+        return null;
+      }
+
       const response = await axiosInstance.get('/auth/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data; 
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        throw error.response?.data;
+      if (!response.data) {
+        console.warn("No user data received from profile endpoint");
+        return null;
       }
-      throw error;
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      // If unauthorized, clear token
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        localStorage.removeItem('token');
+      }
+      return null;
     }
   },
 

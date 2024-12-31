@@ -1,6 +1,6 @@
 // src/app/context/AppContext.tsx
 "use client";
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 
 interface AppContextType {
@@ -16,28 +16,35 @@ const AppContext = createContext<AppContextType | null>(null);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('questionaries');
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
   
   useEffect(() => {
-    if (user !== undefined && isInitialLoad) {
-      setActiveTab(user?.isAdmin ? 'questionariesList' : 'questionaries');
-      setIsInitialLoad(false);
+    if (!loading) {
+      console.log("Auth state updated:", { user, loading });
+      const newTab = user?.isAdmin ? 'questionariesList' : 'questionaries';
+      console.log("Setting active tab to:", newTab);
+      setActiveTab(newTab);
     }
-  }, [user, isInitialLoad]);
+  }, [user, loading]);
+
+  const contextValue = useMemo(() => ({
+    isLoginModalOpen,
+    setIsLoginModalOpen,
+    isRegisterModalOpen,
+    setIsRegisterModalOpen,
+    activeTab,
+    setActiveTab
+  }), [isLoginModalOpen, isRegisterModalOpen, activeTab]);
+
+  if (loading) {
+    return <div>Loading...</div>; // Or your loading component
+  }
 
   return (
-    <AppContext.Provider value={{ 
-      isLoginModalOpen, 
-      setIsLoginModalOpen,
-      isRegisterModalOpen, 
-      setIsRegisterModalOpen,
-      activeTab,
-      setActiveTab
-    }}>
+    <AppContext.Provider value={contextValue}>
       {children}
     </AppContext.Provider>
   );

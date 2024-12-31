@@ -26,14 +26,21 @@ const LoginModal: React.FC<Props> = () => {
 
     const handleNormalLogin = async (values: { email: string; password: string }) => {
         try {
-            await AuthService.login(values.email, values.password);
+            const loginResponse = await AuthService.login(values.email, values.password);
             const userProfile = await AuthService.getProfile();
+            
+            if (!userProfile) {
+                throw new Error('Failed to fetch user profile');
+            }
 
             setUser(userProfile);
-
-            router.push('/dashboard');
             setIsLoginModalOpen(false);
+            
+            // Small delay to ensure state updates before navigation
+            await new Promise(resolve => setTimeout(resolve, 100));
+            router.push('/dashboard');
         } catch (error) {
+            console.error('Login error:', error);
             const errorMessage = (error as Error).message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    
         }
@@ -41,11 +48,9 @@ const LoginModal: React.FC<Props> = () => {
 
     const handleOAuthLogin = async (provider: any) => {
         try {
-            // Configure auth persistence and redirect
             const auth = getAuth();
             await setPersistence(auth, browserLocalPersistence);
             
-            // Set custom parameters for the provider
             provider.setCustomParameters({
                 prompt: 'select_account',
                 redirect_uri: `${window.location.origin}/__/auth/handler`
@@ -57,11 +62,17 @@ const LoginModal: React.FC<Props> = () => {
             if (token) {
                 await AuthService.loginWithFirebase(token);
                 const userProfile = await AuthService.getProfile();
-    
+                
+                if (!userProfile) {
+                    throw new Error('Failed to fetch user profile');
+                }
+
                 setUser(userProfile);
-    
-                router.push('/dashboard'); // Redirect to the dashboard
                 setIsLoginModalOpen(false);
+                
+                // Small delay to ensure state updates before navigation
+                await new Promise(resolve => setTimeout(resolve, 100));
+                router.push('/dashboard');
             }
         } catch (error) {
             console.error('OAuth login error:', error);

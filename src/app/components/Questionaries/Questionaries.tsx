@@ -815,11 +815,15 @@ const StepQuestionnaire: React.FC = () => {
       </div>
     );
   };
-  if (hasSubmitted || questionnaireStatus === "accepted" || questionnaireStatus === "pending") {
+  if (hasSubmitted) {
     return (
       <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
         <h2 className="text-3xl font-semibold text-secondary mb-20">{tDashboard("Sidebar.questionnaire")}</h2>
         <p className="text-xl text-center text-secondary">{t("buttons.questionnaireSubmited")}</p>
+        {questionnaireStatus === "accepted" 
+          ? <p className="text-xl mt-2 text-center text-secondary">{tNotifications("questionnaireAccepted")}</p>
+          : <p className="text-xl mt-2 text-center text-secondary">{tNotifications("questionnaireDeclined")}</p>
+        }
       </div>
     );
   }
