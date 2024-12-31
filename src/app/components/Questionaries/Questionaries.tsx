@@ -2,11 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from '@/i18n/routing';
 import { Question, QuestionnaireState, SubQuestion } from "@/app/types/Questionnaire.type";
 import { questions, subQuestions } from "./data/questions";
 import ProgressBar from "./components/ProgressBar";
-import { showInfoToast } from "@/app/utils/toast";
+import { showErrorToast, showInfoToast } from "@/app/utils/toast";
 import { useAuth } from "@/app/context/AuthContext";
 import QuestionnaireService from '@/app/services/questionnaireService';
 
@@ -26,6 +26,8 @@ const initialState: QuestionnaireState = {
 
 const StepQuestionnaire: React.FC = () => {
   const t = useTranslations("Questionnaire");
+  const tDashboard = useTranslations("Dashboard");
+  const tNotifications = useTranslations('Notifications');
   const router = useRouter();
   const { user } = useAuth();
   const [isAccepted, setIsAccepted] = useState(false);
@@ -35,6 +37,26 @@ const StepQuestionnaire: React.FC = () => {
       ? JSON.parse(savedState)
       : initialState;
   });
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [questionnaireStatus, setQuestionnaireStatus] = useState<string>("");
+
+  useEffect(() => {
+    const checkQuestionnaireSubmission = async () => {
+      try {
+        const userQuestionnaires = await QuestionnaireService.getUserQuestionnaires(String(user?.id));
+        const latestStatus = userQuestionnaires.slice(-1)[0]?.status || "";
+        setQuestionnaireStatus(latestStatus);
+        if (userQuestionnaires.length > 0) {
+          setHasSubmitted(true);
+        }
+      } catch (error) {
+        showErrorToast(tNotifications('errorQuestionnaireStatus'));
+        console.error("Error checking questionnaire submission status:", error);
+      }
+    };
+
+    if (user?.id) checkQuestionnaireSubmission();
+  }, [user?.id]);
 
   // Load saved state on mount
   useEffect(() => {
@@ -267,15 +289,15 @@ const StepQuestionnaire: React.FC = () => {
     try {
       const formattedQuestions = {
         questions: Object.entries(state.responses).map(([step, response]) => ({
-          id: questions[Number(step) - 1].id,
           question: questions[Number(step) - 1].text,
           answer: response.answer,
-        }))
-      };
+      }))
+    }
+      
 
       console.log(formattedQuestions,"formatedQuestions");
 
-      // await QuestionnaireService.createQuestionnaire(formattedQuestions);
+      await QuestionnaireService.createQuestionnaire(formattedQuestions);
 
       // Show success message and redirect
       showInfoToast(t('buttons.toast.successfulSubmission'));
@@ -793,7 +815,14 @@ const StepQuestionnaire: React.FC = () => {
       </div>
     );
   };
-
+  if (hasSubmitted || questionnaireStatus === "accepted" || questionnaireStatus === "pending") {
+    return (
+      <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
+        <h2 className="text-3xl font-semibold text-secondary mb-20">{tDashboard("Sidebar.questionnaire")}</h2>
+        <p className="text-xl text-center text-secondary">{t("buttons.questionnaireSubmited")}</p>
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col min-h-screen">
       <div className="sticky top-0 z-10 bg-white">
@@ -803,6 +832,12 @@ const StepQuestionnaire: React.FC = () => {
           onPrev={handlePrev}
         />
       </div>
+      {questionnaireStatus === "declined" && (
+        <>
+          <p className="text-xl text-red-600 mb-4">{t("medicationDeclined")}</p>
+          <p className="text-secondary mb-8">{t("pleaseStartAgain")}</p>
+        </>
+      )}
       <div className="flex-1 container mx-auto px-4 py-8">
         {state.currentStep === 0 ? (
           renderConsent()

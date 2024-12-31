@@ -139,7 +139,6 @@
   },
   "Dashboard": {
     "back": "Zurück",
-    "optionalInfo": "Optional: Geben Sie hier weitere Informationen ein",
     "finish": "Beenden",
     "previous": "Vorherige",
     "next": "Nächste",
@@ -202,6 +201,7 @@
     "startVerification": "Überprüfung starten"
   },
   "Questionnaire": {
+    "optionalInfo": "Optional: Geben Sie hier weitere Informationen ein",
     "steps": {
       "dataPrivacy": "Datenschutz",
       "patientStatus": "Patientenstatus",

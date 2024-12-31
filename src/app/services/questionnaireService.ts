@@ -1,6 +1,6 @@
 import axios from 'axios';
 import axiosInstance from './api'; 
-import { CreateQuestionnaireRequest } from '../types/Questionnaire.type';
+import { CreateQuestionnaireRequest, Questionnaire } from '../types/Questionnaire.type';
 
 
 const QuestionnaireService = {
@@ -40,7 +40,7 @@ const QuestionnaireService = {
     }
   },
 
-  getAllQuestionnaires: async (): Promise<any[]> => {
+  getAllQuestionnaires: async (): Promise<Questionnaire[]> => {
     const token = localStorage.getItem('token'); // Retrieve token from localStorage
     if (!token) throw new Error("Token not found"); // Handle missing token
     try {

@@ -139,7 +139,6 @@
   },
   "Dashboard": {
     "back": "Zurück",
-    "optionalInfo": "Optional: Geben Sie hier weitere Informationen ein",
     "finish": "Beenden",
     "previous": "Vorherige",
     "next": "Nächste",
@@ -202,6 +201,7 @@
     "startVerification": "Überprüfung starten"
   },
   "Questionnaire": {
+    "optionalInfo": "Optional: Geben Sie hier weitere Informationen ein",
     "steps": {
       "dataPrivacy": "Datenschutz",
       "patientStatus": "Patientenstatus",
@@ -253,14 +253,14 @@
       "finishQuestionnaire": "Fragebogen abschließen",
       "questionnaireSubmited": "Sie haben Ihren Fragebogen bereits abgeschickt.",
       "toast": {
-        "pleaseSelectOption": "Please select at least one option",
-        "pleaseSpecifyOther": "Please specify your other condition",
-        "pleaseAcceptConsent": "Please accept the consent for data processing",
-        "pleaseAnswerSubQuestions": "Please answer all sub-questions",
-        "pleaseEnterPercentage": "Please enter the percentage",
-        "pleaseEnterValidPercentage": "Please enter a valid percentage between 0 and 100",
-        "successfulSubmission": "Questionnaire submitted successfully",
-        "errorOccurred": "An error occurred. Please try again later"
+        "pleaseSelectOption": "Bitte wählen Sie mindestens eine Option aus",
+        "pleaseSpecifyOther": "Bitte geben Sie Ihre andere Erkrankung an",
+        "pleaseAcceptConsent": "Bitte akzeptieren Sie die Einwilligung zur Datenverarbeitung",
+        "pleaseAnswerSubQuestions": "Bitte beantworten Sie alle Unterfragen",
+        "pleaseEnterPercentage": "Bitte geben Sie den Prozentsatz ein",
+        "pleaseEnterValidPercentage": "Bitte geben Sie einen gültigen Prozentsatz zwischen 0 und 100 ein",
+        "successfulSubmission": "Fragebogen erfolgreich eingereicht",
+        "errorOccurred": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut"
       }
     },
     "customInput": {

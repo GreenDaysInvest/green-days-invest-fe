@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import QuestionnaireService from "@/app/services/questionnaireService";
 import { useAuth } from "@/app/context/AuthContext";
 import { useTranslations } from "next-intl";
-import { Questionnaire } from "@/app/types/Questionnaire.type";
+import { CreateQuestionnaireRequest, Questionnaire } from "@/app/types/Questionnaire.type";
 import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
 import { showErrorToast, showInfoToast } from "@/app/utils/toast";
@@ -173,16 +173,25 @@ const QuestionnaireList: React.FC = () => {
                 <Loader />
               </div>
             )}
-            <div className={isLoading ? 'opacity-50' : ''}>
+            <div>
               <h3 className="text-2xl font-semibold text-secondary mb-4">{t('questionnaireResponses')}</h3>
-              <ul className="space-y-4">
-                {selectedQuestionnaire.questions.map((q, index) => (
-                  <li key={index} className="border-b pb-2">
-                    <p className="font-medium text-gray-700">{q.question}</p>
-                    <p className="text-gray-600">{q.answer}</p>
-                  </li>
-                ))}
-              </ul>
+              <div className={`${isLoading ? 'opacity-50' : ''} max-h-[70vh] overflow-y-auto`}>
+                <ul className="space-y-4">
+                  {selectedQuestionnaire.questions.map((questionItem, index) => (
+                    <li key={index} className="border-b pb-4">
+                      <p className="font-medium text-gray-700 mb-2">{questionItem.question}</p>
+                      <p className="text-gray-600">
+                        {Array.isArray(questionItem.answer) 
+                          ? questionItem.answer.map((ans, i) => (
+                              <span key={i} className="block ml-4">• {ans}</span>
+                            ))
+                          : questionItem.answer
+                        }
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <div className="flex justify-between mt-6">
                 <Button 
                   variant="danger" 

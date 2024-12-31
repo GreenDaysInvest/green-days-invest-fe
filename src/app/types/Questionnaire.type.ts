@@ -57,12 +57,19 @@ export interface QuestionnaireState {
 }
 
 export interface CreateQuestionnaireRequest {
-  questions: Question[];
+  questions: {
+    question: string;
+    answer: string | string[];
+  }[]
 }
 
 export interface Questionnaire {
   id: string;
   user: User;
-  questions: Question[];
+  questions: {
+    question: string;
+    answer: string | string[];
+  }[];
   status: string;
+  createdAt?: Date;
 }
