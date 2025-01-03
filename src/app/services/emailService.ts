@@ -53,18 +53,6 @@ const EmailService = {
       console.log('API response:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error sending payment confirmation email:', {
-        message: error.message,
-        code: error.code,
-        response: error.response?.data,
-        status: error.response?.status,
-        headers: error.response?.headers,
-        config: {
-          url: error.config?.url,
-          method: error.config?.method,
-          headers: error.config?.headers
-        }
-      });
       throw error;
     }
   }
