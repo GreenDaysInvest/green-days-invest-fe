@@ -32,7 +32,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       // Clear token and redirect to login if unauthorized
       localStorage.removeItem('token');
-      window.location.href = '/de/login';
+      window.location.href = '/de';
     }
     console.error('API Error:', error);
     return Promise.reject(error);
