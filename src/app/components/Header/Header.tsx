@@ -79,7 +79,7 @@ const Header: React.FC = () => {
           </div>
 
           <motion.div
-            className="w-full lg:container lg:w-1/2 flex justify-center lg:justify-end lg:my-[-100px] h-[280px] md:h-[360px] lg:h-auto"
+            className="w-full lg:container lg:w-1/2 flex justify-center lg:justify-end lg:my-[-100px] h-[320] md:h-[360px] lg:h-auto"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1 }}
