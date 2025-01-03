@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import AuthService from '../services/authServices';
 import { AuthContextType, User } from '../types/Auth.type';
+import { Loader } from '../components/Loader/Loader';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -61,8 +62,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }), [user, loading, error]);
 
     if (loading) {
-        return <div>Loading...</div>; // Or your loading component
-    }
+        return (
+          <div className="h-screen w-full flex items-center justify-center">
+            <Loader />
+          </div>
+        );
+      }
 
     return (
         <AuthContext.Provider value={value}>

@@ -4,6 +4,8 @@ import { User } from '../types/Auth.type';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../../firebase';
 
+const STORAGE_KEY = 'questionnaire_state';
+
 const AuthService = {
   getUserFromSession: async (): Promise<any | null> => {
     const userProfile = await AuthService.getProfile();
@@ -109,6 +111,9 @@ const AuthService = {
   logout: (): void => {
     AuthService.clearToken();
     localStorage.removeItem('token'); 
+
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(STORAGE_KEY + '_accepted');
     signOut(auth);
   },
 };

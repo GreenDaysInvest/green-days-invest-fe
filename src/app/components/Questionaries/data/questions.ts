@@ -222,7 +222,7 @@ export const questions: Question[] = [
   {
     id: 10,
     text: "Welche Medikamente wurden dir verschrieben?",
-    type: "radio",
+    type: "checkbox",
     options: [
       { 
         text: "Migräne-Akuttherapie",

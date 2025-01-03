@@ -126,7 +126,7 @@ const Navbar: React.FC = () => {
             ) : (
               <Link href="/dashboard" className="hidden lg:flex" onClick={closeMobileMenu}>
                 <span className="relative rounded-full bg-main w-[35px] h-[35px] my-[7px] text-white flex justify-center items-center cursor-pointer">
-                  {basket.length > 0 && <span className='absolute top-[-5px] right-[-5px] rounded-full w-[20px] h-[20px] flex justify-center items-center bg-tertiary font-red text-sm'>{basket.length}</span>}
+                  {user.questionnaires && user.questionnaires.length > 0 && basket.length > 0 && <span className='absolute top-[-5px] right-[-5px] rounded-full w-[20px] h-[20px] flex justify-center items-center bg-tertiary font-red text-sm'>{basket.length}</span>}
                   <p className="text-white font-medium capitalize">{user?.name?.charAt(0)}</p>
                 </span>
               </Link>
@@ -173,7 +173,7 @@ const Navbar: React.FC = () => {
               ) : (
                 <Link href="/dashboard" onClick={closeMobileMenu}>
                   <span className="relative rounded-full bg-main w-[35px] h-[35px] text-white flex justify-center items-center cursor-pointer mt-4">
-                    {basket.length > 0 && <span className='absolute top-[-5px] right-[-5px] rounded-full w-[20px] h-[20px] flex justify-center items-center bg-tertiary font-red text-sm'>{basket.length}</span>}
+                    {user.questionnaires && user.questionnaires.length > 0 && basket.length > 0 && <span className='absolute top-[-5px] right-[-5px] rounded-full w-[20px] h-[20px] flex justify-center items-center bg-tertiary font-red text-sm'>{basket.length}</span>}
                     <p className="text-white font-medium capitalize">{user?.name?.charAt(0)}</p>
                   </span>
                 </Link>

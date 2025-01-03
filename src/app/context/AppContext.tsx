@@ -2,6 +2,7 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
+import { Loader } from '../components/Loader/Loader';
 
 interface AppContextType {
   isLoginModalOpen: boolean;
@@ -40,7 +41,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   }), [isLoginModalOpen, isRegisterModalOpen, activeTab]);
 
   if (loading) {
-    return <div>Loading...</div>; // Or your loading component
+    return (
+      <div className="h-screen w-full flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   return (

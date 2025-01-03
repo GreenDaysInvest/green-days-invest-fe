@@ -99,6 +99,7 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handlePrev = () => {
+    console.log('Current state before prev:', state);
     setState(prev => {
       // Get the previous step from history
       const newHistory = [...prev.stepHistory];
@@ -127,9 +128,11 @@ const StepQuestionnaire: React.FC = () => {
         responses: newResponses
       };
     });
+    console.log('Current state after prev:', state);
   };
 
   const handleNext = () => {
+    console.log('Current state before next:', state);
     if (state.currentStep === 0) {
       if (!isAccepted) {
         showInfoToast(t('buttons.toast.pleaseAcceptConsentUpdated'));
@@ -283,6 +286,7 @@ const StepQuestionnaire: React.FC = () => {
       selectedOption: null, // Reset selectedOption as well for consistency
       stepHistory: [...prev.stepHistory, prev.currentStep + 1]
     }));
+    console.log('Current state after next:', state);
   };
 
   const submitQuestionnaire = async () => {
@@ -291,13 +295,18 @@ const StepQuestionnaire: React.FC = () => {
         questions: Object.entries(state.responses).map(([step, response]) => ({
           question: questions[Number(step) - 1].text,
           answer: response.answer,
-      }))
-    }
-      
-
+        }))
+      }
+    
       console.log(formattedQuestions,"formatedQuestions");
 
       await QuestionnaireService.createQuestionnaire(formattedQuestions);
+
+      setHasSubmitted(true);
+
+      // Clear questionnaire data from storage
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_KEY + '_accepted');
 
       // Show success message and redirect
       showInfoToast(t('buttons.toast.successfulSubmission'));
@@ -427,7 +436,8 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderSubQuestions = () => {
-
+    console.log('Rendering sub questions for step:', state.currentStep);
+    console.log('Selected options:', state.selectedOptions);
 
     return (
       <div className="space-y-12">
@@ -592,14 +602,14 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderRadioQuestion = (question: Question) => {
-
+    console.log('Rendering radio question for step:', state.currentStep);
 
     return (
       <div className="space-y-8">
         <h3 className="text-secondary font-semibold text-lg">{question.text}</h3>
         <div className="space-y-4">
           {question.options?.map((option, idx) => {
-            const isSelected = state.responses[state.currentStep]?.answer === option.text || state.selectedOption === option.text;
+            const isSelected = state.responses[state.currentStep]?.answer === option.text;
             return (
               <div key={idx}>
                 <button
