@@ -39,6 +39,7 @@ const StepQuestionnaire: React.FC = () => {
   });
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [questionnaireStatus, setQuestionnaireStatus] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const checkQuestionnaireSubmission = async () => {
@@ -290,7 +291,10 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const submitQuestionnaire = async () => {
+    if (isSubmitting) return; // Prevent multiple submissions
+    
     try {
+      setIsSubmitting(true);
       const formattedQuestions = {
         questions: Object.entries(state.responses).map(([step, response]) => ({
           question: questions[Number(step) - 1].text,
@@ -318,6 +322,8 @@ const StepQuestionnaire: React.FC = () => {
       } else {
         showInfoToast(t('buttons.toast.errorOccurred'));
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
