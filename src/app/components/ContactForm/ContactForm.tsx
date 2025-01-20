@@ -65,7 +65,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isOpen, onClose }) => {
               required
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-main"
+              className="text-secondary w-full px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-main"
               disabled={isSubmitting}
             />
           </div>
@@ -80,7 +80,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isOpen, onClose }) => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-main"
+              className="text-secondary w-full px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-main"
               disabled={isSubmitting}
             />
           </div>
@@ -95,7 +95,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ isOpen, onClose }) => {
               value={formData.message}
               onChange={handleChange}
               rows={4}
-              className="w-full px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-main"
+              className="text-secondary w-full px-3 py-2 border border-secondary rounded-md focus:outline-none focus:ring-1 focus:ring-main"
               disabled={isSubmitting}
             />
           </div>
