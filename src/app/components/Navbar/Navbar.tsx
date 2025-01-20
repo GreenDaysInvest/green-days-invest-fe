@@ -27,13 +27,13 @@ const Navbar: React.FC = () => {
   const handleMouseLeave = () => setDropdownOpen(null);
 
   const dropdownItems = [
-    { href: "sleep-disorder", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.sleepDisorder') },
-    { href: "migrane", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.migraine') },
-    { href: "chronic-pain", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.chronicPain') },
-    { href: "adhd", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.adhd') },
-    { href: "depression", icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.depresion') },
+    { href: "sleep-disorder", icon: <Image src={'/icons/Sleep_disorders.png'} width={40} height={40} alt="disease-card-icon" />, text: tHomePage('Disease.list.sleepDisorder') },
+    { href: "migrane", icon: <Image src={'/icons/Migraine.png'} width={40} height={40} alt="disease-card-icon" />, text: tHomePage('Disease.list.migraine') },
+    { href: "chronic-pain", icon: <Image src={'/icons/Chronic_pain.png'} width={40} height={40} alt="disease-card-icon" />, text: tHomePage('Disease.list.chronicPain') },
+    { href: "adhd", icon: <Image src={'/icons/ADHD.png'} width={40} height={40} alt="disease-card-icon" />, text: tHomePage('Disease.list.adhd') },
+    { href: "depression", icon: <Image src={'/icons/Depression.png'} width={40} height={40} alt="disease-card-icon" />, text: tHomePage('Disease.list.depresion') },
     { href: "../", // "further-complaints",
-      icon: <IoBag className='text-white' />, text: tHomePage('Disease.list.furtherComplaints') },
+      icon: <Image src={'/icons/Other_diseases.png'} width={40} height={40} alt="disease-card-icon" />, text: tHomePage('Disease.list.furtherComplaints') },
   ];
 
   const closeMobileMenu = () => {
@@ -94,7 +94,7 @@ const Navbar: React.FC = () => {
                     {dropdownItems.map((item, _id) => (
                       <Link key={_id} href={`/disease/${item.href}`}>
                         <div className="flex items-center bg-white rounded-md p-4">
-                          <span className="flex items-center justify-center bg-main rounded-md w-[38px] h-[38px] mr-4">
+                          <span className="flex items-center justify-center w-[38px] h-[38px] mr-4">
                             {item.icon}
                           </span>
                           <p className="text-main font-medium">{item.text}</p>
