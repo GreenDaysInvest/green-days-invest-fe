@@ -59,9 +59,8 @@ const DiscoverBannerSection: React.FC<Props> = ({
       <motion.p
         className="text-center text-sm md:text-base text-secondary mt-5 mb-14 w-3/4 lg:w-1/2 mx-auto"
         variants={itemVariants}
-      >
-        {subTitle}
-      </motion.p>
+        dangerouslySetInnerHTML={{ __html: subTitle }}
+      />
       <motion.div
         className="rounded-2xl bg-tertiary w-full flex justify-center items-center"
         variants={itemVariants}

@@ -1,5 +1,5 @@
 import { Client } from "@/app/types/Client.type";
-import Image from "next/image";
+import { FaRegUserCircle } from "react-icons/fa";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 
 interface Props {
@@ -34,13 +34,7 @@ const TestimonialCard: React.FC<Props> = ({ rating, description, client: { name,
         <p className="text-sm text-white mt-4 mb-3">{description}</p>
       </div>
       <div className="flex items-center mt-3">
-        <Image
-          src={avatar}
-          alt={name}
-          width={48}
-          height={48}
-          className="rounded-full"
-        />
+        <FaRegUserCircle className="text-2xl" />
         <div className="flex flex-col ml-3">
           <p className="text-white font-bold">{name}</p>
         </div>

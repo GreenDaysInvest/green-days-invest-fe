@@ -14,7 +14,7 @@ import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
 import AuthService from '@/app/services/authServices';
 import { User } from '@/app/types/Auth.type';
 import { v4 as uuidv4 } from 'uuid';
-import { showErrorToast } from '@/app/utils/toast';
+import { showErrorToast, showInfoToast } from '@/app/utils/toast';
 
 interface Props {}
 
@@ -58,6 +58,8 @@ const RegisterModal: React.FC<Props> = () => {
                 isAdmin: false
             });
 
+            showInfoToast(t('registerSuccess'));
+
             setIsRegisterModalOpen(false);
             setIsLoginModalOpen(true)
         } catch (error) {
@@ -81,6 +83,7 @@ const RegisterModal: React.FC<Props> = () => {
 
             // Send registration data to your backend
             const response = await AuthService.register(userData as User);
+            showInfoToast(t('registerSuccess'));
 
             setIsRegisterModalOpen(false);
             setIsLoginModalOpen(true)

@@ -86,7 +86,7 @@ const TextImage: React.FC<Props> = ({
             alt="flower"
             width={500}
             height={500}
-            className="rounded-xl object-cover lg:w-[90%]"
+            className="rounded-xl object-cover lg:w-[70%]"
           />
         </motion.div>
       </div>

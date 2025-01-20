@@ -14,6 +14,12 @@ interface EmailPayload {
   html: string;
 }
 
+interface ContactFormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
 const EmailService = {
   sendPaymentConfirmation: async (email: string, paymentMethod: 'stripe' | 'paypal', amount: number) => {
     try {
@@ -53,6 +59,39 @@ const EmailService = {
       console.log('API response:', response.data);
       return response.data;
     } catch (error) {
+      throw error;
+    }
+  },
+  sendContactForm: async (data: ContactFormData) => {
+    try {
+      const payload: EmailPayload = {
+        to: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'contact@green-days-invest.com',
+        subject: `Contact Form Submission from ${data.name}`,
+        text: `
+Name: ${data.name}
+Email: ${data.email}
+Message: ${data.message}
+        `,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Message:</strong></p>
+          <p>${data.message}</p>
+        `
+      };
+
+      const response = await axios.post(`${API_URL}/email/contact`, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+        withCredentials: true
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error sending contact form:', error);
       throw error;
     }
   }

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import FaqCard from "../FaqCard/FaqCard";
 import faqData from "../../[locale]/faq/faqData.json";
 import { motion, useInView } from "framer-motion";
+import ContactForm from "../ContactForm/ContactForm";
 
 const Faq: React.FC = () => {
   const t = useTranslations("HomePage");
@@ -12,6 +13,8 @@ const Faq: React.FC = () => {
   const [maxHeight, setMaxHeight] = useState<number | undefined>(undefined);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -50,9 +53,15 @@ const Faq: React.FC = () => {
       <motion.p
         className="text-secondary md:w-3/4 lg:w-2/4 mx-auto text-center my-6"
         variants={itemVariants}
-      >
-        {t("Faq.subtitle")}
-      </motion.p>
+        dangerouslySetInnerHTML={{ __html: t("Faq.subtitle") }}
+        onClick={() => setIsContactModalOpen(true)}
+        style={{ cursor: 'pointer' }}
+      />
+
+      <ContactForm 
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+      />
 
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10"

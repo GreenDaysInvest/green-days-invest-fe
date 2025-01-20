@@ -11,7 +11,7 @@ const nextConfig = {
             protocol: 'https',
             hostname: 'gruenebluete.de',
             port: '',
-            pathname: '/wp-content/uploads/**',
+            pathname: '/cdn/shop/files/**',
           },
         ],
     },

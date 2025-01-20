@@ -41,7 +41,7 @@ const LoginModal: React.FC<Props> = () => {
             router.push('/dashboard');
         } catch (error) {
             console.error('Login error:', error);
-            const errorMessage = (error as Error).message || 'An unexpected error occurred.';
+            const errorMessage = (error as Error)?.message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    
         }
     };
@@ -76,7 +76,7 @@ const LoginModal: React.FC<Props> = () => {
             }
         } catch (error) {
             console.error('OAuth login error:', error);
-            const errorMessage = (error as Error).message || 'An unexpected error occurred.';
+            const errorMessage = (error as Error)?.message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    
         }
     };

@@ -100,7 +100,8 @@
     "required": "Required",
     "invalidEmail": "Invalid Email",
     "passwordSixChars": "Password must be at least 6 characters",
-    "passwordMustMatch": "Passwords must match"
+    "passwordMustMatch": "Passwords must match",
+    "registerSuccess": "Registration successful"
   },
   "FAQ": {
     "title": "Do you have questions?",
@@ -266,5 +267,15 @@
       "placeholder": "Please enter your disease",
       "characterCount": "{{current}}/{{max}} characters"
     }
+  },
+  "Contact": {
+    "title": "Kontaktiere uns",
+    "nameLabel": "Name",
+    "emailLabel": "E-Mail",
+    "messageLabel": "Nachricht",
+    "submit": "Senden",
+    "submitting": "Wird gesendet...",
+    "successMessage": "Vielen Dank für deine Nachricht! Wir werden uns bald bei dir melden.",
+    "errorMessage": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut."
   }
 }

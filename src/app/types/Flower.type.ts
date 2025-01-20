@@ -9,6 +9,7 @@ export interface Flower {
     cbd: string;
     availability: string;
     price: string;
+    farmacy?: string;
 }
 
 export interface Basket {

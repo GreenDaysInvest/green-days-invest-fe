@@ -13,7 +13,7 @@
     "allRightsReserved": "Alle Rechte vorbehalten"
   },
   "Header": {
-    "title": "Cannabis-Therapie auf Knopfdruck - einfach und bequem",
+    "title": "Cannabis-Therapie auf Knopfdruck einfach und bequem",
     "subtitle": "Einfach, schnell und zuverlässig: Mit unserem Service erhältst du dein Cannabis-Rezept bequem von zu Hause aus",
     "firstButton": "Behandlung anfragen",
     "secondButton": "Livebestand prüfen"
@@ -24,9 +24,9 @@
     "DiscoverSection": {
       "Top": {
         "title": "Alles Rund ums medizinische Cannabis!",
-        "subtitle": "Dein Rezept, deine Blüte, deine Gesundheit – alles auf einer Plattform. CannabisRezepte24 bietet Dir die Ganzheitliche Lösung.",
+        "subtitle": "Dein Rezept, deine Blüte, deine Gesundheit – alles auf einer Plattform. <br/> CannabisRezepte24 bietet Dir die Ganzheitliche Lösung.",
         "Card": {
-          "title": "Following please change the design such as Bloomwell the 4th sector (Bist du auf der Suche nach medizinischem Cannabis?)",
+          "title": "Bist du auf der Suche nach medizinischem Cannabis?",
           "list": {
             "first":"Schnelle Bearbeitung",
             "second":"Beste Verfügbarkeit auf dem Markt",
@@ -83,7 +83,7 @@
     },
     "Faq": {
       "title": "Häufig gestellte Fragen",
-      "subtitle": "Hier findest du alle notwendigen Informationen. Hast du noch weitere Fragen? Dann kontaktiere unseren Support."
+      "subtitle": "Hier findest du alle notwendigen Informationen. Hast du noch weitere Fragen? <br/>Dann kontaktiere unseren Support."
     }
   },
   "CannabisPage": {
@@ -100,7 +100,8 @@
     "required": "Erforderlich",
     "invalidEmail": "Ungültige E-Mail",
     "passwordSixChars": "Das Passwort muss mindestens 6 Zeichen lang sein",
-    "passwordMustMatch": "Passwörter müssen übereinstimmen"
+    "passwordMustMatch": "Passwörter müssen übereinstimmen",
+    "registerSuccess": "Registrierung erfolgreich"
   },
   "FAQ": {
     "title": "Haben Sie fragen?",
@@ -267,5 +268,15 @@
       "placeholder": "Bitte geben Sie Ihre Erkrankung ein",
       "characterCount": "{{current}}/{{max}} Zeichen"
     }
+  },
+  "Contact": {
+    "title": "Kontaktiere uns",
+    "nameLabel": "Name",
+    "emailLabel": "E-Mail",
+    "messageLabel": "Nachricht",
+    "submit": "Senden",
+    "submitting": "Wird gesendet...",
+    "successMessage": "Vielen Dank für deine Nachricht! Wir werden uns bald bei dir melden.",
+    "errorMessage": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut."
   }
 }
