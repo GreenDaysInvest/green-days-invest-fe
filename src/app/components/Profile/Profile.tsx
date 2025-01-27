@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Input from '../Input/Input';
@@ -7,9 +7,11 @@ import Button from '../Button/Button';
 import { useAuth } from '@/app/context/AuthContext';
 import { User } from '@/app/types/Auth.type';
 import AuthService from '@/app/services/authServices';
-import { showInfoToast } from '@/app/utils/toast';
+import { showErrorToast, showInfoToast } from '@/app/utils/toast';
 import { useTranslations } from 'next-intl';
 import { GoUnverified, GoVerified } from 'react-icons/go';
+import { useRouter } from '@/i18n/routing';
+import Modal from '../Modal/Modal';
 
 const ProfileSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -27,6 +29,8 @@ const Profile: React.FC = () => {
   const t = useTranslations('Notifications');
   const tDashboard = useTranslations('Dashboard');
   const { user, setUser } = useAuth(); 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const router = useRouter();
 
   const initialValues: User = {
     name: user?.name || "",
@@ -66,6 +70,17 @@ const Profile: React.FC = () => {
       console.error("Error updating profile:", error);
       alert("Failed to update profile.");
     }
+  };
+  const handleDeleteAccount = async () => {
+    try {
+      await AuthService.deleteAccount();
+      showInfoToast(t('accountDeleted'));
+      router.push('/');
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      showErrorToast(t('errorDeletingAccount'));
+    }
+    setShowDeleteConfirm(false);
   };
 
   return (
@@ -120,6 +135,40 @@ const Profile: React.FC = () => {
           </Form>
         )}
       </Formik>
+      <div className="mt-8 pt-6 border-t border-gray-200">
+        <Button 
+          type="button"
+          label="Delete Account"
+          variant="danger"
+          className="w-full bg-red-600 hover:bg-red-700"
+          onClick={() => setShowDeleteConfirm(true)}
+        />
+      </div>
+      {showDeleteConfirm && (
+        <Modal isOpen={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)}>
+          <div className="p-6">
+            <h3 className="text-xl font-semibold mb-4 text-secondary">Delete Account</h3>
+            <p className="mb-6 text-gray-600">
+              Are you sure you want to delete your account? This action cannot be undone.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <Button
+                type="button"
+                label="Cancel"
+                variant="secondary"
+                onClick={() => setShowDeleteConfirm(false)}
+              />
+              <Button
+                type="button"
+                label="Delete"
+                variant="danger"
+                className="bg-red-600 hover:bg-red-700"
+                onClick={handleDeleteAccount}
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

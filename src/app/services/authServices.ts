@@ -116,6 +116,22 @@ const AuthService = {
     localStorage.removeItem(STORAGE_KEY + '_accepted');
     signOut(auth);
   },
+
+  deleteAccount: async (): Promise<void> => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No authentication token found');
+      
+      await axiosInstance.delete('/user/delete-account', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      AuthService.logout();
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) throw error.response?.data;
+      throw error;
+    }
+  }
 };
 
 export default AuthService;
