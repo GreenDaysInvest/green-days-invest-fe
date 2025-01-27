@@ -37,7 +37,7 @@ const LoginModal: React.FC<Props> = () => {
             setIsLoginModalOpen(false);
             
             // Small delay to ensure state updates before navigation
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 1500));
             router.push('/dashboard');
         } catch (error) {
             console.error('Login error:', error);
