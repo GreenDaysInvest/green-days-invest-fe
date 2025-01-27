@@ -23,7 +23,7 @@ const DiseaseCard: FC<DiseaseCardProps> = ({ title}) => {
   }
 
 
-  const diseasesImg: Record<string, string> = {
+  const diseasesDeImg: Record<string, string> = {
     "Schlafstörungen": "/icons/Sleep_disorders.png",
     "Migräne": "/icons/Migraine.png",
     "Chronische Schmerzen": "/icons/Chronic_pain.png",
@@ -31,11 +31,20 @@ const DiseaseCard: FC<DiseaseCardProps> = ({ title}) => {
     "Depressionen": "/icons/Depression.png",
     "Weitere Krankheiten": "/icons/Other_diseases.png"
   }
+
+  const diseasesEnImg: Record<string, string> = {
+    "Sleep Disorders": "/icons/Sleep_disorders.png",
+    "Migraine": "/icons/Migraine.png",
+    "Chronic Pain": "/icons/Chronic_pain.png",
+    "ADHD": "/icons/ADHD.png",
+    "Depression": "/icons/Depression.png",
+    "Other Conditions": "/icons/Other_diseases.png"
+  }
   
   return (
     <div className="bg-lightGreen rounded-2xl p-6 flex flex-col justify-between items-start h-[190px]">
       <div className='flex items-start'>
-        <Image src={`${diseasesImg[title]}`} width={40} height={40} alt="disease-card-icon" />
+        <Image src={diseasesDeImg[title] || diseasesEnImg[title]} width={40} height={40} alt="disease-card-icon" />
         <p className="text-3xl font-medium text-white text-left mb-6 ms-2">{title}</p>
       </div>
       <Link href={`/disease/${diseases[title]}`}>
