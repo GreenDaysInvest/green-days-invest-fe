@@ -177,7 +177,9 @@
     "questionnaireSubmitedSuccesfully": "Fragebogen erfolgreich übermittelt!",
     "errorQuestionnaireStatus": "Fehler beim Prüfen des Fragebogen Übermittlungsstatus",
     "errorSubmitingQuestionnaire": "Fehler beim Senden des Fragebogens",
-    "verificationStatus": "Verifizierungsstatus"
+    "verificationStatus": "Verifizierungsstatus",
+    "accountDeleted": "Ihr Konto wurde erfolgreich gelöscht",
+    "errorDeletingAccount": "Fehler beim Löschen Ihres Kontos. Bitte versuchen Sie es erneut"
   },
   "Checkout": {
     "stipeIsNotLoaded": "Stripe ist noch nicht geladen.",

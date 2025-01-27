@@ -75,6 +75,7 @@ const Profile: React.FC = () => {
     try {
       await AuthService.deleteAccount();
       showInfoToast(t('accountDeleted'));
+      setUser(null)
       router.push('/');
     } catch (error) {
       console.error("Error deleting account:", error);

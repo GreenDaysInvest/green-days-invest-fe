@@ -177,7 +177,9 @@
     "questionnaireSubmitedSuccesfully": "Questionnaire submitted successfully!",
     "errorQuestionnaireStatus": "Error checking questionnaire submission status",
     "errorSubmitingQuestionnaire": "Error submitting questionnaire",
-    "verificationStatus": "Verification Status"
+    "verificationStatus": "Verification Status",
+    "accountDeleted": "Your account has been successfully deleted",
+    "errorDeletingAccount": "Error deleting your account. Please try again"
   },
   "Checkout": {
     "stipeIsNotLoaded": "Stripe is not loaded yet.",
