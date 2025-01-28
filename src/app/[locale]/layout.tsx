@@ -21,9 +21,10 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Cannabis Rezepte 24",
-  description: "Einfach, schnell und zuverlässig: Mit unserem Service erhältst du dein Cannabis-Rezept bequem von zu Hause aus", keywords: ['cannabis-rezept', 'cannabis rezept', 'cannabisrezepte', 'cannabisrezepte24', 'cannabis', 'green days invest', 'greendaysinvest'],
-  authors: [{ name: 'cannabisrezepte24' }],
+  title: "Cannabisrezepte24 – Medizinische Cannabis-Rezepte online",
+  description: "Ihre Plattform für medizinisches Cannabis. Schnell und einfach zum Rezept: Individuelle Beratung, flexible Auswahl der Cannabisblüten und direkte Rezeptübermittlung an Apotheken.", 
+  keywords: ['Cannabis Rezept online', 'Medizinisches Cannabis Therapie', 'THC-Rezept beantragen', 'ADHS mit Cannabis behandeln', 'Chronische Schmerzen lindern mit THC', 'Medizinische Cannabisblüten auswählen', 'Digitale Rezeptplattform für THC', 'Cannabis bei Schlafstörungen', 'THC gegen Migräne', 'Rezept für medizinisches Cannabis Deutschland', 'THC-Therapie einfach beantragen', 'Kostenübernahme Krankenkasse Cannabis', 'Schnelle Rezeptabwicklung für Cannabis', 'Medizinisches THC bei Depressionen', 'Diskrete THC-Rezepte online'],
+  authors: [{ name: 'Cannabisrezepte24' }],
   viewport: {
     width: 'device-width',
     initialScale: 1,
@@ -32,13 +33,13 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
   },
   openGraph: {
-    title: 'Cannabis Rezepte 24',
-    description: 'Einfach, schnell und zuverlässig: Mit unserem Service erhältst du dein Cannabis-Rezept bequem von zu Hause aus',
-    url: 'https://www.mywebsite.com',
-    siteName: 'Cannabis Rezepte 24',
+    title: 'Cannabisrezepte24 – Medizinische Cannabis-Rezepte online',
+    description: 'Ihre Plattform für medizinisches Cannabis. Schnell und einfach zum Rezept: Individuelle Beratung, flexible Auswahl der Cannabisblüten und direkte Rezeptübermittlung an Apotheken.',
+    url: 'https://www.cannabisrezepte24.de',
+    siteName: 'Cannabisrezepte24 – Medizinische Cannabis-Rezepte online',
     images: [
       {
-        url: 'https://www.mywebsite.com/image.jpg',
+        url: 'https://www.cannabisrezepte24.de/_next/image?url=%2Fflower.png&w=384&q=75',
         width: 800,
         height: 600,
         alt: 'Cannabis Rezepte 24 Image',
@@ -48,9 +49,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cannabis Rezepte 24',
-    description: 'Einfach, schnell und zuverlässig: Mit unserem Service erhältst du dein Cannabis-Rezept bequem von zu Hause aus',
-    images: ['https://www.mywebsite.com/image.jpg'],
+    title: 'Cannabisrezepte24 – Medizinische Cannabis-Rezepte online',
+    description: 'Ihre Plattform für medizinisches Cannabis. Schnell und einfach zum Rezept: Individuelle Beratung, flexible Auswahl der Cannabisblüten und direkte Rezeptübermittlung an Apotheken.',
+    images: ['https://www.cannabisrezepte24.de/_next/image?url=%2Fflower.png&w=384&q=75'],
   },
 };
 
@@ -67,6 +68,7 @@ export default async function RootLayout({
     <html lang="de">
       <head>
         <meta name="trustpilot-one-time-domain-verification-id" content="1c53e06d-5503-4417-830f-ade30c79ddb3"/>
+        <meta name="robots" content="index, follow"/>
       </head>
       <body
         className={`${poppins.variable} bg-white antialiased`}

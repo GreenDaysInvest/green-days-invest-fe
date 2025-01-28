@@ -50,7 +50,7 @@ const TextImage: React.FC<Props> = ({
       className={`${className ? className : ""} container mx-auto px-4 sm:px-0 md:px-8 lg:px-4`}
     >
       <motion.div
-        className="lg:w-1/2 mb-10 lg:mb-0"
+        className="lg:w-1/2 mb-20 "
         variants={itemVariants}
       >
         {title && (
@@ -86,7 +86,7 @@ const TextImage: React.FC<Props> = ({
             alt="flower"
             width={500}
             height={500}
-            className="rounded-xl object-cover lg:w-[70%]"
+            className="rounded-xl object-cover lg:w-[75%]"
           />
         </motion.div>
       </div>
