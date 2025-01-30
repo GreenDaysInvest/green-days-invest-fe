@@ -6,6 +6,7 @@ import FaqCard from "../FaqCard/FaqCard";
 import faqData from "../../[locale]/faq/faqData.json";
 import { motion, useInView } from "framer-motion";
 import ContactForm from "../ContactForm/ContactForm";
+import FaqAccordion from "../FaqAccordion/FaqAccordion";
 
 const Faq: React.FC = () => {
   const t = useTranslations("HomePage");
@@ -35,7 +36,7 @@ const Faq: React.FC = () => {
     );
     setMaxHeight(Math.max(...cardHeights));
   }, [faqData]);
-
+  
   return (
     <motion.div
       className="container mx-auto py-10 xl:py-20 px-4 sm:px-0 md:px-8 lg:px-4"
@@ -44,6 +45,7 @@ const Faq: React.FC = () => {
       animate={isInView ? "show" : "hidden"}
       variants={containerVariants}
     >
+      
       <motion.p
         className="text-lightGreen text-3xl md:text-4xl lg:text-5xl text-center font-medium"
         variants={itemVariants}
@@ -64,15 +66,15 @@ const Faq: React.FC = () => {
       />
 
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10"
         variants={containerVariants}
       >
         {Object.entries(faqData).map(([id, section]: [string, any]) => {
-          const list = section.items.map((item: any) => item.title);
+          const list = section.items.map((item: any) => item);
 
           return (
             <motion.div key={id} variants={itemVariants}>
-              <FaqCard id={id} title={section.mainTitle} list={list} maxHeight={maxHeight} />
+              <FaqAccordion idx={id} heading={section.mainTitle} faqs={list} />;
             </motion.div>
           );
         })}

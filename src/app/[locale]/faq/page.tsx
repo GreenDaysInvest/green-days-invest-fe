@@ -4,6 +4,7 @@ import FaqCard from "@/app/components/FaqCard/FaqCard";
 import { useTranslations } from "next-intl";
 import faqData from "./faqData.json";
 import { motion } from "framer-motion";
+import FaqAccordion from "@/app/components/FaqAccordion/FaqAccordion";
 
 const FaqPage = () => {
   const t = useTranslations("HomePage");
@@ -45,15 +46,15 @@ const FaqPage = () => {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-2 gap-6 mt-10"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10"
           variants={containerVariants}
         >
           {Object.entries(faqData).map(([id, section]: [string, any]) => {
-            const list = section.items.map((item: any) => item.title);
+            const list = section.items.map((item: any) => item);
 
             return (
               <motion.div key={id} variants={itemVariants}>
-                <FaqCard id={id} title={section.mainTitle} list={list} />
+                <FaqAccordion idx={id} heading={section.mainTitle} faqs={list} />;
               </motion.div>
             );
           })}
