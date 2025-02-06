@@ -244,6 +244,7 @@ const StepQuestionnaire: React.FC = () => {
       return;
     }
     
+    console.log(state.customInput,"qokla state.customInput")
     if (state.responses[state.currentStep]?.answer === "Sonstige" && !state.customInput) {
       showInfoToast(t('buttons.toast.pleaseSpecifyOther'));
       return;
@@ -420,10 +421,10 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const handleInputChange = (value: string, option: any) => {
-    if (option.inputType === 'number') {
-      // Only allow numbers and validate percentage range
+    // For question 12, validate number input
+    if (state.currentStep === 12) {
       const numValue = parseInt(value);
-      if (isNaN(numValue) || numValue < 0 || numValue > 100) {
+      if (value !== '' && (isNaN(numValue) || numValue < 0 || numValue > 100)) {
         showInfoToast(t('buttons.toast.pleaseEnterValidPercentage'));
         return;
       }
@@ -654,17 +655,19 @@ const StepQuestionnaire: React.FC = () => {
                   </div>
                 </button>
                 {option.hasInput && (state.responses[state.currentStep]?.answer === option.text || state.selectedOption === option.text) && (
-                  <div className="mt-3 ml-8">
+                  <div className="mt-3">
                     <input
-                      type={'number'}
+                      type={state.currentStep === 12 ? 'number' : 'text'}
                       placeholder={option.inputPlaceholder || 'Bitte eingeben'}
                       value={state.responses[state.currentStep]?.inputValue || ''}
                       onChange={(e) => handleInputChange(e.target.value, option)}
-                      className="border rounded p-2 w-32 text-secondary"
-                      min={0}
-                      max={100}
+                      className="border rounded p-2 w-32 text-secondary w-full"
+                      {...(state.currentStep === 12 ? {
+                        min: 0,
+                        max: 100
+                      } : {})}
                     />
-                    {option.inputType === 'number' && <span className="ml-2">%</span>}
+                    {state.currentStep === 12 && <span className="ml-2">%</span>}
                   </div>
                 )}
               </div>
@@ -728,7 +731,6 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderCheckboxQuestion = (question: Question) => {
- 
 
     return (
       <div className="space-y-8">
