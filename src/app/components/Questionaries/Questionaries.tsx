@@ -441,6 +441,18 @@ const StepQuestionnaire: React.FC = () => {
     }));
   };
 
+  const getCurrentQuestionOptions = () => {
+    const currentQuestion = questions[state.currentStep - 1];
+    
+    // For question 3, get dynamic options based on question 2's selection
+    if (currentQuestion.id === 3 && currentQuestion.getDynamicOptions) {
+      const question2Response = state.responses[2]?.answer as string;
+      return currentQuestion.getDynamicOptions(question2Response);
+    }
+    
+    return currentQuestion.options || [];
+  };
+
   const renderSubQuestions = () => {
     console.log('Rendering sub questions for step:', state.currentStep);
     console.log('Selected options:', state.selectedOptions);
@@ -582,13 +594,10 @@ const StepQuestionnaire: React.FC = () => {
   };
 
   const renderQuestion = () => {
-  
-    if (state.currentStep === 0) {
-      return renderConsent();
-    }
-
     const currentQuestion = questions[state.currentStep - 1];
     if (!currentQuestion) return null;
+
+    const options = getCurrentQuestionOptions();
 
     // If we're in question 5 and showing subquestions
     if (state.currentStep === 5 && state.showingSubQuestions && state.selectedOptions.length > 0) {
@@ -614,7 +623,7 @@ const StepQuestionnaire: React.FC = () => {
       <div className="space-y-8">
         <h3 className="text-secondary font-semibold text-lg">{question.text}</h3>
         <div className="space-y-4">
-          {question.options?.map((option, idx) => {
+          {getCurrentQuestionOptions().map((option, idx) => {
             const isSelected = state.responses[state.currentStep]?.answer === option.text;
             return (
               <div key={idx}>
@@ -725,7 +734,7 @@ const StepQuestionnaire: React.FC = () => {
       <div className="space-y-8">
         <h3 className="text-secondary font-semibold text-lg">{question.text}</h3>
         <div className="space-y-3">
-          {question.options?.map((option, idx) => {
+          {getCurrentQuestionOptions().map((option, idx) => {
             const isSelected = state.selectedOptions.includes(option.text) || 
               (Array.isArray(state.responses[state.currentStep]?.answer) && 
                state.responses[state.currentStep]?.answer?.includes(option.text));

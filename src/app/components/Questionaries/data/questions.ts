@@ -104,16 +104,15 @@ export const questions: Question[] = [
     text: "In Welche Kategorie gehört deine Erkrankung? Falls diese nicht aufgeführt ist, was ist deine Haupterkrankung?",
     type: "radio",
     options: [
+      { text: "Allergien" },
       { text: "Chronische Schmerzen", hasFollowUp: true },
       { text: "Migräne/Kopfschmerzen" },
-      { text: "ADHS" },
-      { text: "Schlafstörung" },
-      { text: "Depression" },
-      { text: "Angststörungen/PTBS" },
-      { text: "Erkrankungen des Nervensystems" },
-      { text: "Chronische Darmentzündung" },
-      { text: "Hauterkrankung" },
-      { text: "Krebserkrankung" },
+      { text: "Psychiatrische Erkrankungen" },
+      { text: "Nervensystem-Erkrankungen" },
+      { text: "Herz-Kreislauf-/Lungenerkrankungen" },
+      { text: "Stoffwechselstörungen" },
+      { text: "Infektionskrankheiten" },
+      { text: "Krebserkrankungen" },
       { text: "Sonstige", hasInput: true }
     ]
   },
@@ -121,24 +120,12 @@ export const questions: Question[] = [
     id: 3,
     text: "",
     type: "radio",
-    options: [
-      { 
-        text: "Rückenschmerzen",
-        subtext: "(Skoliose, Bandscheibenvorfall, Morbus Bechterew)"
-      },
-      { 
-        text: "Gelenkschmerzen",
-        subtext: "(Arthrose, Arthritis, Rheuma, Gicht)"
-      },
-      { 
-        text: "Nervenschmerzen",
-        subtext: "(Neuropathie)"
-      },
-      { 
-        text: "Bauchschmerzen",
-        subtext: "(Endometriose)"
+    getDynamicOptions: (selectedOption: string) => {
+      if (selectedOption && subQuestions[selectedOption as keyof typeof subQuestions]) {
+        return subQuestions[selectedOption as keyof typeof subQuestions].options;
       }
-    ]
+      return [];
+    }
   },
   {
     id: 4,

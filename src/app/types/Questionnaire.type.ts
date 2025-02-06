@@ -19,6 +19,7 @@ export interface Question {
   options?: QuestionOption[];
   isAlternativeFlow?: boolean;
   isOptional?: boolean;
+  getDynamicOptions?: (selectedOption: string) => QuestionOption[];
 }
 
 export interface SubQuestion {
