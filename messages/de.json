@@ -10,7 +10,8 @@
     "blog": "Blog",
     "faq": "FAQ",
     "termsPrivacy": "Bedingungen & Datenschutz",
-    "allRightsReserved": "Alle Rechte vorbehalten"
+    "allRightsReserved": "Alle Rechte vorbehalten",
+    "register": "Registrieren"
   },
   "Header": {
     "title": "Cannabis-Therapie auf Knopfdruck einfach und bequem",
@@ -105,7 +106,8 @@
   },
   "FAQ": {
     "title": "Haben Sie fragen?",
-    "inThisGuide": "In diesem Handbuch"
+    "inThisGuide": "In diesem Handbuch",
+    "seeMore": "Mehr erfahren"
   },
   "HowItWorksPage": {
     "title": "Behandlungsablauf",

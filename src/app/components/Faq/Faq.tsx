@@ -2,8 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import FaqCard from "../FaqCard/FaqCard";
-import faqData from "../../[locale]/faq/faqData.json";
+import homeFaqData from "../../[locale]/faq/homeFaqData.json";
 import { motion, useInView } from "framer-motion";
 import ContactForm from "../ContactForm/ContactForm";
 import FaqAccordion from "../FaqAccordion/FaqAccordion";
@@ -35,7 +34,7 @@ const Faq: React.FC = () => {
       (card) => (card as HTMLElement).offsetHeight
     );
     setMaxHeight(Math.max(...cardHeights));
-  }, [faqData]);
+  }, [homeFaqData]);
   
   return (
     <motion.div
@@ -69,7 +68,7 @@ const Faq: React.FC = () => {
         className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10"
         variants={containerVariants}
       >
-        {Object.entries(faqData).map(([id, section]: [string, any]) => {
+        {Object.entries(homeFaqData).map(([id, section]: [string, any]) => {
           const list = section.items.map((item: any) => item);
 
           return (

@@ -44,7 +44,7 @@ const DiseaseCard: FC<DiseaseCardProps> = ({ title}) => {
   return (
     <div className="bg-lightGreen rounded-2xl p-6 flex flex-col justify-between items-start h-[190px]">
       <div className='flex items-start'>
-        <Image src={diseasesDeImg[title] || diseasesEnImg[title]} width={40} height={40} alt="disease-card-icon" />
+        <Image src={diseasesDeImg[title] || diseasesEnImg[title]} width={50} height={50} alt="disease-card-icon" />
         <p className="text-3xl font-medium text-white text-left mb-6 ms-2">{title}</p>
       </div>
       <Link href={`/disease/${diseases[title]}`}>

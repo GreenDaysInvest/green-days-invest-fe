@@ -10,6 +10,12 @@ import TextImage from "../components/DiscoverSections/TextImage";
 import { useTranslations } from "next-intl";
 import { testimonals } from "./const";
 import trust from "../../../public/trust.webp"
+import QuestionnaireIcon from '../../../public/icons/Questionnaire.png'
+import CannabisFlowerIcon from '../../../public/icons/Cannabis_flower.png'
+import PharmacyIcon from '../../../public/icons/Pharmacy.png'
+import DoctorTreatmentIcon from '../../../public/icons/Doctor_treatment.png'
+import RezeptausstellungIcon from '../../../public/icons/Prescription.png'
+import ShippingIcon from '../../../public/icons/Shipping.png'
 
 const partnersData = [ 
   {
@@ -31,6 +37,36 @@ export default function Home() {
 
   const t = useTranslations('HomePage');
 
+  const items = [
+    {
+      title: 'first',
+      icon: QuestionnaireIcon,
+    },
+    {
+      title: 'second',
+      icon: CannabisFlowerIcon,
+    },
+    {
+      title: 'third',
+      icon: PharmacyIcon,
+    }
+  ]
+
+  const itemsTwo = [
+    {
+      title: 'fourth',
+      icon: DoctorTreatmentIcon,
+    },
+    {
+      title: 'fifth',
+      icon: RezeptausstellungIcon,
+    },
+    {
+      title: 'sixth',
+      icon: ShippingIcon,
+    }
+  ]
+
   return (
     <div className="">
       <Header />
@@ -50,14 +86,14 @@ export default function Home() {
         title={t('DiscoverSection.Bottom.title')}
         subTitle={t('DiscoverSection.Bottom.subtitle')}
         image='/flower.png'
-        items={['first', 'second', 'third']}
+        items={items}
         className='py-10 xl:py-20'
         hasGap
         />
       <TextImage 
         image='/flower.png'
         isReverse
-        items={['fourth', 'fifth', 'sixth']}
+        items={itemsTwo}
         className='pb-10 xl:pb-20'
         />
       <DiseaseList />

@@ -120,7 +120,7 @@ const Navbar: React.FC = () => {
             </button>
             {!user ? (
               <div className="hidden lg:flex">
-                <Button label='Register' variant='secondary' onClick={() => { setIsRegisterModalOpen(true); closeMobileMenu(); }} />
+                <Button label={t('register')} variant='secondary' onClick={() => { setIsRegisterModalOpen(true); closeMobileMenu(); }} />
                 <Button className='ml-4' label='Login' variant='outline' onClick={() => { setIsLoginModalOpen(true); closeMobileMenu(); }} />
               </div>
             ) : (
@@ -167,7 +167,7 @@ const Navbar: React.FC = () => {
 
               {!user ? (
                 <div className='flex justify-center space-x-4 py-4'>
-                  <Button label='Register' variant='secondary' className='px-8' onClick={() => { setIsRegisterModalOpen(true); closeMobileMenu(); }} />
+                  <Button label={t('register')} variant='secondary' className='px-8' onClick={() => { setIsRegisterModalOpen(true); closeMobileMenu(); }} />
                   <Button label='Login' variant='outline' className='px-8' onClick={() => { setIsLoginModalOpen(true); closeMobileMenu(); }} />
                 </div>
               ) : (

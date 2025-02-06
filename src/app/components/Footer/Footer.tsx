@@ -124,7 +124,7 @@ const Footer = () => {
           variants={itemVariants}
         >
           <p className="text-white text-center">
-            Copyright © 2025 Green Day Invest | {t("allRightsReserved")}
+            Copyright © 2025 CannabisRezepte24 | {t("allRightsReserved")}
           </p>
         </motion.div>
       </div>

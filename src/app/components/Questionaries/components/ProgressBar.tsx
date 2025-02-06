@@ -39,13 +39,13 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, onClose, onPrev 
   ];
 
   return (
-    <div className="w-full bg-white shadow-sm py-4 px-6 flex items-center justify-between">
-      <button 
+    <div className="w-full bg-white py-4 px-6 flex items-center justify-between">
+      {currentStep > 1 && <button 
         onClick={onPrev} 
         className={`mr-4 text-gray-500 hover:text-secondary transition-colors ${currentStep <= 1 ? 'invisible' : ''}`}
       >
         <IoChevronBack size={24} />
-      </button>
+      </button>}
       
       <div className="flex-1 flex items-center justify-center">
         {steps.map((step, index) => {
@@ -59,7 +59,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, onClose, onPrev 
           
           return (
             <React.Fragment key={step.number}>
-              <div className="flex items-center">
+              <div className="flex items-center me-3">
                 <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
                   isCompleted
                     ? 'bg-secondary text-white'
@@ -79,7 +79,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, onClose, onPrev 
                   {step.label}
                 </span>
               </div>
-              {index < steps.length - 1 && (
+              {/* {index < steps.length - 1 && (
                 <div className={`flex-1 h-0.5 mx-2 ${
                   isCompleted
                     ? 'bg-secondary'
@@ -87,18 +87,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, onClose, onPrev 
                       ? 'bg-secondary/20'
                       : 'bg-gray-200'
                 }`} />
-              )}
+              )} */}
             </React.Fragment>
           );
         })}
       </div>
-
-      <button 
-        onClick={onClose} 
-        className="ml-4 text-gray-500 hover:text-secondary transition-colors"
-      >
-        <IoClose size={24} />
-      </button>
     </div>
   );
 };

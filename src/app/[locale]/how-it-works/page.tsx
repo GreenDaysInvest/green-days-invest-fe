@@ -90,7 +90,7 @@ const HowItWorksPage = () => {
               className={`flex items-start mb-16 w-full sm:w-1/2 overflow-hidden ${
                 index % 2 === 0
                   ? "flex-row-reverse sm:flex-row ms-0 sm:ms-8"
-                  : "flex-row-reverse justify-self-end me-0 sm:me-8"
+                  : "flex-row-reverse justify-self-end ms-auto me-0 sm:me-8"
               }`}
               variants={itemVariants}
             >

@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import { FC, useState, useRef, useEffect } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 
@@ -15,6 +16,8 @@ interface Props {
 }
 
 const FaqAccordion: FC<Props> = ({ idx, heading, faqs }) => {
+
+  const t = useTranslations('FAQ');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [heights, setHeights] = useState<number[]>([]); 
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -30,7 +33,6 @@ const FaqAccordion: FC<Props> = ({ idx, heading, faqs }) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
-  console.log(idx,"idx")
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -60,7 +62,7 @@ const FaqAccordion: FC<Props> = ({ idx, heading, faqs }) => {
                 height: activeIndex === index ? `${heights[index]}px` : "0px",
               }}
             >
-              <div className="px-3 md:px-6 py-4 text-main">{faq.description}</div>
+              <div className="px-3 md:px-6 py-4 text-main">{faq.description} <Link className="font-bold" href={`/faq/${idx}`}>{t('seeMore')}</Link></div>
             </div>
           </div>
         ))}

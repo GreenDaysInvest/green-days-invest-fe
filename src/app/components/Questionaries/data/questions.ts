@@ -96,7 +96,7 @@ export const questions: Question[] = [
     type: "radio",
     options: [
       { text: "Ja" },
-      { text: "Nein", hasFollowUp: true, redirectToOtherDiseases: true }
+      { text: "Nein" }
     ]
   },
   {

@@ -1,0 +1,88 @@
+{
+    "2.2": {
+      "mainTitle": "Rechnung & Zahlung",
+      "items": [
+        {
+          "id": "2.2.1",
+          "title": "Welche Zahlungsmethoden werden angeboten?",
+          "description": "Wir akzeptieren Kreditkarte, PayPal, SEPA-Lastschrift."
+        },
+        {
+          "id": "2.2.2",
+          "title": "Wo finde ich meine Rechnungen?",
+          "description": "Deine Rechnungen stehen dir im Kundenbereich zur Verfügung. "
+        },
+        {
+          "id": "2.2.3",
+          "title": "Kostenübernahme der (privaten) Krankenkasse",
+          "description": "Private Krankenkassen übernehmen oft die Kosten für Cannabis-Therapie. Die gesetzliche Versicherung übernimmt diese nicht."
+        },
+        {
+          "id": "2.2.4",
+          "title": "Kann ich meine Bestellung stornieren?",
+          "description": "Ja, du kannst deine Bestellung vor der Rezeptausstellung stornieren."
+        }
+      ]
+    },
+    "2.3": {
+        "mainTitle": "Alles rund ums Rezept",
+        "items": [
+            {
+                "id": "2.3.1",
+                "title": "Wie erhalte ich mein Rezept?",
+                "description": "Sobald dein medizinischer Fragebogen geprüft und genehmigt wurde, stellen unsere Ärzte ein Privatrezept für die von dir gewählte Cannabisblüte aus."
+            },
+            {
+                "id": "2.3.2",
+                "title": "e-Rezept: Wie funktioniert es?",
+                "description": "Das e-Rezept ist eine digitale Lösung, die den Einlöseprozess erheblich erleichtert."
+            },
+            {
+                "id": "2.3.3",
+                "title": "Wie häufig erhalte ich ein Rezept?",
+                "description": "Die Häugkeit der Rezeptausstellung hängt von deiner ärztlichen Diagnose und deinem Bedarf ab."
+            },
+            {
+                "id": "2.3.4",
+                "title": "Wie versende ich mein Rezept?",
+                "description": "Du hast die Wahl: Eigenversand oder Automatisierter Versand durch uns."
+            }
+        ]
+    },
+    "2.1": {
+      "mainTitle": "Allgemeine Informationen",
+      "items": [
+        {
+            "id": "2.1.1",
+            "title": "Wie nehme ich Cannabis ein?",
+            "description": "Cannabis kann auf drei Hauptarten eingenommen werden, Inhalation (Vaporizer), Orale Einnahme (Öle, Kapseln, Edibles), Sublinguale Anwendung (Tropfen, Sprays)."
+        },
+        {
+            "id": "2.1.2",
+            "title": "Cannabis auf Rezept – was du als Patient wissen musst",
+            "description": "Medizinisches Cannabis ist ein panzliches Arzneimittel, das bei einer Vielzahl von Beschwerden eingesetzt wird. Für ein Rezept musst Du dich registrieren und einen Fragebogen ausfüllen"
+        },
+        {
+          "id": "2.1.3",
+          "title": "Darf ich als Cannabis-Patient Auto fahren?",
+          "description": "Das Führen eines Fahrzeugs ist erlaubt, wenn du durch die Einnahme von Cannabis nicht beeinträchtigt bist. "
+        }
+      ]
+    },
+    "2.4": {
+        "mainTitle": "Apotheke",
+        "items": [
+            {
+                "id": "2.4.1",
+                "title": "Wo finde ich die optimale Apotheke, um mein Rezept einzulösen?",
+                "description": "Unsere Plattform zeigt dir eine Liste von Partnerapotheken, die regelmäßig ein breites Sortiment an Cannabisblüten führen."
+            },
+            {
+                "id": "2.4.2",
+                "title": "Was ist, wenn meine Blüte nicht mehr verfügbar ist?",
+                "description": "Sollte die von dir gewählte Sorte nicht mehr lieferbar sein, kannst du eine alternative Blüte wählen oder die Apotheke wechseln."
+            }
+        ]
+    }
+  }
+  

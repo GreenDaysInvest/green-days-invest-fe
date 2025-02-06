@@ -12,7 +12,7 @@ interface Props {
   subTitle?: string;
   image: StaticImageData | string;
   isReverse?: boolean;
-  items?: string[];
+  items?: { title: string; icon: StaticImageData | string }[];
   className?: string;
   hasGap?: boolean;
 }
@@ -70,11 +70,12 @@ const TextImage: React.FC<Props> = ({
           className={`lg:w-1/2 ${hasGap ? "pt-10 md:pt-20" : ""} pt-10 md:pt-20 lg:pt-0 `}
           variants={itemVariants}
         >
-          {items?.map((key) => (
-            <motion.div key={key} variants={itemVariants}>
+          {items?.map((item) => (
+            <motion.div key={item.title} variants={itemVariants}>
               <CardItem
-                title={t(`DiscoverSection.Bottom.Keys.${key}.title`)}
-                subtitle={t(`DiscoverSection.Bottom.Keys.${key}.subtitle`)}
+                icon={item.icon}
+                title={t(`DiscoverSection.Bottom.Keys.${item.title}.title`)}
+                subtitle={t(`DiscoverSection.Bottom.Keys.${item.title}.subtitle`)}
               />
             </motion.div>
           ))}

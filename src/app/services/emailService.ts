@@ -33,16 +33,56 @@ const EmailService = {
 
       const payload: EmailPayload = {
         to: email,
-        subject: 'Payment Confirmation - Green Days Invest',
+        subject: 'Payment Confirmation - CannabisRezepte24',
         text: `Thank you for your payment of ${amount} via ${paymentMethod}. Your transaction was successful.`,
         html: `
-          <h1>Payment Confirmation</h1>
-          <p>Thank you for your payment!</p>
-          <p>Amount: ${amount}</p>
-          <p>Payment Method: ${paymentMethod}</p>
-          <p>Status: Successful</p>
-          <br/>
-          <p>Thank you for choosing Green Days Invest!</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f9f9f9; padding: 20px 0;">
+            <tr>
+              <td align="center">
+                <table
+                  width="600"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+                >
+                  <!-- Logo Section -->
+                  <tr>
+                    <td align="center" style="background-color: #f3f3f3; padding: 20px;">
+                      <img
+                        src="https://www.cannabisrezepte24.de/logo.svg"
+                        alt="Green Days Invest Logo"
+                        style="max-height: 50px;"
+                      />
+                    </td>
+                  </tr>
+                  <!-- Content Section -->
+                  <tr>
+                    <td style="padding: 20px; font-family: Arial, sans-serif;">
+                      <h1 style="color: #333333; font-size: 24px; margin-bottom: 20px;">
+                        Zahlungsbestätigung
+                      </h1>
+                      <p style="color: #555555; line-height: 1.6; margin-bottom: 15px;">
+                        Vielen Dank für Ihre Zahlung!
+                      </p>
+                      <p style="color: #555555; line-height: 1.6; margin-bottom: 15px;">
+                        Betrag: ${amount}
+                      </p>
+                      <p style="color: #555555; line-height: 1.6; margin-bottom: 15px;">
+                        Zahlungsmethode: ${paymentMethod}
+                      </p>
+                      <p style="color: #555555; line-height: 1.6; margin-bottom: 15px;">
+                        Status: Erfolgreich
+                      </p>
+                      <br />
+                      <p style="color: #555555; line-height: 1.6;">
+                        Vielen Dank, dass Sie sich für CannabisRezepte24 entschieden haben!
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
         `
       };
 
@@ -65,19 +105,57 @@ const EmailService = {
   sendContactForm: async (data: ContactFormData) => {
     try {
       const payload: EmailPayload = {
-        to: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'contact@green-days-invest.com',
+        to: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'bennedictphiliphanel@gmail.com',
         subject: `Contact Form Submission from ${data.name}`,
         text: `
-Name: ${data.name}
-Email: ${data.email}
-Message: ${data.message}
+          Name: ${data.name}
+          Email: ${data.email}
+          Message: ${data.message}
         `,
         html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${data.name}</p>
-          <p><strong>Email:</strong> ${data.email}</p>
-          <p><strong>Message:</strong></p>
-          <p>${data.message}</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f9f9f9; padding: 20px 0;">
+            <tr>
+              <td align="center">
+                <table
+                  width="600"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+                >
+                  <!-- Logo Section -->
+                  <tr>
+                    <td align="center" style="background-color: #f3f3f3; padding: 20px;">
+                      <img
+                        src="https://www.cannabisrezepte24.de/logo.svg"
+                        alt="Green Days Invest Logo"
+                        style="max-height: 50px;"
+                      />
+                    </td>
+                  </tr>
+                  <!-- Content Section -->
+                  <tr>
+                    <td style="padding: 20px; font-family: Arial, sans-serif;">
+                      <h2 style="color: #333333; font-size: 24px; margin-bottom: 20px;">
+                        Neue Kontaktformular-Einreichung
+                      </h2>
+                      <p style="color: #555555; line-height: 1.6; margin-bottom: 15px;">
+                        <strong>Name:</strong> ${data.name}
+                      </p>
+                      <p style="color: #555555; line-height: 1.6; margin-bottom: 15px;">
+                        <strong>Email:</strong> ${data.email}
+                      </p>
+                      <p style="color: #555555; line-height: 1.6; margin-bottom: 15px;">
+                        <strong>Nachricht:</strong>
+                      </p>
+                      <p style="color: #555555; line-height: 1.6; margin-bottom: 15px;">
+                        ${data.message}
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
         `
       };
 

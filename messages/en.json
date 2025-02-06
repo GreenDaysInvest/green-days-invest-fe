@@ -10,7 +10,8 @@
     "blog": "Blog",
     "faq": "FAQ",
     "termsPrivacy": "Terms & Privacy",
-    "allRightsReserved": "All rights reserved"
+    "allRightsReserved": "All rights reserved",
+    "register": "Register"
   },
   "Header": {
     "title": "Cannabis therapy at the push of a button - simple and convenient",
@@ -105,7 +106,8 @@
   },
   "FAQ": {
     "title": "Do you have questions?",
-    "inThisGuide": "In this guide"
+    "inThisGuide": "In this guide",
+    "seeMore": "See More"
   },
   "HowItWorksPage": {
     "title": "Treatment Process",
