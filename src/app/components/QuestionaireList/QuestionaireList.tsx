@@ -188,6 +188,10 @@ const QuestionnaireList: React.FC = () => {
                           : questionItem.answer
                         }
                       </p>
+                      <p className="font-medium text-gray-700 mb-2">
+
+                        {questionItem.input} {questionItem.question === 'Wurde bereits eine Minderung der Erwerbstätigkeit oder ein Grad der Behinderung festgestellt?' ? '%' : ''}
+                      </p>
                     </li>
                   ))}
                 </ul>

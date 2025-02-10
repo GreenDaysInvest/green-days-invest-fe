@@ -153,8 +153,8 @@
     "status": "Status",
     "viewResponses": "View Responses",
     "searchQuestionnaire": "Search Questionnaire",
-    "medicationDeclined": "Your medication was declined!",
-    "pleaseStartAgain": "Please start again!",
+    "medicationDeclined": "Medication Declined",
+    "pleaseStartAgain": "Please start again",
     "Sidebar": {
       "questionnaire": "Questionnaire",
       "questionnaires": "Questionnaires",
@@ -206,6 +206,8 @@
   },
   "Questionnaire": {
     "optionalInfo": "Optional: Enter additional information here",
+    "medicationDeclined": "Medication Declined",
+    "pleaseStartAgain": "Please start again",
     "steps": {
       "dataPrivacy": "Data Privacy",
       "patientStatus": "Patient Status",

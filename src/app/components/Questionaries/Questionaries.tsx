@@ -131,6 +131,7 @@ const StepQuestionnaire: React.FC = () => {
     });
     console.log('Current state after prev:', state);
   };
+  console.log(state.currentStep,"qokla state.currentStep")
 
   const handleNext = () => {
     console.log('Current state before next:', state);
@@ -243,11 +244,20 @@ const StepQuestionnaire: React.FC = () => {
       showInfoToast(t('buttons.toast.pleaseSelectOption'));
       return;
     }
-    
-    console.log(state.customInput,"qokla state.customInput")
-    if (state.responses[state.currentStep]?.answer === "Sonstige" && !state.customInput) {
+    const customInput = state.responses[state.currentStep]?.inputValue || state.responses[state.currentStep]?.customInput;
+
+    if ((state.responses[state.currentStep]?.answer === "Sonstige" || state.responses[state.currentStep]?.answer === "Anderer Krebs") && customInput === "") {
       showInfoToast(t('buttons.toast.pleaseSpecifyOther'));
       return;
+    }
+    if(state.responses[state.currentStep]?.answer === "Sonstige") {
+      setState(prev => ({
+        ...prev,
+        currentStep: prev.currentStep + 1,
+        showingSubQuestions: false,
+        selectedOptions: [], // Reset selectedOptions
+        selectedOption: null, // Reset selectedOption as well for consistency
+      }));
     }
 
     // Check for redirections to other diseases question
@@ -300,6 +310,7 @@ const StepQuestionnaire: React.FC = () => {
         questions: Object.entries(state.responses).map(([step, response]) => ({
           question: questions[Number(step) - 1].text,
           answer: response.answer,
+          input: response.inputValue || response.customInput
         }))
       }
     
@@ -308,6 +319,7 @@ const StepQuestionnaire: React.FC = () => {
       await QuestionnaireService.createQuestionnaire(formattedQuestions);
 
       setHasSubmitted(true);
+      setQuestionnaireStatus('pending')
 
       // Clear questionnaire data from storage
       localStorage.removeItem(STORAGE_KEY);
@@ -422,6 +434,7 @@ const StepQuestionnaire: React.FC = () => {
 
   const handleInputChange = (value: string, option: any) => {
     // For question 12, validate number input
+    console.log(state.currentStep,"qokla state.currentStep")
     if (state.currentStep === 12) {
       const numValue = parseInt(value);
       if (value !== '' && (isNaN(numValue) || numValue < 0 || numValue > 100)) {
@@ -429,6 +442,7 @@ const StepQuestionnaire: React.FC = () => {
         return;
       }
     }
+    console.log(value,"qokla value")
 
     setState(prev => ({
       ...prev,
@@ -667,7 +681,6 @@ const StepQuestionnaire: React.FC = () => {
                         max: 100
                       } : {})}
                     />
-                    {state.currentStep === 12 && <span className="ml-2">%</span>}
                   </div>
                 )}
               </div>
@@ -756,7 +769,7 @@ const StepQuestionnaire: React.FC = () => {
                   `}
                 >
                   <div className="flex items-center">
-                    <div className={`w-6 h-6 border-2 rounded flex items-center justify-center ${
+                    <div className={`w-6 h-6 border-2 rounded flex-shrink-0 flex items-center justify-center ${
                       isSelected
                         ? 'border-secondary'
                         : 'border-gray-300'
@@ -842,15 +855,20 @@ const StepQuestionnaire: React.FC = () => {
       </div>
     );
   };
-  if (hasSubmitted) {
+  if (hasSubmitted && questionnaireStatus === "pending") {
     return (
       <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
         <h2 className="text-3xl font-semibold text-secondary mb-20">{tDashboard("Sidebar.questionnaire")}</h2>
         <p className="text-xl text-center text-secondary">{t("buttons.questionnaireSubmited")}</p>
-        {questionnaireStatus === "accepted" 
-          ? <p className="text-xl mt-2 text-center text-secondary">{tNotifications("questionnaireAccepted")}</p>
-          : <p className="text-xl mt-2 text-center text-secondary">{tNotifications("questionnaireDeclined")}</p>
-        }
+      </div>
+    );
+  }
+  if (hasSubmitted && questionnaireStatus === "accepted") {
+    return (
+      <div className="flex flex-col items-center py-10 px-4 max-w-lg mx-auto">
+        <h2 className="text-3xl font-semibold text-secondary mb-20">{tDashboard("Sidebar.questionnaire")}</h2>
+        <p className="text-xl text-center text-secondary">{t("buttons.questionnaireSubmited")}</p>
+        <p className="text-xl mt-2 text-center text-secondary">{tNotifications("questionnaireAccepted")}</p>
       </div>
     );
   }
@@ -865,8 +883,8 @@ const StepQuestionnaire: React.FC = () => {
       </div>
       {questionnaireStatus === "declined" && (
         <>
-          <p className="text-xl text-red-600 mb-4">{t("medicationDeclined")}</p>
-          <p className="text-secondary mb-8">{t("pleaseStartAgain")}</p>
+          <p className="text-center text-xl text-red-600 mt-8 mb-4">{t("medicationDeclined")}</p>
+          <p className="text-center text-secondary ">{t("pleaseStartAgain")}</p>
         </>
       )}
       <div className="flex-1 container mx-auto px-4 py-8">

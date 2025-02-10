@@ -61,6 +61,7 @@ export interface CreateQuestionnaireRequest {
   questions: {
     question: string;
     answer: string | string[];
+    input?: string | number;
   }[]
 }
 
@@ -70,6 +71,7 @@ export interface Questionnaire {
   questions: {
     question: string;
     answer: string | string[];
+    input?: string | number;
   }[];
   status: string;
   createdAt?: Date;

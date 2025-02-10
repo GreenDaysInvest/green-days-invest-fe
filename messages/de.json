@@ -207,6 +207,8 @@
   },
   "Questionnaire": {
     "optionalInfo": "Optional: Geben Sie hier weitere Informationen ein",
+    "medicationDeclined": "Medikation abgelehnt",
+    "pleaseStartAgain": "Bitte starten Sie erneut",
     "steps": {
       "dataPrivacy": "Datenschutz",
       "patientStatus": "Patientenstatus",

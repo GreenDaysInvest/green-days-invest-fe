@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Modal from "../Modal/Modal";
@@ -11,6 +11,7 @@ import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
 import AuthService from '@/app/services/authServices';
 import { showErrorToast } from '@/app/utils/toast';
 import { useAuth } from '@/app/context/AuthContext';
+import { Loader } from '../Loader/Loader';
 
 interface Props {}
 
@@ -18,6 +19,7 @@ const LoginModal: React.FC<Props> = () => {
     const router = useRouter();
     const { setUser } = useAuth();
     const { isLoginModalOpen, setIsLoginModalOpen, setIsRegisterModalOpen } = useApp();
+    const [isLoading, setIsLoading] = useState(false);
 
     const loginValidationSchema = Yup.object({
         email: Yup.string().email('Invalid email').required('Required'),
@@ -25,6 +27,7 @@ const LoginModal: React.FC<Props> = () => {
     });
 
     const handleNormalLogin = async (values: { email: string; password: string }) => {
+        setIsLoading(true);
         try {
             const loginResponse = await AuthService.login(values.email, values.password);
             const userProfile = await AuthService.getProfile();
@@ -43,10 +46,13 @@ const LoginModal: React.FC<Props> = () => {
             console.error('Login error:', error);
             const errorMessage = (error as Error)?.message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const handleOAuthLogin = async (provider: any) => {
+        setIsLoading(true);
         try {
             const auth = getAuth();
             await setPersistence(auth, browserLocalPersistence);
@@ -58,9 +64,11 @@ const LoginModal: React.FC<Props> = () => {
             
             const result = await signInWithPopup(auth, provider);
             const token = await result.user?.getIdToken();
+
             
             if (token) {
-                await AuthService.loginWithFirebase(token);
+                const response = await AuthService.loginWithFirebase(token);
+                console.log(response,"qokla response");
                 const userProfile = await AuthService.getProfile();
                 
                 if (!userProfile) {
@@ -71,78 +79,84 @@ const LoginModal: React.FC<Props> = () => {
                 setIsLoginModalOpen(false);
                 
                 // Small delay to ensure state updates before navigation
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 router.push('/dashboard');
             }
         } catch (error) {
             console.error('OAuth login error:', error);
             const errorMessage = (error as Error)?.message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <Modal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}>
-            <div className="bg-white p-0 sm:p-10 flex flex-col space-y-6">
-                <h2 className="text-4xl text-main text-center font-semibold mb-4">Login</h2>
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <div className="bg-white p-0 sm:p-10 flex flex-col space-y-6">
+                    <h2 className="text-4xl text-main text-center font-semibold mb-4">Login</h2>
 
-                <Formik
-                    initialValues={{ email: '', password: '' }}
-                    validationSchema={loginValidationSchema}
-                    onSubmit={handleNormalLogin}
-                >
-                    {() => (
-                        <Form className='flex flex-col'>
-                            <Input
-                                name="email"
-                                type="email"
-                                placeholder="Email"
-                            />
-                            <Input
-                                name="password"
-                                type="password"
-                                placeholder="Password"
-                            />
-
-                            <Button type="submit" label="Login" variant="secondary" />
-
-                            <Button  
-                                onClick={() => {
-                                    setIsLoginModalOpen(false);
-                                    setIsRegisterModalOpen(true);
-                                }} 
-                                variant='link' 
-                                label='Need to register?'
-                                className='text-left ps-0'
-                            />
-
-                            <div className="mt-6 flex flex-col justify-center gap-4">
-                                <Button
-                                    type="button"
-                                    label="Login with Google"
-                                    onClick={() => handleOAuthLogin(googleProvider)}
-                                    variant="icon"
-                                    icon={<FaGoogle />}
+                    <Formik
+                        initialValues={{ email: '', password: '' }}
+                        validationSchema={loginValidationSchema}
+                        onSubmit={handleNormalLogin}
+                    >
+                        {() => (
+                            <Form className='flex flex-col'>
+                                <Input
+                                    name="email"
+                                    type="email"
+                                    placeholder="Email"
                                 />
-                                <Button
-                                    type="button"
-                                    label="Login with Facebook"
-                                    onClick={() => handleOAuthLogin(facebookProvider)}
-                                    variant="icon"
-                                    icon={<FaFacebook />}
+                                <Input
+                                    name="password"
+                                    type="password"
+                                    placeholder="Password"
                                 />
-                                <Button
-                                    type="button"
-                                    label="Login with iCloud"
-                                    onClick={() => handleOAuthLogin(appleProvider)}
-                                    variant="icon"
-                                    icon={<FaApple />}
+
+                                <Button type="submit" label="Login" variant="secondary" />
+
+                                <Button  
+                                    onClick={() => {
+                                        setIsLoginModalOpen(false);
+                                        setIsRegisterModalOpen(true);
+                                    }} 
+                                    variant='link' 
+                                    label='Need to register?'
+                                    className='text-left ps-0'
                                 />
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
+
+                                <div className="mt-6 flex flex-col justify-center gap-4">
+                                    <Button
+                                        type="button"
+                                        label="Login with Google"
+                                        onClick={() => handleOAuthLogin(googleProvider)}
+                                        variant="icon"
+                                        icon={<FaGoogle />}
+                                    />
+                                    <Button
+                                        type="button"
+                                        label="Login with Facebook"
+                                        onClick={() => handleOAuthLogin(facebookProvider)}
+                                        variant="icon"
+                                        icon={<FaFacebook />}
+                                    />
+                                    <Button
+                                        type="button"
+                                        label="Login with iCloud"
+                                        onClick={() => handleOAuthLogin(appleProvider)}
+                                        variant="icon"
+                                        icon={<FaApple />}
+                                    />
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            )}
         </Modal>
     );
 };

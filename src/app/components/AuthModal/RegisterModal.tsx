@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Modal from "../Modal/Modal";
@@ -15,6 +15,7 @@ import AuthService from '@/app/services/authServices';
 import { User } from '@/app/types/Auth.type';
 import { v4 as uuidv4 } from 'uuid';
 import { showErrorToast, showInfoToast } from '@/app/utils/toast';
+import { Loader } from '../Loader/Loader';
 
 interface Props {}
 
@@ -22,6 +23,7 @@ const RegisterModal: React.FC<Props> = () => {
     const router = useRouter();
     const t = useTranslations('Validations');
     const { isRegisterModalOpen, setIsRegisterModalOpen, setIsLoginModalOpen } = useApp();
+    const [isLoading, setIsLoading] = useState(false);
 
     const registerValidationSchema = Yup.object({
         name: Yup.string().required(t('required')),
@@ -43,8 +45,8 @@ const RegisterModal: React.FC<Props> = () => {
         birthdate: string;
         password: string;
     }) => {
+        setIsLoading(true);
         try {
-
             const uid = uuidv4();
             // Send registration data to your backend
             await AuthService.register({
@@ -66,10 +68,13 @@ const RegisterModal: React.FC<Props> = () => {
             console.error('Registration error:', error);
             const errorMessage = (error as Error).message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleOAuthRegister = async (provider: AuthProvider) => {
+    const handleOAuthRegistration = async (provider: AuthProvider) => {
+        setIsLoading(true);
         try {
             const result = await signInWithPopup(auth, provider);
             const userData: User = {
@@ -91,108 +96,114 @@ const RegisterModal: React.FC<Props> = () => {
             console.error('Error registering with provider:', error);
             const errorMessage = (error as Error).message || 'An unexpected error occurred.';
             showErrorToast(errorMessage);    
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <Modal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)}>
-            <div className="bg-white p-0 sm:p-10 flex flex-col space-y-4">
-                <h2 className="text-4xl text-main text-center font-semibold mb-4">Register</h2>
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <div className="bg-white p-0 sm:p-10 flex flex-col space-y-4">
+                    <h2 className="text-4xl text-main text-center font-semibold mb-4">Register</h2>
 
-                <Formik
-                    initialValues={{
-                        name: '',
-                        surname: '',
-                        email: '',
-                        phoneNumber: '',
-                        birthdate: '',
-                        password: '',
-                        repeatPassword: ''
-                    }}
-                    validationSchema={registerValidationSchema}
-                    onSubmit={handleRegistration}
-                >
-                    {() => (
-                        <Form className='flex flex-col'>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <Input name="name" type="text" placeholder="Name" />
-                                    <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
+                    <Formik
+                        initialValues={{
+                            name: '',
+                            surname: '',
+                            email: '',
+                            phoneNumber: '',
+                            birthdate: '',
+                            password: '',
+                            repeatPassword: ''
+                        }}
+                        validationSchema={registerValidationSchema}
+                        onSubmit={handleRegistration}
+                    >
+                        {() => (
+                            <Form className='flex flex-col'>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <Input name="name" type="text" placeholder="Name" />
+                                        <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
+                                    </div>
+
+                                    <div>
+                                        <Input name="surname" type="text" placeholder="Surname" />
+                                        <ErrorMessage name="surname" component="div" className="text-red-500 text-sm" />
+                                    </div>
                                 </div>
 
                                 <div>
-                                    <Input name="surname" type="text" placeholder="Surname" />
-                                    <ErrorMessage name="surname" component="div" className="text-red-500 text-sm" />
+                                    <Input name="email" type="email" placeholder="Email" />
+                                    <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
                                 </div>
-                            </div>
 
-                            <div>
-                                <Input name="email" type="email" placeholder="Email" />
-                                <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
-                            </div>
+                                <div>
+                                    <Input name="phoneNumber" type="tel" placeholder="Phone number" />
+                                    <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-sm" />
+                                </div>
 
-                            <div>
-                                <Input name="phoneNumber" type="tel" placeholder="Phone number" />
-                                <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-sm" />
-                            </div>
+                                <div>
+                                    <Input name="birthdate" type="date" placeholder="Birth date" />
+                                    <ErrorMessage name="birthdate" component="div" className="text-red-500 text-sm" />
+                                </div>
 
-                            <div>
-                                <Input name="birthdate" type="date" placeholder="Birth date" />
-                                <ErrorMessage name="birthdate" component="div" className="text-red-500 text-sm" />
-                            </div>
+                                <div>
+                                    <Input name="password" type="password" placeholder="Password" />
+                                    <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
+                                </div>
 
-                            <div>
-                                <Input name="password" type="password" placeholder="Password" />
-                                <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
-                            </div>
+                                <div>
+                                    <Input
+                                        name="repeatPassword"
+                                        type="password"
+                                        placeholder="Repeat your password"
+                                    />
+                                    <ErrorMessage name="repeatPassword" component="div" className="text-red-500 text-sm" />
+                                </div>
 
-                            <div>
-                                <Input
-                                    name="repeatPassword"
-                                    type="password"
-                                    placeholder="Repeat your password"
+                                <Button type="submit" label="Register" variant="secondary" />
+                                <Button  
+                                    onClick={() => {
+                                        setIsLoginModalOpen(true);
+                                        setIsRegisterModalOpen(false);
+                                    }} 
+                                    variant='link' 
+                                    label='Go to Log in'
+                                    className='text-left ps-0'
                                 />
-                                <ErrorMessage name="repeatPassword" component="div" className="text-red-500 text-sm" />
-                            </div>
 
-                            <Button type="submit" label="Register" variant="secondary" />
-                            <Button  
-                                onClick={() => {
-                                    setIsLoginModalOpen(true);
-                                    setIsRegisterModalOpen(false);
-                                }} 
-                                variant='link' 
-                                label='Go to Log in'
-                                className='text-left ps-0'
-                            />
-
-                            <div className="mt-6 flex flex-col justify-center gap-4">
-                                <Button
-                                    type="button"
-                                    label="Sign up with Google"
-                                    onClick={() => handleOAuthRegister(googleProvider)}
-                                    variant="icon"
-                                    icon={<FaGoogle />}
-                                />
-                                <Button
-                                    type="button"
-                                    label="Sign up with Facebook"
-                                    onClick={() => handleOAuthRegister(facebookProvider)}
-                                    variant="icon"
-                                    icon={<FaFacebook />}
-                                />
-                                <Button
-                                    type="button"
-                                    label="Sign up with iCloud"
-                                    onClick={() => handleOAuthRegister(appleProvider)}
-                                    variant="icon"
-                                    icon={<FaApple />}
-                                />
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
+                                <div className="mt-6 flex flex-col justify-center gap-4">
+                                    <Button
+                                        type="button"
+                                        label="Sign up with Google"
+                                        onClick={() => handleOAuthRegistration(googleProvider)}
+                                        variant="icon"
+                                        icon={<FaGoogle />}
+                                    />
+                                    <Button
+                                        type="button"
+                                        label="Sign up with Facebook"
+                                        onClick={() => handleOAuthRegistration(facebookProvider)}
+                                        variant="icon"
+                                        icon={<FaFacebook />}
+                                    />
+                                    <Button
+                                        type="button"
+                                        label="Sign up with iCloud"
+                                        onClick={() => handleOAuthRegistration(appleProvider)}
+                                        variant="icon"
+                                        icon={<FaApple />}
+                                    />
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            )}
         </Modal>
     );
 };
